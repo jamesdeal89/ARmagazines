@@ -1,8 +1,8 @@
-#Computer Science NEA
+# Computer Science NEA
 
-#AR Magazine Cover Videos
+# AR Magazine Cover Videos
 
-###Bibliography:
+### Bibliography:
 
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
 - OpenCV homography documentation
