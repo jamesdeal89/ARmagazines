@@ -15,3 +15,6 @@ https://pyimagesearch.com/2021/01/04/opencv-augmented-reality-ar/
 
 https://youtu.be/oXlwWbU8l2o
 - YouTube OpenCV Course
+
+https://youtu.be/7gSWd2hodFU
+- YouTube OpenCV video series; specifically on Augmented Reality
