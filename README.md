@@ -6,6 +6,16 @@ main image model is moving. This video is to be overlain on top of a printed
 magazine in real life (Augmented Reality). It should follow and adapt to the movements
 and angling that the camera is taking footage from. 
 
+### Planning & Research:
+#### Example 1: IKEA Place
+![IKEA Place example image](/assets/ikea.webp)
+
+#### Example 2: Snapchat filters
+![Snapchat filter example image](/assets/snap.webp)
+
+#### Example 3: Pokemon GO
+![Pokemon GO example inage](/assets/poke.webp)
+
 ### Bibliography:
 
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
