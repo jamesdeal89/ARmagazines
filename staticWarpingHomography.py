@@ -1,4 +1,7 @@
 # using https://medium.com/acmvit/how-to-project-an-image-in-perspective-view-of-a-background-image-opencv-python-d101bdf966bc
+# this is a short example of warping images based on non-automatically selecting target points
+# for the final product it'll need to recognize target points automatically and use a frame by frame video feed
+# and a frame by frame video source
 import cv2
 import numpy
 
@@ -29,28 +32,8 @@ warpedSource = cv2.warpPerspective(source,homographyMatrix,(1200,627))
 cv2.imshow("warped image",warpedSource)
 cv2.waitKey(0)
 
-# blend the two images and display them
+# blend the two images and display them as a rough way to overlay the two 
 overlay = cv2.addWeighted(target,0.5,warpedSource,0.5,0.0)
 cv2.imshow("overlaid images", overlay)
-cv2.waitKey(0)
-
-# black mask of target
-mask2 = numpy.zeros((627,1200),dtype=numpy.uint8)
-cv2.imshow("combining", mask2)
-cv2.waitKey(0)
-targetPoints = numpy.array([[372,144],[125,188],[414,610],[650,482]])
-# fill mask with white area of warped source
-mask2 = cv2.fillConvexPoly(mask2,targetPoints,(255,255,255))
-cv2.imshow("combining", mask2)
-cv2.waitKey(0)
-mask2 = cv2.bitwise_not(mask2)
-cv2.imshow("combining", mask2)
-cv2.waitKey(0)
-mask2 = cv2.bitwise_and(target, mask2)
-cv2.imshow("combining", mask2)
-cv2.waitKey(0)
-finalOutput = cv2bitwise_or(warpedSource,mask2)
-
-cv2.imshow("final", finalOutput)
 cv2.waitKey(0)
 
