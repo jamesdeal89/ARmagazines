@@ -24,6 +24,9 @@ source. My AR is using a video feed whereas this uses a 3D model.
 #### Example 3: Pokemon GO
 ![Pokemon GO example inage](/assets/poke.webp)
 
+### Documented Design:
+![Keypoint markers drawn using OpenCV](/assets/keypoints.png)
+
 ### Bibliography:
 
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
