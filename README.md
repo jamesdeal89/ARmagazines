@@ -41,3 +41,5 @@ https://youtu.be/oXlwWbU8l2o
 https://youtu.be/7gSWd2hodFU
 - YouTube OpenCV video series; specifically on Augmented Reality
 
+https://learnopencv.com/image-alignment-feature-based-using-opencv-c-python/
+- OpenCV ORB image alignment
