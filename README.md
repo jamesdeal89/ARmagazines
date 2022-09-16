@@ -26,6 +26,11 @@ source. My AR is using a video feed whereas this uses a 3D model.
 
 ## Documented Design:
 ![Keypoint markers drawn using OpenCV](/assets/keypoints.png)
+Above is an example of how OpenCV and it's ORB methods can be used to create a series of keypoints
+These unique keypoints can uniquely indentify a target image. It even works through a webcam with non-ideal alignment or lighting
+thanks to being able to allow a certain degree of inaccuracy to still be accepted as a match. In the image above, OpenCV draws the matching points 
+to demonstrate which areas correlate to the same points on the source. This will be important for my project as I need to recognize several magazine
+covers apart and load specific source videos to overlay on top. 
 
 ## Bibliography:
 
