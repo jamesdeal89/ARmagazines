@@ -6,7 +6,7 @@ main image model is moving. This video is to be overlain on top of a printed
 magazine in real life (Augmented Reality). It should follow and adapt to the movements
 and angling that the camera is taking footage from. 
 
-### Planning & Research:
+### Analysis:
 #### Example 1: IKEA Place
 ![IKEA Place example image](/assets/ikea.webp)
 Ikea Place is an app provided by the Swedish furniture company. It allows users who are browsing for furniture
