@@ -9,6 +9,14 @@ and angling that the camera is taking footage from.
 ### Planning & Research:
 #### Example 1: IKEA Place
 ![IKEA Place example image](/assets/ikea.webp)
+Ikea Place is an app provided by the Swedish furniture company. It allows users who are browsing for furniture
+to place it inside of their home using their smartphone's camera. Allowing them to compare the size and aesthetic
+of the items. It also enourages users to create a more personal connection with the item being placed into their home
+via AR; making the app an effective sales technique. This relates to my project as it uses a projection in AR
+through a phone camera/webcam. It adjusts based on the movement of the camera. However my project does differ
+in some ways. Firstly, I would also have to adjust for when the camera is steady but the target (magazine) is moving. 
+In IKEA Place, it's unlikely the target (floor or desk) would move instead of the camera. I also am using a different
+source. My AR is using a video feed whereas this uses a 3D model. 
 
 #### Example 2: Snapchat filters
 ![Snapchat filter example image](/assets/snap.webp)
