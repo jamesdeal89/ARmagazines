@@ -1,12 +1,12 @@
 # Computer Science NEA - AR Video Magazine Covers
-### Introduction:
+## Introduction:
 My project idea is to create either an investigation into, or a finalized app
 product which overlays a video of a pre-recorded magazine cover where the 
 main image model is moving. This video is to be overlain on top of a printed
 magazine in real life (Augmented Reality). It should follow and adapt to the movements
 and angling that the camera is taking footage from. 
 
-### Analysis:
+## Analysis:
 #### Example 1: IKEA Place
 ![IKEA Place example image](/assets/ikea.webp)
 Ikea Place is an app provided by the Swedish furniture company. It allows users who are browsing for furniture
@@ -24,10 +24,10 @@ source. My AR is using a video feed whereas this uses a 3D model.
 #### Example 3: Pokemon GO
 ![Pokemon GO example inage](/assets/poke.webp)
 
-### Documented Design:
+## Documented Design:
 ![Keypoint markers drawn using OpenCV](/assets/keypoints.png)
 
-### Bibliography:
+## Bibliography:
 
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
 - OpenCV homography documentation
