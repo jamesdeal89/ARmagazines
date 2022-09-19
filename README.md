@@ -8,8 +8,8 @@ magazine in real life (Augmented Reality). It should follow and adapt to the mov
 and angling that the camera is taking footage from.
 
 ### Who is the product for?
-I want to create this product to help the schools Media Studies department create new, innovative
-interactions for students GCSE, AS, and A level coursework. The coursework all involve creating either a magazine 
+I want to create this product to help the school's Media Studies department, specifically Mr.Robson, create new, innovative
+interaction methods for student's GCSE, AS, and A level coursework. The coursework all involve creating either a magazine 
 or a 'digipack' which also features a cover similar to a magazine. My product will allow them to deepen user 
 imersion with their magazine or digipack while joining reality with digital. 
 
