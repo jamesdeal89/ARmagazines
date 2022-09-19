@@ -50,7 +50,16 @@ Above is an example of how OpenCV and it's ORB methods can be used to create a s
 These unique keypoints can uniquely indentify a target image. It even works through a webcam with non-ideal alignment or lighting
 thanks to being able to allow a certain degree of inaccuracy to still be accepted as a match. In the image above, OpenCV draws the matching points 
 to demonstrate which areas correlate to the same points on the source. This will be important for my project as I need to recognize several magazine
-covers apart and load specific source videos to overlay on top. 
+covers apart and load specific source videos to overlay on top. The source code for this can be found in keypointDetection.py.
+
+![Border detection with homography and OpenCV](/assets/border.png)
+Here I add onto the above python file by taking the keypoints and relating them to the same keypoints found through the webcam.
+The difference in their distances allows for a homography matrix to be calculated. To do this I created a numpy array of the successful
+keypoints and used .reshape() to format it as a 2D array of 2 keypoints each. This is the accepted format for matching homography using cv2. 
+This numpy array has to also be made for the keypoints in the original image. From this calculation we get a homography matrix.
+If done successfully this gives the data to perform a warp which matches to the image in the webcam. I then use cv2.perspectiveTransform to 
+apply this warp to the border coordinates of the target image. This is then projected onto the webcam frame and can be seen above as the white
+box. 
 
 ## Bibliography:
 

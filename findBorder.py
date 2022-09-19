@@ -6,6 +6,9 @@
 # https://learnopencv.com/image-alignment-feature-based-using-opencv-c-python/
 # https://youtu.be/7gSWd2hodFU
 # https://youtu.be/oXlwWbU8l2o
+# I understand the code is messy and procedures would reduce unecesary complexity by a lot
+# but first I want to create a proof of concept and then clean up the implementation after
+
 import cv2
 import numpy as np
 
@@ -104,15 +107,37 @@ while True:
         features = cv2.drawMatches(target,keyPoints,webFrame,keyPointsWeb,successfullMatches,None,flags=2)
         cv2.imshow("features", features)
     elif len(successfullMatches2) > 20:
+        originalPoints = np.float32([keyPoints2[m.queryIdx].pt for m in successfullMatches2]).reshape(-1,1,2)
+        destinationPoints = np.float32([keyPointsWeb[m.trainIdx].pt for m in successfullMatches2]).reshape(-1,1,2)
+        homographyMatrix, mask = cv2.findHomography(originalPoints,destinationPoints,cv2.RANSAC,5)
+        # we now create the base frame of the source which is just the dimenions of the image
+        # we calculated this previously so I'll just pass in the variables.
+        sourcePoints = np.float32([[0,0],[0,h],[w,h],[w,0]]).reshape(-1,1,2)
+
+        # now we warp those border points based on where cv2 thinks it's found the same points through the webcam
+        # this is done using the homography matrix
+        destinationPoints = cv2.perspectiveTransform(sourcePoints,homographyMatrix)
+        # we now add these border lines of the target image to the webcam frame
+        cv2.polylines(webFrame,[np.int32(destinationPoints)],True,(255,255,255),3)
         # this a built in cv2 function which shows a drawn line of matched features parralel to each other
         features = cv2.drawMatches(target2,keyPoints2,webFrame,keyPointsWeb,successfullMatches2,None,flags=2)
         cv2.imshow("features", features)
     elif len(successfullMatches3) > 20:
+        originalPoints = np.float32([keyPoints3[m.queryIdx].pt for m in successfullMatches3]).reshape(-1,1,2)
+        destinationPoints = np.float32([keyPointsWeb[m.trainIdx].pt for m in successfullMatches3]).reshape(-1,1,2)
+        homographyMatrix, mask = cv2.findHomography(originalPoints,destinationPoints,cv2.RANSAC,5)
+        # we now create the base frame of the source which is just the dimenions of the image
+        # we calculated this previously so I'll just pass in the variables.
+        sourcePoints = np.float32([[0,0],[0,h],[w,h],[w,0]]).reshape(-1,1,2)
+
+        # now we warp those border points based on where cv2 thinks it's found the same points through the webcam
+        # this is done using the homography matrix
+        destinationPoints = cv2.perspectiveTransform(sourcePoints,homographyMatrix)
+        # we now add these border lines of the target image to the webcam frame
+        cv2.polylines(webFrame,[np.int32(destinationPoints)],True,(255,255,255),3)
         # this a built in cv2 function which shows a drawn line of matched features parralel to each other
         features = cv2.drawMatches(target3,keyPoints3,webFrame,keyPointsWeb,successfullMatches3,None,flags=2)
         cv2.imshow("features", features)
-    else:
-        cv2.imshow("no match", webFrame)
 
     # wait for keypress and if keypress is q or Q, break loop
     buttonPress = cv2.waitKey(1)
