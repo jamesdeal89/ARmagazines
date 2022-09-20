@@ -13,6 +13,15 @@ interaction methods for student's GCSE, AS, and A level coursework. The coursewo
 or a 'digipack' which also features a cover similar to a magazine. My product will allow them to deepen user 
 imersion with their magazine or digipack while joining reality with digital. 
 
+### Main Objectives:
+- Read video feeds from a webcam or smartphone camera
+- Load source videos of pre-recorded moving covers 
+- Detect and recognize which of the source videos matches to the magazine/digipack shown
+- Detect edges and borders of the magazine/digipack
+- Frame by frame overlay and adjust the warping of the source to match the one in the video
+- Thereby creating an AR effect
+- Finally adapt the project for a user friendly interface on laptops or a mobile application
+
 ### Already existing AR products:
 #### Example 1: IKEA Place
 ![IKEA Place example image](/assets/ikea.webp)
