@@ -56,10 +56,10 @@ the AR projection which could be something I need to consider implementing.
 ## Documented Design:
 ![Keypoint markers drawn using OpenCV](/assets/keypoints.png)
 Above is an example of how OpenCV and it's ORB methods can be used to create a series of keypoints.
-These unique keypoints can uniquely indentify a target image. It even works through a webcam with non-ideal alignment or lighting
+These keypoints can uniquely indentify a target image. It even works through a webcam with non-ideal alignment or lighting
 thanks to being able to allow a certain degree of inaccuracy to still be accepted as a match. In the image above, OpenCV draws the matching points 
 to demonstrate which areas correlate to the same points on the source. This will be important for my project as I need to recognize several magazine
-covers apart and load specific source videos to overlay on top. The source code for this can be found in keypointDetection.py.
+covers apart and load specific source videos to overlay on top. The way this works is by taking features of the magazine cover and making that a keypoint from the relationship between groups of pixels. For example you can see the bottom of the letters in MUSK are being used to identify the image from how the white pixels are spaced. The source code for this can be found in keypointDetection.py. 
 
 ![Border detection with homography and OpenCV](/assets/border.png)
 Here I add onto the above python file by taking the keypoints and relating them to the same keypoints found through the webcam.
