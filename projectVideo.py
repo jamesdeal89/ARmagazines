@@ -6,11 +6,12 @@ To improve efficiency I'll start by making procedures and functions.
 Then after finishing my proof of concept I'll create an OOP structure and make my 
 own implementation of cv2 based algorithms.
 """
-
+import sys
 import cv2
 import numpy as np
 
-def findBorder(webFrame, orb, keyPointsWeb,keyPoints,successfullMatches):
+def findBorder(webFrame,target,w,h, orb, keyPointsWeb,keyPoints,successfullMatches):
+    print("finding border")
     # we need to reformat the data in the successful matches to allow us to put it into cv2.findHomography 
     # this is done using numpy's .reshape and a numpy array
     # we pass in -1, 1, 2 as we want 1 array with 2 elements each conatined within whatever it's divisible into
@@ -37,10 +38,12 @@ def findBorder(webFrame, orb, keyPointsWeb,keyPoints,successfullMatches):
 
     # this a built in cv2 function which shows a drawn line of matched features parralel to each other
     features = cv2.drawMatches(target,keyPoints,webFrame,keyPointsWeb,successfullMatches,None,flags=2)
+    print("showing frame")
     cv2.imshow("features", features)
 
 
 def recognizeCover(webFrame, descriptors, descriptors2, descriptors3, descriptorsWeb):
+    print("looking for cover")
     # using a bruteforce method of scanning across the entire image for the keypoints
     bruteForce = cv2.BFMatcher()
     matches = bruteForce.knnMatch(descriptors,descriptorsWeb, k=2)
@@ -78,9 +81,11 @@ def recognizeCover(webFrame, descriptors, descriptors2, descriptors3, descriptor
         return None, None
 
 
-def webcamRead(feed, orb, keyPoints, keyPoints2, keyPoints3, descriptors, descriptors2, descriptors3):
+def webcamRead(feed,target, target2, target3, w,h, orb, keyPoints, keyPoints2, keyPoints3, descriptors, descriptors2, descriptors3):
     frameLoaded, webFrame = feed.read()
+    print("reading webcam")
     while frameLoaded:
+
         # read the keypoints in the orb of the webcam frames
         # we can use these to compare to the target keypoints
         keyPointsWeb, descriptorsWeb = orb.detectAndCompute(webFrame,None)
@@ -91,14 +96,19 @@ def webcamRead(feed, orb, keyPoints, keyPoints2, keyPoints3, descriptors, descri
         # find the border of the target image found through the webcam based on which target cover it is
         if targetNum != None:
             if targetNum == 1:
-                findBorder(webFrame, orb, keyPointsWeb,keyPoints,matches)
+                findBorder(webFrame,target, w,h, orb, keyPointsWeb,keyPoints,matches)
             elif targetNum == 2:
-                findBorder(webFrame, orb, keyPointsWeb,keyPoints2,matches)
+                findBorder(webFrame, target2, w,h, orb, keyPointsWeb,keyPoints2,matches)
             elif targetNum == 3:
-                findBorder(webFrame, orb, keyPointsWeb,keyPoints3,matches)
+                findBorder(webFrame, target3, w,h, orb, keyPointsWeb,keyPoints3,matches)
 
         # load the next frame and update boolean
         frameLoaded, webFrame = feed.read()
+
+        # wait for keypress and if keypress is q or Q, break loop
+        buttonPress = cv2.waitKey(1)
+        if buttonPress==81 or buttonPress==113:
+            sys.exit()
 
 
 def main():
@@ -112,6 +122,14 @@ def main():
     target3 = cv2.imread("target3.jpg")
     # load source video to project onto the target
     source = cv2.VideoCapture("source.mp4")
+    sourceRead, frame = source.read()
+
+    # resizing all targets and source to be the same
+    # .shape on a loaded image returns a tuple of height, width, and channels
+    h, w, c = target.shape
+    frame = cv2.resize(frame,(w,h))
+    target2 = cv2.resize(target2,(w,h))
+    target3 = cv2.resize(target3,(w,h))
 
     # using cv2 ORB which is a feature which creates image detector keypoints
     # nfeatures specifices the number of features to use as matching points
@@ -124,7 +142,7 @@ def main():
     keyPoints2, descriptors2 = orb.detectAndCompute(target2,None)
     keyPoints3, descriptors3 = orb.detectAndCompute(target3,None)
 
-    webcamRead(feed, orb,keyPoints, keyPoints2, keyPoints3, descriptors, descriptors2, descriptors3)
+    webcamRead(feed, target, target2, target3, w,h, orb,keyPoints, keyPoints2, keyPoints3, descriptors, descriptors2, descriptors3)
 
 
 if __name__ == "__main__":
