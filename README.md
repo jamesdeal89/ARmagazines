@@ -54,6 +54,7 @@ finger across the screen to 'throw' a ball to catch them. My project doesn't inv
 the AR projection which could be something I need to consider implementing. 
 
 ## Documented Design:
+#### Prototype Proof-Of-Concept:
 ![Keypoint markers drawn using OpenCV](/assets/keypoints.png)
 Above is an example of how OpenCV and it's ORB methods can be used to create a series of keypoints.
 These keypoints can uniquely indentify a target image. It even works through a webcam with non-ideal alignment or lighting
@@ -69,6 +70,15 @@ This numpy array has to also be made for the keypoints in the original image. Fr
 If done successfully this gives the data to perform a warp which matches to the image in the webcam. I then use cv2.perspectiveTransform to 
 apply this warp to the border coordinates of the target image. This is then projected onto the webcam frame and can be seen above as the white
 box. 
+
+![White mask frame with a black box where the target is](/assets/mask1.png)
+
+![Warped source frame](/assets/warpedSource.png)
+
+![Mask after bitwise AND with webcam frame](/assets/maskAfterANDWithWebcam.png)
+
+![Successful tracked overlay after using bitwise OR between warped source and the masked webcam frame](/assets/overlaySuccessAfterORbetweenWarpedSourceMaskedWebcam.png)
+
 
 ## Bibliography:
 
