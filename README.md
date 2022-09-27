@@ -102,4 +102,7 @@ https://learnopencv.com/image-alignment-feature-based-using-opencv-c-python/
 - OpenCV ORB image alignment
 
 https://pythonprogramming.net/image-recognition-python/
-- article discussing image recognition algorithms without OpenCV
+- Article discussing image recognition algorithms without OpenCV
+
+https://docs.python.org/3/library/tkinter.html
+- Documentation on Tkinter for GUI
