@@ -72,6 +72,7 @@ apply this warp to the border coordinates of the target image. This is then proj
 box. 
 
 <img src="/assets/mask1.png" alt="White mask frame with a black box where the target is" width="500"/>
+Above you can see a mask which is a white frame in the exact same size as the webcam frame. This is actually generated using numpy.zeros() which just makes a matrix of zeros in the resolution we pass in. OpenCV can interpret this matrix as an 'image' and display it for documentation and also for processing. Using the border points we previously created using homography, we can use OpenCV to draw a filled area where the target is in white (255,255,255). Following this we use a bitwise NOT to flip the colours to the target area being black (0,0,0) and the rest of the frame white (255,255,255). Leaving us with the final mask to overlay later.
 
 <img src="/assets/warpedSource.png" alt="Warped source frame" width="500"/>
 
