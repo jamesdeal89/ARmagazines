@@ -24,7 +24,7 @@ imersion with their magazine or digipack while joining reality with digital.
 
 ### Already existing AR products:
 #### Example 1: IKEA Place
-![IKEA Place example image](/assets/ikea.webp)
+<img src="/assets/ikea.webp" alt="IKEA Place example image" width="300"/>
 Ikea Place is an app provided by the Swedish furniture company. It allows users who are browsing for furniture
 to place it inside of their home using their smartphone's camera. Allowing them to compare the size and aesthetic
 of the items. It also enourages users to create a more personal connection with the item being placed into their home
@@ -36,7 +36,7 @@ source. My AR is using a video feed whereas this uses a 3D model. The applicatio
 being made for art and entertainment rather than commercial sales. 
 
 #### Example 2: Snapchat filters
-![Snapchat filter example image](/assets/snap.webp)
+<img src="/assets/snap.webp" alt="Snapchat filter example image" width="300"/>
 Snapchat filters are much more different to my project than Ikea Place. These AR filters track a users face to project
 things like masks, beards, tatoos and more onto them. It can be both 2D or 3D projections and they can respond to the 
 users (for example some have physics implementations like to make wobbly noses when a persons head moves). I think the 
@@ -45,7 +45,7 @@ are purely entertainment and novelty whereas AR magazine covers would be also in
 obvious difference in mine being non-3D model based.
 
 #### Example 3: Pokemon GO
-![Pokemon GO example inage](/assets/poke.webp)
+<img src="/assets/poke.webp" alt="Pokemon GO example image" width="300"/>
 Pokemon Go is a 2016 mobile app which uses the iconic characters from Pokemon to make a location based video game.
 Users would have to physically move outside and the phone's GPS would register their location and move their character.
 Based on this they would encounter 'Pokemon' which they could try to 'capture'; capturing them is where AR and the link
@@ -55,14 +55,14 @@ the AR projection which could be something I need to consider implementing.
 
 ## Documented Design:
 #### Prototype Proof-Of-Concept:
-![Keypoint markers drawn using OpenCV](/assets/keypoints.png)
+<img src="/assets/keypoints.png" alt="Keypoint markers drawn using OpenCV" width="300"/>
 Above is an example of how OpenCV and it's ORB methods can be used to create a series of keypoints.
 These keypoints can uniquely indentify a target image. It even works through a webcam with non-ideal alignment or lighting
 thanks to being able to allow a certain degree of inaccuracy to still be accepted as a match. In the image above, OpenCV draws the matching points 
 to demonstrate which areas correlate to the same points on the source. This will be important for my project as I need to recognize several magazine
 covers apart and load specific source videos to overlay on top. The way this works is by taking features of the magazine cover and making that a keypoint from the relationship between groups of pixels. For example you can see the bottom of the letters in MUSK are being used to identify the image from how the white pixels are spaced. The source code for this can be found in keypointDetection.py. 
 
-![Border detection with homography and OpenCV](/assets/border.png)
+<img src="/assets/border.png" alt="Border detection with homography in OpenCV" width="300"/>
 Here I add onto the above python file by taking the keypoints and relating them to the same keypoints found through the webcam.
 The difference in their distances allows for a homography matrix to be calculated. To do this I created a numpy array of the successful
 keypoints and used .reshape() to format it as a 2D array of 2 keypoints each. This is the accepted format for matching homography using cv2. 
@@ -71,14 +71,14 @@ If done successfully this gives the data to perform a warp which matches to the 
 apply this warp to the border coordinates of the target image. This is then projected onto the webcam frame and can be seen above as the white
 box. 
 
-![White mask frame with a black box where the target is](/assets/mask1.png)
+<img src="/assets/mask1.png" alt="White mask frame with a black box where the target is" width="300"/>
 
-
-![Warped source frame](/assets/warpedSource.png)
+<img src="/assets/warpedSource.png" alt="Warped source frame" width="300"/>
 
 ![Mask after bitwise AND with webcam frame](/assets/maskAfterANDWithWebcam.png)
+<img src="/assets/maskAfterANDWithWebcam.png" alt="Mask after bitwise AND with webcam frame" width="300"/>
 
-![Successful tracked overlay after using bitwise OR between warped source and the masked webcam frame](/assets/overlaySuccessAfterORbetweenWarpedSourceMaskedWebcam.png)
+<img src="/assets/overlaySuccessAfterORbetweenWarpedSourceMaskedWebcam.png" alt="Successful tracked overlay after using bitwise OR between warped source and the masked webcam frame" width="300"/>
 
 
 ## Bibliography:
