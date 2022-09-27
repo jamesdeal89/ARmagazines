@@ -75,7 +75,6 @@ box.
 
 <img src="/assets/warpedSource.png" alt="Warped source frame" width="500"/>
 
-![Mask after bitwise AND with webcam frame](/assets/maskAfterANDWithWebcam.png)
 <img src="/assets/maskAfterANDWithWebcam.png" alt="Mask after bitwise AND with webcam frame" width="500"/>
 
 <img src="/assets/overlaySuccessAfterORbetweenWarpedSourceMaskedWebcam.png" alt="Successful tracked overlay after using bitwise OR between warped source and the masked webcam frame" width="500"/>
