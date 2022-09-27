@@ -73,6 +73,7 @@ box.
 
 ![White mask frame with a black box where the target is](/assets/mask1.png)
 
+
 ![Warped source frame](/assets/warpedSource.png)
 
 ![Mask after bitwise AND with webcam frame](/assets/maskAfterANDWithWebcam.png)
@@ -99,3 +100,6 @@ https://youtu.be/7gSWd2hodFU
 
 https://learnopencv.com/image-alignment-feature-based-using-opencv-c-python/
 - OpenCV ORB image alignment
+
+https://pythonprogramming.net/image-recognition-python/
+- article discussing image recognition algorithms without OpenCV
