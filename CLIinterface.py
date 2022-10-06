@@ -1,14 +1,14 @@
 """
-To start with this file, I want to clean up the previous implementation
-then I want to use my knowledge of perspective warping to frame by frame
-adjust the source video to fit onto the target through the webcam.
-To improve efficiency I'll start by making procedures and functions.
-Then after finishing my proof of concept I'll create an OOP structure and make my 
-own implementation of cv2 based algorithms.
+For this iteration I want to add a comand line interface to make loading target magazine covers and source
+videos more user friendly. I want to progress this further by using Tkinter to make a full GUI.
+Additionally I think it's important to allow for more than 3 targets/sources and that will require using
+file I/O to store and loops to iterate through the saved locations and make variables for each.
+Further functionalisation of my code may be required to make using infinitely more targets possible.
 """
 import sys
 import cv2
 import numpy as np
+import csv
 
 def overlay(webFrame, sourceFrame, target, homographyMatrix, destinationPoints,w,h):
     # we take the warped source frame and the webcam frame and overlay the two
@@ -25,18 +25,20 @@ def overlay(webFrame, sourceFrame, target, homographyMatrix, destinationPoints,w
     # create a white mask with a black box where the target was detected
     cv2.fillConvexPoly(mask2, destinationPoints, (255,255,255))
 
-    
+    # flip the image to make the target area black (0) and the rest white (1)
     mask2 = cv2.bitwise_not(mask2)
 
-    print(webFrame.shape)
-    print(mask2.shape)
-    print(destinationPoints.shape)
-
+    # using a bitwise and to mask over the area in the webcam which holds the target
+    # this works as the mask is white (1) in areas which don't contain the target.
+    # therefore an AND operation with the webcam data which is also 1's and 0's.
+    # will just maintain the webcam data as A.1 = A
+    # whereas the target area is black (0) so if we do A.0 it simplifies to 0
+    # leaving the target area as all 0 values. 
     masked_image2 = cv2.bitwise_and(webFrame, mask2)
-    cv2.imshow("masked image", masked_image2)
-
-    #Using Bitwise or to merge the two images
+    # using bitwise or to merge the two images
     final = cv2.bitwise_or(warpedSource, masked_image2)
+
+    # displaying each stage for documentation purposes
     cv2.imshow("mask", mask2)
     cv2.imshow("masked_image2", masked_image2)
     cv2.imshow("overlay", final)
@@ -159,7 +161,34 @@ def webcamRead(feed, source,target, target2, target3, orb, keyPoints, keyPoints2
             sys.exit()
 
 
+
+def generatePairs():
+    # create a csv file of the target and source pairs if one does not exist
+    ...
+
+
+def loadPairs():
+    # use a csv file to load the target and source pairs using loops
+    with open("pairs.csv") as file:
+        reader = csv.reader(file)
+        for row in reader:
+            ...
+
+
 def main():
+    while True:
+        loadOrGen = input("do you want to load or generate a target-source pair file? (L or G)").strip().lower()
+        if loadOrGen == "l":
+            try:
+                loadPairs()
+            except FileNotFoundError:
+                sys.exit("There was no pairs.csv file found in the local directory")
+            else:
+                break
+        elif loadOrGen == "g":
+            generatePairs()
+            break
+    """
     # get default webcam feed
     feed = cv2.VideoCapture(0)
     # load target image to detect and map onto (ignore filename)
@@ -170,8 +199,7 @@ def main():
     target3 = cv2.imread("target3.jpg")
     # load source video to project onto the target
     source = cv2.VideoCapture("source.mp4")
-
-
+    """
 
     # using cv2 ORB which is a feature which creates image detector keypoints
     # nfeatures specifices the number of features to use as matching points
