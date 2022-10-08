@@ -9,6 +9,8 @@ import sys
 import cv2
 import numpy as np
 import csv
+import re
+import os
 
 def overlay(webFrame, sourceFrame, target, homographyMatrix, destinationPoints,w,h):
     # we take the warped source frame and the webcam frame and overlay the two
@@ -161,14 +163,61 @@ def webcamRead(feed, source,target, target2, target3, orb, keyPoints, keyPoints2
             sys.exit()
 
 
+def generateCSV(pairings, createOrUpdate):
+    # this will use file I/O and the csv library to take the pairing dictionary list and either write or append to 
+    # a pairs.csv file.
+    with open("pairs.csv",createOrUpdate) as file:
+        # use the csv library's dictionary writer to make the .csv file's heading (if creating) and for later writing each dict
+        dictwriter = csv.DictWriter(file, fieldnames=pairings[0].keys())
+        if createOrUpdate == "w":
+            dictwriter.writeheader()
+        # iterate through the pairs list to get each dictionary 
+        for pair in pairings:
+            dictwriter.writerow(pair)
 
-def generatePairs():
+
+def generatePairs(createOrUpdate):
     # create a csv file of the target and source pairs if one does not exist
-    ...
+    # allow user to keep entering target and source pair filenames with .mp4 and .jpeg images until ctrl+D
+    # verify input using regex
+    targetSource = []
+    print("This entry will continue for more pairs until ctrl+D is pressed")
+    while True:
+        try:
+            pairing = {}
+            pair = input("Please input your target filename (.jpeg/.jpg) followed by source filename (.mp4) as such: 'target.jpg, source.jpg':")
+            # use regex to ensure the user has used the correct syntax for input and use regex groupings to capture the data we want
+            if matches := re.search(r"^(.+), (.+)",pair):
+                fileTarget = matches.group(1)
+                fileSource = matches.group(2)
+                # seperate the file extensions using os library 
+                name,ext = os.path.splitext(fileTarget)
+                name1,ext1 = os.path.splitext(fileSource)
+                # check that both file extensions are valid to avoid OpenCV compatability errors
+                if ext in [".jpg",".jpeg"] and ext1 == ".mp4":
+                    # if valid update the dictionary pair and append it to the list
+                    pairing["target"] = fileTarget
+                    pairing["source"] = fileSource
+                    targetSource.append(pairing)
+                else:
+                    print("\n\nfile extension not compatible")
+            else:
+                print("\n\nPlease use the format of 'targetFile, sourceFile' including extensions")
+        except EOFError:
+            # if ctrl+D is pressed break the entry loop
+            print("\n\nYou have pressed ctrl+D and have completed entry.")
+            print("Your pairings are below:")
+            print(targetSource)
+            break
+    # once loop is broken we call the file generator function
+    generateCSV(targetSource,createOrUpdate)
+        
 
 
 def loadPairs():
     # use a csv file to load the target and source pairs using loops
+    # after this the loaded pairs will be passed into a function which uses OpenCV and iterative loops
+    # to load all the pairs into OpenCV image objects.
     with open("pairs.csv") as file:
         reader = csv.reader(file)
         for row in reader:
@@ -177,29 +226,24 @@ def loadPairs():
 
 def main():
     while True:
-        loadOrGen = input("do you want to load or generate a target-source pair file? (L or G)").strip().lower()
+        loadOrGen = input("Do you want to load, generate, or update a target-source pair file? (L,G, or U)").strip().lower()
         if loadOrGen == "l":
             try:
                 loadPairs()
             except FileNotFoundError:
-                sys.exit("There was no pairs.csv file found in the local directory")
+                # catch any error where the file pairs.csv does not exist and exit while giving error message
+                sys.exit("There was no pairs.csv file found in the local directory. File must be named pairs.csv to load.")
             else:
+                # if the pair loading was successful we can break the loop for checking input
                 break
         elif loadOrGen == "g":
-            generatePairs()
+            # call the generate function and pass in "w" to create or overwrite a pairs.csv file
+            generatePairs("w")
             break
-    """
-    # get default webcam feed
-    feed = cv2.VideoCapture(0)
-    # load target image to detect and map onto (ignore filename)
-    target = cv2.imread("target.jpg")
-    # load secondary image target
-    target2 = cv2.imread("target2.jpg")
-    # load third image 
-    target3 = cv2.imread("target3.jpg")
-    # load source video to project onto the target
-    source = cv2.VideoCapture("source.mp4")
-    """
+        elif loadOrGen == "u":
+            # using the same generate function except pass in "a" to append to an already exisiting pairs.csv file
+            generatePairs("a")
+            break
 
     # using cv2 ORB which is a feature which creates image detector keypoints
     # nfeatures specifices the number of features to use as matching points
