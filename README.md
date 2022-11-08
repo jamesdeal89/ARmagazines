@@ -83,6 +83,9 @@ Using the mask we created two images previously, we load the mask and the webcam
 <img src="/assets/overlaySuccessAfterORbetweenWarpedSourceMaskedWebcam.png" alt="Successful tracked overlay after using bitwise OR between warped source and the masked webcam frame" width="500"/>
 Finally we have to compute one more bitwise operation between the previous step's masked webcam frame and the warped source frame. 
 
+#### Graphical Interface
+For my program, I need to create a user-friendly interface. This is as my client is the schools media studies department who might not have time to hard code filepaths or to navigate a command-line. Therefore from my research I've found that PySimpleGUI is an effective library to use for this purpose. It allows me to create graphical windows and input boxes which are essential. However, as the name suggests, it keeps the code required to get it working at a minimum. Therefore allowing me to focus on the backend further.
+
 ## Bibliography:
 
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
