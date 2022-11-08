@@ -5,7 +5,7 @@ Additionally I think it's important to allow for more than 3 targets/sources and
 file I/O to store and loops to iterate through the saved locations and make variables for each.
 Further functionalisation of my code may be required to make using infinitely more targets possible.
 """
-import PySimpleGUI
+import PySimpleGUI as sg
 import sys
 import cv2
 import numpy as np
@@ -164,6 +164,40 @@ def webcamRead(feed, source,target, target2, target3, orb, keyPoints, keyPoints2
             sys.exit()
 
 
+def GUIgen():
+    """The second GUI to get the target and source file locations"""
+    event, values = sg.Window('Provide the files', [[sg.Text("This will pop-up continously until 'finish' button is pressed")],[sg.Text('File for target magazine cover')], [sg.Input(), sg.FileBrowse()],[sg.Text('File for source video to be projected')], [sg.Input(), sg.FileBrowse()], [sg.OK(), sg.Button('Finish')] ]).read(close=True)
+    if event == 'Finish':
+        return None, None
+    else:
+        return values[0], values[1]
+
+
+def GUI():
+    """This is the first GUI page which gets the user to either provide or generate a .csv pair file"""
+    # set the theme
+    sg.theme('DarkAmber') 
+    # sets the layout of the GUI
+    layout = [  [sg.Text('For the AR to work, a savefile of source videos and target magazine cover images needs to be loaded.')],
+                [sg.Text('How to continue?:')],
+                [sg.Button('Load'), sg.Button('Generate'), sg.Button("Update") ]  ]
+    # makes a window
+    window = sg.Window('AR Magazine Projector', layout)
+    # loops to scan for events and capture user inputs
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED: 
+            break
+        elif event == 'Load':
+            return "l"
+        elif event == 'Generate':
+            return "g"
+        elif event == 'Update':
+            return "u"
+    # close the window if the user breaks the event check loop
+    window.close()
+
+
 def generateCSV(pairings, createOrUpdate):
     # this will use file I/O and the csv library to take the pairing dictionary list and either write or append to 
     # a pairs.csv file.
@@ -182,34 +216,22 @@ def generatePairs(createOrUpdate):
     # allow user to keep entering target and source pair filenames with .mp4 and .jpeg images until ctrl+D
     # verify input using regex
     targetSource = []
-    print("This entry will continue for more pairs until ctrl+D is pressed")
     while True:
-        try:
-            pairing = {}
-            pair = input("Please input your target filename (.jpeg/.jpg) followed by source filename (.mp4) as such: 'target.jpg, source.jpg':")
-            # use regex to ensure the user has used the correct syntax for input and use regex groupings to capture the data we want
-            if matches := re.search(r"^(.+), (.+)",pair):
-                fileTarget = matches.group(1)
-                fileSource = matches.group(2)
-                # seperate the file extensions using os library 
-                name,ext = os.path.splitext(fileTarget)
-                name1,ext1 = os.path.splitext(fileSource)
-                # check that both file extensions are valid to avoid OpenCV compatability errors
-                if ext in [".jpg",".jpeg"] and ext1 == ".mp4":
-                    # if valid update the dictionary pair and append it to the list
-                    pairing["target"] = fileTarget
-                    pairing["source"] = fileSource
-                    targetSource.append(pairing)
-                else:
-                    print("\n\nfile extension not compatible")
-            else:
-                print("\n\nPlease use the format of 'targetFile, sourceFile' including extensions")
-        except EOFError:
-            # if ctrl+D is pressed break the entry loop
-            print("\n\nYou have pressed ctrl+D and have completed entry.")
-            print("Your pairings are below:")
-            print(targetSource)
+        pairing = {}
+        fileTarget, fileSource = GUIgen()
+        if fileTarget == None:
             break
+        # seperate the file extensions using os library 
+        name,ext = os.path.splitext(fileTarget)
+        name1,ext1 = os.path.splitext(fileSource)
+        # check that both file extensions are valid to avoid OpenCV compatability errors
+        if ext in [".jpg",".jpeg"] and ext1 == ".mp4":
+            # if valid update the dictionary pair and append it to the list
+            pairing["target"] = fileTarget
+            pairing["source"] = fileSource
+            targetSource.append(pairing)
+        else:
+            sg.popup('ERROR', 'File extension must be .jpeg/.jpg for the target and .mp4 for the source')
     # once loop is broken we call the file generator function
     generateCSV(targetSource,createOrUpdate)
         
@@ -225,25 +247,10 @@ def loadPairs():
             ...
 
 
-def GUI():
-    PySimpleGUI.theme('DarkAmber')
-    layout = [  [PySimpleGUI.Text('Some text on Row 1')],
-            [PySimpleGUI.Text('Enter something on Row 2'), PySimpleGUI.InputText()],
-            [PySimpleGUI.Button('Ok'), PySimpleGUI.Button('Cancel')] ]
-
-    window = PySimpleGUI.Window('Window Title', layout)
-    while True:
-        event, values = window.read()
-        if event == PySimpleGUI.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
-            break
-        print('You entered ', values[0])
-
-window.close()
-
 def main():
     while True:
-        GUI()
-        loadOrGen = input("Do you want to load, generate, or update a target-source pair file? (L,G, or U)").strip().lower()
+        loadOrGen = GUI()
+        #loadOrGen = input("Do you want to load, generate, or update a target-source pair file? (L,G, or U)").strip().lower()
         if loadOrGen == "l":
             try:
                 loadPairs()
