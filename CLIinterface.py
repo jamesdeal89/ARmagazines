@@ -1,10 +1,11 @@
 """
 For this iteration I want to add a comand line interface to make loading target magazine covers and source
-videos more user friendly. I want to progress this further by using Tkinter to make a full GUI.
+videos more user friendly. I want to progress this further by using PySimpleGUI to make a full GUI.
 Additionally I think it's important to allow for more than 3 targets/sources and that will require using
 file I/O to store and loops to iterate through the saved locations and make variables for each.
 Further functionalisation of my code may be required to make using infinitely more targets possible.
 """
+import PySimpleGUI
 import sys
 import cv2
 import numpy as np
@@ -224,8 +225,24 @@ def loadPairs():
             ...
 
 
+def GUI():
+    PySimpleGUI.theme('DarkAmber')
+    layout = [  [PySimpleGUI.Text('Some text on Row 1')],
+            [PySimpleGUI.Text('Enter something on Row 2'), PySimpleGUI.InputText()],
+            [PySimpleGUI.Button('Ok'), PySimpleGUI.Button('Cancel')] ]
+
+    window = PySimpleGUI.Window('Window Title', layout)
+    while True:
+        event, values = window.read()
+        if event == PySimpleGUI.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
+            break
+        print('You entered ', values[0])
+
+window.close()
+
 def main():
     while True:
+        GUI()
         loadOrGen = input("Do you want to load, generate, or update a target-source pair file? (L,G, or U)").strip().lower()
         if loadOrGen == "l":
             try:
