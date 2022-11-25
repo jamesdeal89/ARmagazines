@@ -35,6 +35,7 @@ In IKEA Place, it's unlikely the target (floor or desk) would move instead of th
 source. My AR is using a video feed whereas this uses a 3D model. The applications of my product are also different,
 being made for art and entertainment rather than commercial sales. 
 <hr/>
+
 #### Example 2: Snapchat filters
 <img src="/assets/snap.webp" alt="Snapchat filter example image" width="500"/>
 Snapchat filters are much more different to my project than Ikea Place. These AR filters track a users face to project
@@ -44,6 +45,7 @@ purpose of this product is more towards entertainment than Ikea Place, but much 
 are purely entertainment and novelty whereas AR magazine covers would be also informational. And of course theres the
 obvious difference in mine being non-3D model based.
 <hr/>
+
 #### Example 3: Pokemon GO
 <img src="/assets/poke.webp" alt="Pokemon GO example image" width="500"/>
 Pokemon Go is a 2016 mobile app which uses the iconic characters from Pokemon to make a location based video game.
@@ -53,6 +55,7 @@ to my project arises as it would use the phones camera to AR project a 3D pokemo
 finger across the screen to 'throw' a ball to catch them. My project doesn't involve this level of interactivity with
 the AR projection which could be something I need to consider implementing. 
 <hr/>
+
 #### Example 4: Google Maps Live View
 <img src="/assets/liveView.webp" alt="Google Live View example image" width=500>
 Google in the past few years have rolled out a new feature in Google Maps on mobile. It's called 'Live View' and is used to 
