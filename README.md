@@ -70,6 +70,7 @@ signal.
 ### Research On Algorithms / Aproaches That Could Be Used:
 #### OpenCV Documentation - Displaying Video And Capturing Camera Feeds:
 Source: https://docs.opencv.org/4.x/dd/de7/group__videoio.html
+
 This page holds detailed information on how the Open Computer Vision Python library can used to load and write video information.
 It states that the syntax for the VideoCapture() method is:
 
