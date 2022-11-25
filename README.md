@@ -53,6 +53,17 @@ to my project arises as it would use the phones camera to AR project a 3D pokemo
 finger across the screen to 'throw' a ball to catch them. My project doesn't involve this level of interactivity with
 the AR projection which could be something I need to consider implementing. 
 
+#### Example 4: Google Maps Live View
+<img src="/assets/liveView.webp" alt="Google Live View example image" width=500>
+Google in the past few years have rolled out a new feature in Google Maps on mobile. It's called 'Live View' and is used to 
+allow you to see floating directional arrows and prompts for where to go if you're unsure in built-up areas with many alleys and possible
+routes. This stays tracked in position no matter where you point the smartphone as shown in the example image above. When first hearing of 
+this idea it can feel somewhat gimmicky as holding up your phone in front of your face as a viewfinder for naviagtion could be distracting. 
+However Google has developed the feature to use Google Street View data, another project where 360 cameras document city streets into a global
+database. Therefore when you use the AR Live View feature it not only creates these projections based on GPS, but also calibrates your location
+based on the camera feed data; making it useful even as purely a calibration tool. This is especially useful in built-up urban areas with poor
+signal.
+
 ## Documented Design:
 #### Prototype Proof-Of-Concept:
 <img src="/assets/keypoints.png" alt="Keypoint markers drawn using OpenCV" width="500"/>
@@ -84,7 +95,7 @@ Using the mask we created two images previously, we load the mask and the webcam
 Finally we have to compute one more bitwise operation between the previous step's masked webcam frame and the warped source frame. 
 
 #### Graphical Interface
-For my program, I need to create a user-friendly interface. This is as my client is the schools media studies department who might not have time to hard code filepaths or to navigate a command-line. Therefore from my research I've found that PySimpleGUI is an effective library to use for this purpose. It allows me to create graphical windows and input boxes which are essential. However, as the name suggests, it keeps the code required to get it working at a minimum. Therefore allowing me to focus on the backend further.
+For my program, I need to create a user-friendly interface. This is as my client is the schools media studies department who might not have time or the knowledge to hard-code filepaths or to navigate a command-line. Therefore from my research I've found that PySimpleGUI is an effective library to use for this purpose. It allows me to create graphical windows and input boxes which are essential. However, as the name suggests, it keeps the code required to get it working at a minimum. Therefore allowing me to focus on the backend further while still having an effective user interface.
 
 ## Bibliography:
 
@@ -111,3 +122,6 @@ https://pythonprogramming.net/image-recognition-python/
 
 https://docs.python.org/3/library/tkinter.html
 - Documentation on Tkinter for GUI
+
+https://www.pocket-lint.com/apps/news/google/147956-what-is-google-maps-ar-navigation-and-how-do-you-use-it
+- Article on Google Live View, used in research for AR similar products
