@@ -72,9 +72,11 @@ signal.
 Source: https://docs.opencv.org/4.x/dd/de7/group__videoio.html
 This page holds detailed information on how the Open Computer Vision Python library can used to load and write video information.
 It states that the syntax for the VideoCapture() method is:
-'''
+
+~~~
 cv::VideoCapture::VideoCapture(int -> index, int -> apiPreference = CAP_ANY)
-'''
+~~~
+
 In laymans terms this notation means that this is a part of the CV library which has a VideoCapture method. This can take two parameters:
 The index which is an integer and your 'api preference' which is also an integer. The documentation page further elaborates to say that passing in 
 a value of '0' will capture from to the systems default video device; typically the webcam. 
