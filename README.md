@@ -34,7 +34,7 @@ in some ways. Firstly, I would also have to adjust for when the camera is steady
 In IKEA Place, it's unlikely the target (floor or desk) would move instead of the camera. I also am using a different
 source. My AR is using a video feed whereas this uses a 3D model. The applications of my product are also different,
 being made for art and entertainment rather than commercial sales. 
-
+<hr/>
 #### Example 2: Snapchat filters
 <img src="/assets/snap.webp" alt="Snapchat filter example image" width="500"/>
 Snapchat filters are much more different to my project than Ikea Place. These AR filters track a users face to project
@@ -43,7 +43,7 @@ users (for example some have physics implementations like to make wobbly noses w
 purpose of this product is more towards entertainment than Ikea Place, but much more so than my project. Snapchat filters
 are purely entertainment and novelty whereas AR magazine covers would be also informational. And of course theres the
 obvious difference in mine being non-3D model based.
-
+<hr/>
 #### Example 3: Pokemon GO
 <img src="/assets/poke.webp" alt="Pokemon GO example image" width="500"/>
 Pokemon Go is a 2016 mobile app which uses the iconic characters from Pokemon to make a location based video game.
@@ -52,7 +52,7 @@ Based on this they would encounter 'Pokemon' which they could try to 'capture'; 
 to my project arises as it would use the phones camera to AR project a 3D pokemon model. The user can also drag their
 finger across the screen to 'throw' a ball to catch them. My project doesn't involve this level of interactivity with
 the AR projection which could be something I need to consider implementing. 
-
+<hr/>
 #### Example 4: Google Maps Live View
 <img src="/assets/liveView.webp" alt="Google Live View example image" width=500>
 Google in the past few years have rolled out a new feature in Google Maps on mobile. It's called 'Live View' and is used to 
@@ -64,8 +64,16 @@ database. Therefore when you use the AR Live View feature it not only creates th
 based on the camera feed data; making it useful even as purely a calibration tool. This is especially useful in built-up urban areas with poor
 signal.
 
+### Research On Algorithms / Aproaches That Could Be Used:
+#### OpenCV Documentation - Displaying Video And Capturing Camera Feeds:
+Source: https://docs.opencv.org/4.x/dd/de7/group__videoio.html
+#### OpenCV Documentation - Homography Algorithms:
+Source: https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
+#### OpenCV Documentation - Bitwise Operators:
+Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
+
 ## Documented Design:
-#### Prototype Proof-Of-Concept:
+### Prototype Proof-Of-Concept:
 <img src="/assets/keypoints.png" alt="Keypoint markers drawn using OpenCV" width="500"/>
 Above is an example of how OpenCV and it's ORB methods can be used to create a series of keypoints.
 These keypoints can uniquely indentify a target image. It even works through a webcam with non-ideal alignment or lighting
@@ -94,7 +102,7 @@ Using the mask we created two images previously, we load the mask and the webcam
 <img src="/assets/overlaySuccessAfterORbetweenWarpedSourceMaskedWebcam.png" alt="Successful tracked overlay after using bitwise OR between warped source and the masked webcam frame" width="500"/>
 Finally we have to compute one more bitwise operation between the previous step's masked webcam frame and the warped source frame. 
 
-#### Graphical Interface
+### Graphical Interface
 For my program, I need to create a user-friendly interface. This is as my client is the schools media studies department who might not have time or the knowledge to hard-code filepaths or to navigate a command-line. Therefore from my research I've found that PySimpleGUI is an effective library to use for this purpose. It allows me to create graphical windows and input boxes which are essential. However, as the name suggests, it keeps the code required to get it working at a minimum. Therefore allowing me to focus on the backend further while still having an effective user interface.
 
 ## Bibliography:
