@@ -13,6 +13,16 @@ interaction methods for student's GCSE, AS, and A level coursework. The coursewo
 or a 'digipack' which also features a cover similar to a magazine. My product will allow them to deepen user 
 imersion with their magazine or digipack while joining reality with digital. 
 
+### Interview with Client:
+#### What would you like the project to achieve?
+INSERT ANSWER HERE
+#### What are the key features of a program like this?
+INSERT ANSWER HERE
+#### Are there any additional features you would be interested in?
+INSERT ANSWER HERE
+#### What already exisiting AR or other related products interest you?
+INSERT ANSWER HERE
+
 ### Main Objectives:
 - Read video feeds from a webcam or smartphone camera
 - Load source videos of pre-recorded moving covers 
@@ -72,18 +82,6 @@ signal.
 This is a free and open-source fork of the Microsoft VSCode Integrated Development Environment. It has the same features as the main branch however the open-source aproach makes it more attractive. It can be found here: https://github.com/VSCodium/vscodium
 #### Python3:
 Python is a high-level programming language with a focus on simple, 'English-like' syntax. While it's back-end is often considered inefficient in comparison to others, it's still a powerful language with many API and libraries avaliable which will no doubt be useful for a project which will need to integrate with webcams and other hardware.  
-
-### Client Details
-My client for this project is the school's media studies department, specifically Mr.Robson. The main idea of the project came from him and therefore a Q&A style interview would help me better understand what his goals and objectives for the proposed project is.
-### Interview with Client:
-#### What would you like the project to achieve?
-INSERT ANSWER HERE
-#### What are the key features of a program like this?
-INSERT ANSWER HERE
-#### Are there any additional features you would be interested in?
-INSERT ANSWER HERE
-#### What already exisiting AR or other related products interest you?
-INSERT ANSWER HERE
 
 ### Research On Algorithms / Aproaches That Could Be Used:
 #### OpenCV Documentation - Displaying Video And Capturing Camera Feeds:
