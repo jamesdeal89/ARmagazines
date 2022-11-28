@@ -67,6 +67,12 @@ database. Therefore when you use the AR Live View feature it not only creates th
 based on the camera feed data; making it useful even as purely a calibration tool. This is especially useful in built-up urban areas with poor
 signal.
 
+### Software To Aid Development:
+#### VSCodium:
+This is a free and open-source fork of the Microsoft VSCode Integrated Development Environment. It has the same features as the main branch however the open-source aproach makes it more attractive. It can be found here: https://github.com/VSCodium/vscodium
+#### Python3:
+Python is a high-level programming language with a focus on simple, 'English-like' syntax. While it's back-end is often considered inefficient in comparison to others, it's still a powerful language with many API and libraries avaliable which will no doubt be useful for a project which will need to integrate with webcams and other hardware.  
+
 ### Research On Algorithms / Aproaches That Could Be Used:
 #### OpenCV Documentation - Displaying Video And Capturing Camera Feeds:
 Source: https://docs.opencv.org/4.x/dd/de7/group__videoio.html
