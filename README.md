@@ -137,6 +137,7 @@ Overall the protyping of a 'proof-of-concept' was successful and will be useful 
 - Bitwise operations on images
 - Warping Images
 - Detecting images
+
 Additionally my client will require a graphical interface. Currently the program hard-codes the paths for source and target files. This will need to be changed to a GUI and a new function or OOP structure to allow for unlimited source-target pairs to be detected and added as required. Iteration will therefore be key. 
 
 ### Graphical Interface:
