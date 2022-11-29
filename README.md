@@ -169,3 +169,6 @@ https://www.pocket-lint.com/apps/news/google/147956-what-is-google-maps-ar-navig
 
 https://stackoverflow.com/questions/14177744/how-does-perspective-transformation-work-in-pil
 - Stackoverflow question about perspective warp algorithms
+
+https://dev.to/duomly/how-to-create-simple-image-recognition-with-python-3hf4
+- Article on image recognition using neural network
