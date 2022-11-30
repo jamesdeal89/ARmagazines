@@ -131,6 +131,7 @@ Using the mask we created two images previously, we load the mask and the webcam
 <hr/>
 <img src="/assets/overlaySuccessAfterORbetweenWarpedSourceMaskedWebcam.png" alt="Successful tracked overlay after using bitwise OR between warped source and the masked webcam frame" width="500"/>
 Finally we have to compute one more bitwise operation between the previous step's masked webcam frame and the warped source frame. 
+<hr/>
 
 #### Prototype Review:
 Overall the protyping of a 'proof-of-concept' was successful and will be useful in communicating with my client about the project's progress. However the libraries I used for this example program are pretty complex and take a lot of the pressure off of me as a programmer; as such I will need to research creating my own algorithms for sections of the OpenCV library to enhance my projects complexity. Examples of where my own implementations could be created are:

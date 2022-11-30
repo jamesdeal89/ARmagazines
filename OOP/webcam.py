@@ -1,0 +1,1 @@
+"""This is the class for webcam objects which inherits from the file class"""

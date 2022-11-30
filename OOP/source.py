@@ -1,0 +1,1 @@
+"""This is the class for source videos which inheritys from the webcam class"""
