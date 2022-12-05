@@ -22,10 +22,11 @@ class File():
     def filepath(self):
         return self._filepath
     
+    # getter for the loadedObj attribute
+    def getLoadedObj(self):
+        return self._loadedObj
+
     # loads the file from the filepath attribute and loads it as an OpenCV object, saved in the loadedObj attribute
     def load(self):
         self._loadedObj = OpenCV.imread(self.filepath)
 
-    # getter for the loadedObj attribute
-    def getLoadedObj(self):
-        return self._loadedObj
