@@ -7,7 +7,7 @@ Some classes will be placed in a filesystem of objects which are in this folder.
 Overall this file will be focused on GUI implementation and calling class methods."""
 
 import cv2
-import PySimpleGUI
+import PySimpleGUI as sg
 
 def GUIgen():
     """The second GUI to get the target and source file locations"""
