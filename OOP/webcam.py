@@ -3,7 +3,8 @@ class Webcam(File):
     """
     This is the Webcam class which inherits from the File class
     """
-    def __init__(self, filepath):
+    def __init__(self,filepath=None):
+        super().__init__(filepath)
         self._frame = None
         self._descriptors = None
         self._keyPoints = None
