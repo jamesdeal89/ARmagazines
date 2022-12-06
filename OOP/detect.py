@@ -6,7 +6,7 @@ class Detect():
         - webcam: the webcam object.
         - targetsList: array of target objects.
         """
-        self.webcamFrame = webcam.frame
+        self.webcam = webcam
         self.targetsList = targetsList
         self.detected = None
 
@@ -15,4 +15,15 @@ class Detect():
         bruteForce = cv2.BFMatcher()
         # Iterate through each target object 
         for target in targetsList:
-            ...
+            # Scan images to compare keypoints based on descriptors attributes
+            matches = bruteForce.knnMatch(target.descriptors,webcam.descriptors,k=2)
+            successfullMatches = []
+            # Iterate through the matches and add them to a list of good matches if they're within a certain simiarity
+            for targetMatch,sourceMatch in matches:
+                if targetMatch.distance < 0.75 * sourceMatch.distance:
+                    # Append the good match to a list
+                    successfullMatches.append(targetMatch)
+            # Over 15 good matches will be considered a complete match
+            if len(successfullMatches) > 15:
+                # If so, break the for loop and return the list of matches and the matched target object from the Detect method
+                return successfullMatches, target
