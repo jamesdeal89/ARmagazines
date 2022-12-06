@@ -16,7 +16,7 @@ class Detect():
         # Iterate through each target object 
         for target in targetsList:
             # Scan images to compare keypoints based on descriptors attributes
-            matches = bruteForce.knnMatch(target.descriptors,webcam.descriptors,k=2)
+            matches = bruteForce.knnMatch(target.getDescriptors(),webcam.getDescriptors(),k=2)
             successfullMatches = []
             # Iterate through the matches and add them to a list of good matches if they're within a certain simiarity
             for targetMatch,sourceMatch in matches:
