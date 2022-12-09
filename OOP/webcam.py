@@ -1,4 +1,6 @@
 """This is the class for webcam objects which inherits from the file class"""
+from file import File
+import cv2
 class Webcam(File):
     """
     This is the Webcam class which inherits from the File class
@@ -37,4 +39,4 @@ class Webcam(File):
     # Loads the next frame of the webcam
     def next(self):
         # Here loadedBool is a True/False of whether the feed is ended
-        self._loadedBool, self._frame = self.loadedWeb.read()
+        self._loadedBool, self._frame = self._loadedWeb.read()

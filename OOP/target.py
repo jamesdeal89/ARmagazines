@@ -15,7 +15,7 @@ class Target(File):
     def genPoints(self):
         orb = cv2.ORB_create(nfeatures=1000)
         # Create descriptor and keypoint attributes which can be used for target detection later
-        self._keyPoints, self._descriptors = orb.detectAndCompute(super.getLoadedObj(),None)
+        self._keyPoints, self._descriptors = orb.detectAndCompute(self.getLoadedObj(),None)
 
     # getter for descriptors
     def getDescriptors(self):

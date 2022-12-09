@@ -1,11 +1,11 @@
 """This file is for the warp class which takes a source object and warps it"""
 import cv2
 class Warp():
-    def __init__(self, sourceFrame, homographyMatrix, dimensions):
+    def __init__(self, sourceFrame, homographyMatrix, dimensionsList):
         self.warpedImg = None
         self.homographyMatrix = homographyMatrix
         self.sourceFrame = sourceFrame
-        self.dimensions = dimensions
+        self.dimensionsList = dimensionsList
     
     @property
     def warpedImg(self):
@@ -20,8 +20,8 @@ class Warp():
         return self._sourceFrame
 
     @property
-    def dimenions(self):
-        return self._dimensions
+    def dimensionsList(self):
+        return self._dimensionsList
 
     @warpedImg.setter
     def warpedImg(self,img):
@@ -35,9 +35,9 @@ class Warp():
     def sourceFrame(self,frame):
         self._sourceFrame = frame
 
-    @dimensions.setter
-    def dimesnions(self,list):
-        self._dimensions = list
+    @dimensionsList.setter
+    def dimensionsList(self,listDim):
+        self._dimensionsList = listDim
 
     def warp(self):
         """

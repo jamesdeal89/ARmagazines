@@ -6,8 +6,24 @@ detection into their own objects.
 Some classes will be placed in a filesystem of objects which are in this folder.
 Overall this file will be focused on GUI implementation and calling class methods."""
 
+# import our external libraries of:
+# OpenCV for image manipulation, 
+# PySimpleGUI for GUI, 
+# os is for identify filepaths,
+# sys is for error handling,
+# and built-in python csv library for saving and loading data
 import cv2
 import PySimpleGUI as sg
+import csv
+import os
+import sys
+from warp import Warp
+from project import Project
+from detect import Detect
+from border import Border
+from webcam import Webcam
+from source import Source
+from target import Target
 
 def GUIgen():
     """The second GUI to get the target and source file locations"""
@@ -52,6 +68,7 @@ def generateCSV(pairings, createOrUpdate):
         # iterate through the pairs list to get each dictionary 
         for pair in pairings:
             dictwriter.writerow(pair)
+        return loadPairs()
 
 def generatePairs(createOrUpdate):
     # create a csv file of the target and source pairs if one does not exist
@@ -75,17 +92,18 @@ def generatePairs(createOrUpdate):
         else:
             sg.popup('ERROR', 'File extension must be .jpeg/.jpg for the target and .mp4 for the source')
     # once loop is broken we call the file generator function
-    generateCSV(targetSource,createOrUpdate)
+    return generateCSV(targetSource,createOrUpdate)
 
 def loadPairs():
-    with open("pairs.csv") as file:
-        reader = csv.reader(file)
-        targets = {}
-        sources = {}
+    with open("pairs.csv", "r") as file:
+        reader = csv.DictReader(file)
+        targets = []
+        sources = []
         counter = 0
         for row in reader:
-            targets["target"+str(counter)] = cv2.imread(row["target"])
-            sources["source"+ str(counter)] = cv2.VideoCapture(row["source"])
+            # we make an append to an array of each object we create for target and source respectively
+            targets.append(Target(row["target"]))
+            sources.append(Source(row["source"]))
             counter += 1
         return targets, sources
 
@@ -99,18 +117,33 @@ def main():
                 targets, sources = loadPairs()
             except FileNotFoundError:
                 # catch any error where the file pairs.csv does not exist and exit while giving error message
-                sys.exit("Tshere was no pairs.csv file found in the local directory. File must be named pairs.csv to load.")
+                sys.exit("There was no pairs.csv file found in the local directory. File must be named pairs.csv to load.")
             else:
                 # if the pair loading was successful we can break the loop for checking input
                 break
         elif loadOrGen == "g":
             # call the generate function and pass in "w" to create or overwrite a pairs.csv file
-            generatePairs("w")
+            targets, source = generatePairs("w")
             break
         elif loadOrGen == "u":
             # using the same generate function except pass in "a" to append to an already exisiting pairs.csv file
-            generatePairs("a")
+            targets,source = generatePairs("a")
             break
+    # now that we have the data for every target and source intialized in a dictionary we can begin using the class methods to create the ouput
+    # first we intialize the webcam
+    webcam = Webcam()
+    webcam.load()
+    # now we can create a loop based on each frame of the webcam we load
+    while True:
+        # call the method which loads the next frame
+        webcam.next()
+        # use the Detect class decect() method to get which object is in the frame (if any)
+        detect = Detect(webcam, targets)
+        result = detect.detect()
+        if result != None:
+            successfullMatches, detectedTarget = result
+            # following two lines are for debug 
+            print(detectedTarget.filepath)
 
 # if we're running the main.py file, run the main() subroutine
 # this prevents issues with imported files
