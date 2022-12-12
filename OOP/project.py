@@ -47,8 +47,8 @@ class Project():
         self._mask2 = np.zeros(self.webFrame.shape, dtype=np.uint8)
         # create a white mask with a black box where the target was detected
         print(self._mask2, self.destinationPoints)
-        cv2.fillConvexPoly(self._mask2, self.destinationPoints, (255,255,255))
+        cv2.fillConvexPoly(self._mask2, np.int32(self.destinationPoints), (255,255,255))
         self._mask2 = cv2.bitwise_not(self._mask2)
         self._masked_image2 = cv2.bitwise_and(self.webFrame, self._mask2)
-        self._final = cv2.bitwise_or(warpedSource, self._masked_image2)
+        self._final = cv2.bitwise_or(self.warpedSource, self._masked_image2)
         cv2.imshow("Ouput", self._final)
