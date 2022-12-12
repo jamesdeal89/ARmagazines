@@ -144,8 +144,18 @@ def main():
     while True:
         # call the method which loads the next frame
         webcam.next()
-        for target in targets:
-            target.getSourceObj().next()
+        try:
+            for target in targets:
+                target.getSourceObj().next(w1,h1)
+        except cv2.error:
+            targets[0].load()
+            targets[0].getSourceObj().load()
+            h1,w1,c1 = targets[0].getLoadedObj().shape
+            for target in targets[1:]:
+                target.getSourceObj().load()
+                target.load()
+                target.resize(w1,h1)
+                target.getSourceObj().next(w1,h1)
         # use the Detect class decect() method to get which object is in the frame (if any)
         detect = Detect(webcam, targets)
         result = detect.detect()
@@ -161,6 +171,10 @@ def main():
             project = Project(webcam.getFrame(), warpedSource, destinationPoints)
             project.project()
             print("PROJECTED ONTO WEBCAM")
+            buttonPress = cv2.waitKey(1)
+            if buttonPress == 81 or buttonPress == 113:
+                sys.exit()
+
 
 # if we're running the main.py file, run the main() subroutine
 # this prevents issues with imported files

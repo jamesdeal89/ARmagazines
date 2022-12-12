@@ -22,6 +22,7 @@ class Source(Webcam):
         self._loadedVid = cv2.VideoCapture(self.filepath[0])
     
     # Loads the next frame of the video
-    def next(self):
+    def next(self,w,h):
         # Here loadedBool is a True/False of whether the video has ended
         self._loadedBool, self._frame = self._loadedVid.read()
+        self._frame = cv2.resize(self._frame,(w,h))

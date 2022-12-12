@@ -31,3 +31,4 @@ class Target(File):
 
     def resize(self,w,h):
         self._loadedObj = cv2.resize(self._loadedObj,(w,h))
+

@@ -33,7 +33,7 @@ class Detect():
             Matches.append([successfullMatches, target])
         # Over 15 good matches will be considered a complete match
         for resultMatches in Matches:
-            if len(resultMatches[0]) > 15:
+            if len(resultMatches[0]) > 20:
                 print("MATCHED")
                 # If so, break the for loop and return the list of matches and the matched target object from the Detect method
                 return resultMatches[0], resultMatches[1]
