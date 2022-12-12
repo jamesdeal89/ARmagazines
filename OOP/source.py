@@ -1,5 +1,6 @@
 """This is the class for source videos which inherits from the webcam class"""
 from webcam import Webcam
+import cv2
 class Source(Webcam):
     """
     This is the Source class which inherits from the Webcam class.
@@ -17,7 +18,8 @@ class Source(Webcam):
     # Loads the video file - polymorphism of load() method in File/Webcam class
     def load(self):
         # Load the video file from the path and and assign to loadedVid attribute
-        self._loadedVid = cv2.VideoCapture(self.filepath)
+        print(self.filepath)
+        self._loadedVid = cv2.VideoCapture(self.filepath[0])
     
     # Loads the next frame of the video
     def next(self):

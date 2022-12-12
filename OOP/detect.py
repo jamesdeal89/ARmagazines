@@ -20,7 +20,6 @@ class Detect():
         for target in self.targetsList:
             print("CHECK......")
             # load and create keypoints+descriptors for each target object using it's methods
-            target.load()
             target.genPoints()
             self.webcam.genPoints()
             # Scan images to compare keypoints based on descriptors attributes

@@ -45,5 +45,5 @@ class Warp():
         Warps the image by the provided homography matrix.
         Returns the resulting OpenCV object.
         """
-        self._warpedImg = cv2.warpPerspective(self._sourceFrame, self._homographyMatrix, (self._dimensions[0],self._dimensions[1]))
+        self._warpedImg = cv2.warpPerspective(self._sourceFrame, self._homographyMatrix, (self._dimensionsList[0],self._dimensionsList[1]))
         return self._warpedImg

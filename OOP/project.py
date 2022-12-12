@@ -6,6 +6,7 @@ class Project():
         self.webFrame = webFrame
         self.warpedSource = warpedSource
         self.destinationPoints = destinationPoints
+
     
     # the getter for webFrame
     @property
@@ -31,23 +32,23 @@ class Project():
     @warpedSource.setter
     def warpedSource(self,frame):
         self._warpedSource = frame
-        self._homographyMatrix = matrix
+
 
     # the setter for destinationPoints
     @destinationPoints.setter
     def destinationPoints(self, points):
         self._destinationPoints = points
-        self._dimensions = dimArray
 
     def project(self):
         """This method will use the intialized values for warpedSource and the webcamFrame
         to overlay the two and create an AR effect based on the destination points calculated via
         the Border() class"""
         # create a blank mask of 0s in the dimensions of the webcam frame
-        self.mask2 = np.zeros(self.webFrame.shape, dtype=np.uint8)
+        self._mask2 = np.zeros(self.webFrame.shape, dtype=np.uint8)
         # create a white mask with a black box where the target was detected
-        cv2.fillConvexPoly(self.mask2, self.destinationPoints, (255,255,255))
-        self.mask2 = cv2.bitwise_not(self.mask2)
-        self.masked_image2 = cv2.bitwise_and(self.webFrame, self.mask2)
-        self.final = cv2.bitwise_and(self.webFrame,self.mask2)
-        cv2.imshow("Ouput", self.final)
+        print(self._mask2, self.destinationPoints)
+        cv2.fillConvexPoly(self._mask2, self.destinationPoints, (255,255,255))
+        self._mask2 = cv2.bitwise_not(self._mask2)
+        self._masked_image2 = cv2.bitwise_and(self.webFrame, self._mask2)
+        self._final = cv2.bitwise_or(warpedSource, self._masked_image2)
+        cv2.imshow("Ouput", self._final)

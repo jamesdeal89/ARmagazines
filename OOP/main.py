@@ -102,10 +102,9 @@ def loadPairs():
         counter = 0
         for row in reader:
             # we make an append to an array of each object we create for target and source respectively
-            targets.append(Target(row["target"]))
-            sources.append(Source(row["source"]))
+            targets.append(Target(row["target"],sourceObj=Source([row["source"]])))
             counter += 1
-        return targets, sources
+        return targets
 
 def main():
     while True:
@@ -114,7 +113,7 @@ def main():
         if loadOrGen == "l":
             try:
                 # get the tuple of loaded target cv2 objects and loaded source cv2 objects
-                targets, sources = loadPairs()
+                targets = loadPairs()
             except FileNotFoundError:
                 # catch any error where the file pairs.csv does not exist and exit while giving error message
                 sys.exit("There was no pairs.csv file found in the local directory. File must be named pairs.csv to load.")
@@ -123,27 +122,45 @@ def main():
                 break
         elif loadOrGen == "g":
             # call the generate function and pass in "w" to create or overwrite a pairs.csv file
-            targets, source = generatePairs("w")
+            targets = generatePairs("w")
             break
         elif loadOrGen == "u":
             # using the same generate function except pass in "a" to append to an already exisiting pairs.csv file
-            targets,source = generatePairs("a")
+            targets = generatePairs("a")
             break
     # now that we have the data for every target and source intialized in a dictionary we can begin using the class methods to create the ouput
     # first we intialize the webcam
     webcam = Webcam()
     webcam.load()
+    targets[0].load()
+    targets[0].getSourceObj().load()
+    h1,w1,c1 = targets[0].getLoadedObj().shape
+    for target in targets[1:]:
+        target.getSourceObj().load()
+        target.load()
+        target.resize(w1,h1)
+        # use the Detect class decect() method to get which object is in the frame (if any)
     # now we can create a loop based on each frame of the webcam we load
     while True:
         # call the method which loads the next frame
         webcam.next()
+        for target in targets:
+            target.getSourceObj().next()
         # use the Detect class decect() method to get which object is in the frame (if any)
         detect = Detect(webcam, targets)
         result = detect.detect()
         if result != None:
             successfullMatches, detectedTarget = result
-            # following two lines are for debug 
-            print(detectedTarget.filepath)
+            border = Border(detectedTarget, webcam, successfullMatches)
+            destinationPoints, homographyMatrix = border.border()
+            print("BORDER CALCULATED")
+            h,w,c = webcam.getFrame().shape
+            warp = Warp(target.getSourceObj().getFrame(), homographyMatrix, [w,h])
+            warpedSource = warp.warp()
+            print("SOURCE WARPED")
+            project = Project(webcam.getFrame(), warpedSource, destinationPoints)
+            project.project()
+            print("PROJECTED ONTO WEBCAM")
 
 # if we're running the main.py file, run the main() subroutine
 # this prevents issues with imported files
