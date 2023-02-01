@@ -1,4 +1,9 @@
 # Computer Science NEA - AR Video Magazine Covers
+## Requirements:
+ - Python 3.XX
+ - OpenCV (pip3 install opencv-python)
+ - PySimpleGUI (pip3 install PySimpleGUI)
+
 ## Analysis:
 ### Introduction:
 My project idea is to create either an investigation into, or a finalized app
