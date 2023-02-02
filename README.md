@@ -149,8 +149,21 @@ Additionally my client will require a graphical interface. Currently the program
 ### Graphical Interface:
 For my program, I need to create a user-friendly interface. This is as my client is the schools media studies department who might not have time or the knowledge to hard-code filepaths or to navigate a command-line. Therefore from my research I've found that PySimpleGUI is an effective library to use for this purpose. It allows me to create graphical windows and input boxes which are essential. However, as the name suggests, it keeps the code required to get it working at a minimum. Therefore allowing me to focus on the backend further while still having an effective user interface.
 
-## Bibliography:
+### Making a bitwise operator class
+I want to remove some of the OpenCV library methods and instead make my own algorithms to enhance my project. In this stage I want to start with creating my own bitwsie operator class for OpenCV images. 
+#### How OpenCV stores pixel data
+According to my source, https://datahacker.rs/how-to-access-and-edit-pixel-values-in-opencv-with-python/, the library stores images in a matrix of colour value tuples. In this case the arrangement of these pixels can be demonstrated by the image below:
+<img src="/assets/pixelLayout.jpg" alt="image of pixel layout" width="500" />
+In this layout the top left corner is considered the origin of the matrix and each value has an inverted (blue, green, red) tuple.
+This method can be used to split an image into 3 seperated b,g,r values in different images. The usage is shown here:
 
+~~~
+b, g, r = cv2.split(img)
+~~~
+
+
+
+## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
 - OpenCV homography documentation
 
@@ -183,3 +196,6 @@ https://stackoverflow.com/questions/14177744/how-does-perspective-transformation
 
 https://dev.to/duomly/how-to-create-simple-image-recognition-with-python-3hf4
 - Article on image recognition using neural network
+
+https://datahacker.rs/how-to-access-and-edit-pixel-values-in-opencv-with-python/
+- Article on reading pixel colour values from OpenCV images - part of making a bitwise operator class
