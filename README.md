@@ -161,7 +161,13 @@ This method can be used to split an image into 3 seperated b,g,r values in diffe
 b, g, r = cv2.split(img)
 ~~~
 
+Changining individual pixel colour can be done via the following syntax:
 
+~~~
+img[50, 50] = (0, 0, 255)
+~~~
+
+This is exactly what I need for creating a bitwise operator class. 
 
 ## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
