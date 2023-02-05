@@ -6,6 +6,7 @@ class Search():
         self._unordList = unordList
         self._sortedDir = None
 
+
     def sort(self):
         """
         this method uses insetion sort to sort the files in the directory currently searching
@@ -27,6 +28,7 @@ class Search():
 
         # line below only used if testing the function with pytest
         return self._sortedDir
+
 
     def binarySearch(self,sortedDir,target,start,end):
         if start > end:

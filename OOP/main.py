@@ -24,6 +24,7 @@ from border import Border
 from webcam import Webcam
 from source import Source
 from target import Target
+from search import Search
 
 def GUIgen():
     """The second GUI to get the target and source file locations"""
@@ -111,15 +112,16 @@ def main():
         loadOrGen = GUI()
         #loadOrGen = input("Do you want to load, generate, or update a target-source pair file? (L,G, or U)").strip().lower()
         if loadOrGen == "l":
-            try:
+            # create an instance of the search class ass set the target as the pairs file and the files to search as the current working directory
+            path = os.getcwd()
+            search = Search("pairs.csv", os.listdir(path))
+            search.sort()
+            if search.search():
                 # get the tuple of loaded target cv2 objects and loaded source cv2 objects
                 targets = loadPairs()
-            except FileNotFoundError:
-                # catch any error where the file pairs.csv does not exist and exit while giving error message
-                sys.exit("There was no pairs.csv file found in the local directory. File must be named pairs.csv to load.")
-            else:
-                # if the pair loading was successful we can break the loop for checking input
                 break
+            else:
+                sys.exit("ERROR - pairs.csv file not found. please generate first.")
         elif loadOrGen == "g":
             # call the generate function and pass in "w" to create or overwrite a pairs.csv file
             targets = generatePairs("w")

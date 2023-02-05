@@ -205,3 +205,12 @@ https://dev.to/duomly/how-to-create-simple-image-recognition-with-python-3hf4
 
 https://datahacker.rs/how-to-access-and-edit-pixel-values-in-opencv-with-python/
 - Article on reading pixel colour values from OpenCV images - part of making a bitwise operator class
+
+https://www.geeksforgeeks.org/python-list-files-in-a-directory/
+- Explains different methods for accessing files in directories
+
+https://www.geeksforgeeks.org/searching-algorithms/
+- Explains several searching algorithms
+
+https://www.geeksforgeeks.org/sorting-algorithms/
+- Explains several sorting algorithms
