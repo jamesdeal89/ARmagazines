@@ -214,3 +214,6 @@ https://www.geeksforgeeks.org/searching-algorithms/
 
 https://www.geeksforgeeks.org/sorting-algorithms/
 - Explains several sorting algorithms
+
+https://docs.opencv.org/3.4/d0/d86/tutorial_py_image_arithmetics.html
+- Overview of image overlays and masking using bitwise operations
