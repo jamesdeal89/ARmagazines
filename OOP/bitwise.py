@@ -24,21 +24,66 @@ class Bitwise():
         width = img.shape[1]
         if img.shape != img2.shape:
             sys.exit("ERROR - images are not the same size")
+        # iterate through each row
         for row in range(0,height):
+            # iterate through each column
             for column in range(0,width):
+                # list to hold each pixels, RGB values after operation
                 values = []
+                # iterate and hold each images pixel colour values one by one for each colour
                 for value in img[column, row]:
                     for value2 in img2[column,row]:
-                        values.append()
+                        # use my binary converter to get binary values
+                        value = self.decimalToBinary(value) 
+                        value2 = self.decimalToBinary(value2)
+                        # adjust the length of the values so that both have the same number of bits
+                        if value > value2:
+                            # .zfill(desiredLength) can be used on an str to fill with leading 0's
+                            value2 = int(str(value2).zfill(len(str(value))))
+                        elif value2 > value:
+                            value = int(str(value).zfill(len(str(value2))))
+                        # perform AND operation on the bits and add to this pixels values
+                        values.append(value&value2)
+                # ammend the pixel values in the respective pixel with the ANDed values
                 img[column,row] = (values[0],values[1],values[2])
+        # return the amended first image which now holds the values after being ANDed with all of image 2
+        return img
+
+
 
 
     def bitOr(self):
         # perform a bitwise OR between the two images
-        pass
+        height = img.shape[0]
+        width = img.shape[1]
+        if img.shape != img2.shape:
+            sys.exit("ERROR - images are not the same size")
+        # iterate through each row
+        for row in range(0,height):
+            # iterate through each column
+            for column in range(0,width):
+                # list to hold each pixels, RGB values after operation
+                values = []
+                # iterate and hold each images pixel colour values one by one for each colour
+                for value in img[column, row]:
+                    for value2 in img2[column,row]:
+                        # use my binary converter to get binary values
+                        value = self.decimalToBinary(value) 
+                        value2 = self.decimalToBinary(value2)
+                        # adjust the length of the values so that both have the same number of bits
+                        if value > value2:
+                            # .zfill(desiredLength) can be used on an str to fill with leading 0's
+                            value2 = int(str(value2).zfill(len(str(value))))
+                        elif value2 > value:
+                            value = int(str(value).zfill(len(str(value2))))
+                        # perform OR operation on the bits and add to this pixels values
+                        values.append(value|value2)
+                # ammend the pixel values in the respective pixel with the ORed values
+                img[column,row] = (values[0],values[1],values[2])
+        # return the amended first image which now holds the values after being ORed with all of image 2
 
 
     def bitNot(self):
-        # perfrom a bitwise NOT between the two images
+        # perfrom a bitwise NOT on an image
         pass
 
