@@ -52,7 +52,7 @@ class Bitwise():
 
 
 
-    def bitOr(self):
+    def bitOr(self, img, img2):
         # perform a bitwise OR between the two images
         height = img.shape[0]
         width = img.shape[1]
@@ -83,7 +83,24 @@ class Bitwise():
         # return the amended first image which now holds the values after being ORed with all of image 2
 
 
-    def bitNot(self):
+    def bitNot(self, img):
         # perfrom a bitwise NOT on an image
-        pass
-
+        height = img.shape[0]
+        width = img.shape[1]
+        for row in range(0,height):
+            for column in range(0,width):
+                # iterate through every pixel value
+                # create list to store new values for this pixel
+                values = []
+                for value in img[column,row]:
+                    # iterate through every pixel's RGB values, using a loop here as sometimes images have more than 3 values (CMYK)
+                    # convert to binary using my converter method
+                    value = self.decimalToBinary(value)
+                    # use a bitwise NOT on the value
+                    # values.append(~value)
+                    for bit in str(value):
+                        if int(bit) == 0:
+                            values.append(1)
+                        else:
+                            values.append(0)
+                img[column,row] = (values[0],values[1],values[2])
