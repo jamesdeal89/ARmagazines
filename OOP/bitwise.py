@@ -42,14 +42,20 @@ class Bitwise():
                             value2 = int(str(value2).zfill(len(str(value))))
                         elif value2 > value:
                             value = int(str(value).zfill(len(str(value2))))
+                        # iterate through each bit in each value
+                        for bit in value:
+                            for bit in value2:
+                                # perform a bitwise AND operation using if conditions
+                                if value == 1 and value2 == 1:
+                                    values.append(1)
+                                else:
+                                    values.append(0)
                         # perform AND operation on the bits and add to this pixels values
-                        values.append(value&value2)
+                        #values.append(value&value2)
                 # ammend the pixel values in the respective pixel with the ANDed values
                 img[column,row] = (values[0],values[1],values[2])
         # return the amended first image which now holds the values after being ANDed with all of image 2
         return img
-
-
 
 
     def bitOr(self, img, img2):
@@ -76,12 +82,20 @@ class Bitwise():
                             value2 = int(str(value2).zfill(len(str(value))))
                         elif value2 > value:
                             value = int(str(value).zfill(len(str(value2))))
+                        # iterate through each bit in each value
+                        for bit in value:
+                            for bit in value2:
+                                # perform a bitwise AND operation using if conditions
+                                if value == 1 or value2 == 1:
+                                    values.append(1)
+                                else:
+                                    values.append(0)
                         # perform OR operation on the bits and add to this pixels values
-                        values.append(value|value2)
+                        # values.append(value|value2)
                 # ammend the pixel values in the respective pixel with the ORed values
                 img[column,row] = (values[0],values[1],values[2])
         # return the amended first image which now holds the values after being ORed with all of image 2
-
+        return img
 
     def bitNot(self, img):
         # perfrom a bitwise NOT on an image
