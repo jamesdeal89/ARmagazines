@@ -325,6 +325,8 @@ While it could be interesting to pursue making my own implementation of these bi
 - Async --> While waiting on one task, another can be started. Therefore I could start on the next row before the first finished. 
 - Pypy --> JIT('Just In Time') compiler for Python would allow me to execute my code faster as it keeps the machine code for already run functions.
 
+Nonetheless, this experience gave me an infinitely better understanding of how the modules I will end up using in my final project achieve what they do. 
+
 ## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
 - OpenCV homography documentation
