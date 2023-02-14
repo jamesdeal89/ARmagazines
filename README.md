@@ -153,7 +153,9 @@ For my program, I need to create a user-friendly interface. This is as my client
 I want to remove some of the OpenCV library methods and instead make my own algorithms to enhance my project. In this stage I want to start with creating my own bitwsie operator class for OpenCV images. 
 #### How OpenCV stores pixel data
 According to my source, https://datahacker.rs/how-to-access-and-edit-pixel-values-in-opencv-with-python/, the library stores images in a matrix of colour value tuples. In this case the arrangement of these pixels can be demonstrated by the image below:
+
 <img src="/assets/pixelLayout.jpg" alt="image of pixel layout" width="500" />
+
 In this layout the top left corner is considered the origin of the matrix and each value has an inverted (blue, green, red) tuple.
 This method can be used to split an image into 3 seperated b,g,r values in different images. The usage is shown here:
 
