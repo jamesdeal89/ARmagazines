@@ -177,6 +177,8 @@ This is exactly what I need for creating a bitwise operator class.
 I could now implement a bitwise operator class of my own using Python. 
 The solution I arrived at can be seen below:
 
+#### My implementation of bitwise operators on OpenCV images
+
 ~~~
    def bitAnd(self,img, img2):
         # perform a bitwise AND between the two images
@@ -284,6 +286,8 @@ The solution I arrived at can be seen below:
                             values.append(0)
                 img[column,row] = (values[0],values[1],values[2])
 ~~~
+
+#### Review of my implementation
 
 The solution I used above, while technically correct, has many major drawbacks. Firstly, the majority of the OpenCV based modules which achieve this task use
 external C language based programs. This is as the execution time for Python is just too slow for tasks which require rapid computation. In my project, I need to 
