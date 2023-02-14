@@ -176,6 +176,12 @@ def main():
             buttonPress = cv2.waitKey(1)
             if buttonPress == 81 or buttonPress == 113:
                 sys.exit()
+        else:
+            # if there is no detected target, we still display the plain webcam to keep motion smooth
+            cv2.imshow("webcamRaw",webcam.getFrame())
+            buttonPress = cv2.waitKey(1)
+            if buttonPress == 81 or buttonPress == 113:
+                sys.exit()
 
 
 # if we're running the main.py file, run the main() subroutine

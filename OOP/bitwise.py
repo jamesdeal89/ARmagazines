@@ -25,9 +25,9 @@ class Bitwise():
         if img.shape != img2.shape:
             sys.exit("ERROR - images are not the same size")
         # iterate through each row
-        for row in range(0,height):
+        for column in range(0,height):
             # iterate through each column
-            for column in range(0,width):
+            for row in range(0,width):
                 # list to hold each pixels, RGB values after operation
                 values = []
                 # iterate and hold each images pixel colour values one by one for each colour
@@ -65,9 +65,9 @@ class Bitwise():
         if img.shape != img2.shape:
             sys.exit("ERROR - images are not the same size")
         # iterate through each row
-        for row in range(0,height):
+        for column in range(0,height):
             # iterate through each column
-            for column in range(0,width):
+            for row in range(0,width):
                 # list to hold each pixels, RGB values after operation
                 values = []
                 # iterate and hold each images pixel colour values one by one for each colour
@@ -99,10 +99,10 @@ class Bitwise():
 
     def bitNot(self, img):
         # perfrom a bitwise NOT on an image
-        height = img.shape[0]
-        width = img.shape[1]
-        for row in range(0,height):
-            for column in range(0,width):
+        height = (img.shape[0])
+        width = (img.shape[1])
+        for column in range(0,height):
+            for row in range(0,width):
                 # iterate through every pixel value
                 # create list to store new values for this pixel
                 values = []
