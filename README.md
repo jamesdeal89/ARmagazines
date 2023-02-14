@@ -168,6 +168,141 @@ img[50, 50] = (0, 0, 255)
 ~~~
 
 This is exactly what I need for creating a bitwise operator class. 
+I could now implement a bitwise operator class of my own using Python. 
+The solution I arrived at can be seen below:
+
+~~~
+   def bitAnd(self,img, img2):
+        # perform a bitwise AND between the two images
+        # time speed of execution (for comparison with multiprocessing)
+        start = time.perf_counter()
+        height = img.shape[0]
+        width = img.shape[1]
+        if img.shape != img2.shape:
+            sys.exit("ERROR - images are not the same size")
+        # iterate through each row
+        for column in range(0,height):
+            # iterate through each column
+            for row in range(0,width):
+                # list to hold each pixels, RGB values after operation
+                values = []
+                # iterate and hold each images pixel colour values one by one for each colour
+                for value in img[column, row]:
+                    for value2 in img2[column,row]:
+                        # use my binary converter to get binary values
+                        value = self.decimalToBinary(value) 
+                        value2 = self.decimalToBinary(value2)
+                        # adjust the length of the values so that both have the same number of bits
+                        if value > value2:
+                            # .zfill(desiredLength) can be used on an str to fill with leading 0's
+                            value2 = int(str(value2).zfill(len(str(value))))
+                        elif value2 > value:
+                            value = int(str(value).zfill(len(str(value2))))
+                        # iterate through each bit in each value
+                        for bit in value:
+                            for bit in value2:
+                                # perform a bitwise AND operation using if conditions
+                                if value == 1 and value2 == 1:
+                                    values.append(1)
+                                else:
+                                    values.append(0)
+                        # perform AND operation on the bits and add to this pixels values
+                        #values.append(value&value2)
+                # ammend the pixel values in the respective pixel with the ANDed values
+                img[column,row] = (values[0],values[1],values[2])
+        # return the amended first image which now holds the values after being ANDed with all of image 2
+        # also time how long the whole function took (for comparison with multiprocessing)
+        end = time.perf_counter()
+        print("Time taken:", end-start)
+        return img
+
+
+    def bitOr(self, img, img2):
+        # perform a bitwise OR between the two images
+        height = img.shape[0]
+        width = img.shape[1]
+        if img.shape != img2.shape:
+            sys.exit("ERROR - images are not the same size")
+        # iterate through each row
+        for column in range(0,height):
+            # iterate through each column
+            for row in range(0,width):
+                # list to hold each pixels, RGB values after operation
+                values = []
+                # iterate and hold each images pixel colour values one by one for each colour
+                for value in img[column, row]:
+                    for value2 in img2[column,row]:
+                        # use my binary converter to get binary values
+                        value = self.decimalToBinary(value) 
+                        value2 = self.decimalToBinary(value2)
+                        # adjust the length of the values so that both have the same number of bits
+                        if value > value2:
+                            # .zfill(desiredLength) can be used on an str to fill with leading 0's
+                            value2 = int(str(value2).zfill(len(str(value))))
+                        elif value2 > value:
+                            value = int(str(value).zfill(len(str(value2))))
+                        # iterate through each bit in each value
+                        for bit in value:
+                            for bit in value2:
+                                # perform a bitwise AND operation using if conditions
+                                if value == 1 or value2 == 1:
+                                    values.append(1)
+                                else:
+                                    values.append(0)
+                        # perform OR operation on the bits and add to this pixels values
+                        # values.append(value|value2)
+                # ammend the pixel values in the respective pixel with the ORed values
+                img[column,row] = (values[0],values[1],values[2])
+        # return the amended first image which now holds the values after being ORed with all of image 2
+        return img
+
+    def bitNot(self, img):
+        # perfrom a bitwise NOT on an image
+        height = (img.shape[0])
+        width = (img.shape[1])
+        for column in range(0,height):
+            for row in range(0,width):
+                # iterate through every pixel value
+                # create list to store new values for this pixel
+                values = []
+                for value in img[column,row]:
+                    # iterate through every pixel's RGB values, using a loop here as sometimes images have more than 3 values (CMYK)
+                    # convert to binary using my converter method
+                    value = self.decimalToBinary(value)
+                    # use a bitwise NOT on the value
+                    # values.append(~value)
+                    for bit in str(value):
+                        if int(bit) == 0:
+                            values.append(1)
+                        else:
+                            values.append(0)
+                img[column,row] = (values[0],values[1],values[2])
+~~~
+
+The solution I used above, while technically correct, has many major drawbacks. Firstly, the majority of the OpenCV based modules which achieve this task use
+external C language based programs. This is as the execution time for Python is just too slow for tasks which require rapid computation. In my project, I need to 
+have this run every frame for at least ~20 frames per second to create a smooth motion for the user. Having a process like this take more than a second will make the program unusable for augmented reality purposes. 
+When I tested this implementation using Python's built-in Time module, I found that a single execution of the bitAnd() method on a high resolution image took just under 500 seconds. This is without even using my own implementation of denary to binary conversion which would have slowed it down even more. The method I used for conversion can be seen below and used recursion:
+
+~~~
+    def decimalToBinary(self,num,output=[]): 
+        """takes a decimal number and uses recursion to return the binary value """
+        # if the number is greater than 1
+        if num > 1:
+            # recur and half the number by 2 using integer division and also pass in the current output
+            self.decimalToBinary(num//2,output)
+        # then if the output is 1 or less we can append this to our output and return the output
+        # when the output is not complete, the return closes the stack frame, 
+        # but when the final stack is complete, it will return the final output out of the original call
+        output.append(num%2)
+        # make output a single string
+        return int("".join(map(str,output)))
+~~~
+
+While it could be interesting to pursue making my own implementation of these bitwise operators work for my use-case, I think time would be better spent moving onto more interesting and impactful features of the project. However if I were to try solve this issue, I would look further into one of:
+- Multiprocessing --> Multiple functions can be executed at once using multiple threads/cores. Therefore I could run several rows at a time. 
+- Async --> While waiting on one task, another can be started. Therefore I could start on the next row before the first finished. 
+- Pypy --> JIT('Just In Time') compiler for Python would allow me to execute my code faster as it keeps the machine code for already run functions.
 
 ## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
@@ -217,3 +352,6 @@ https://www.geeksforgeeks.org/sorting-algorithms/
 
 https://docs.opencv.org/3.4/d0/d86/tutorial_py_image_arithmetics.html
 - Overview of image overlays and masking using bitwise operations
+
+https://www.youtube.com/watch?v=X7vBbelRXn0
+- YouTube video from mCoding which explains how to optimise Python execution
