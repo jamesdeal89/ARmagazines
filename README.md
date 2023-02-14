@@ -145,6 +145,10 @@ Overall the protyping of a 'proof-of-concept' was successful and will be useful 
 - Detecting images
 
 Additionally my client will require a graphical interface. Currently the program hard-codes the paths for source and target files. This will need to be changed to a GUI and a new function or OOP structure to allow for unlimited source-target pairs to be detected and added as required. Iteration will therefore be key. 
+A list of areas I could add functionality to/ improve on are:
+- GUI 
+- Allowing many sets of image/source pair files --> users may want to create categories via this
+- Allow the user to select a 'performance' mode that only loads the first detected target and ignores other --> increases framerate
 
 ### Graphical Interface:
 For my program, I need to create a user-friendly interface. This is as my client is the schools media studies department who might not have time or the knowledge to hard-code filepaths or to navigate a command-line. Therefore from my research I've found that PySimpleGUI is an effective library to use for this purpose. It allows me to create graphical windows and input boxes which are essential. However, as the name suggests, it keeps the code required to get it working at a minimum. Therefore allowing me to focus on the backend further while still having an effective user interface.
