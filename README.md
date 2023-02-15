@@ -378,3 +378,6 @@ https://docs.opencv.org/3.4/d0/d86/tutorial_py_image_arithmetics.html
 
 https://www.youtube.com/watch?v=X7vBbelRXn0
 - YouTube video from mCoding which explains how to optimise Python execution
+
+https://www.geeksforgeeks.org/python-gui-tkinter/
+- Lists the possible elements for user input in Tkinter for GUI
