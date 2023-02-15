@@ -118,3 +118,4 @@ class Bitwise():
                         else:
                             values.append(0)
                 img[column,row] = (values[0],values[1],values[2])
+        return img
