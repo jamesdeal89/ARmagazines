@@ -145,11 +145,14 @@ def main():
     # now we can create a loop based on each frame of the webcam we load
     while True:
         # call the method which loads the next frame
+        result = None
         webcam.next()
         try:
+            # NOTE: source objects are stored WITHIN their respective target objects
             for target in targets:
                 target.getSourceObj().next(w1,h1)
         except cv2.error:
+            # if we fail to load the next frame we should loop the source videos by reloading them now
             targets[0].load()
             targets[0].getSourceObj().load()
             h1,w1,c1 = targets[0].getLoadedObj().shape
@@ -158,10 +161,11 @@ def main():
                 target.load()
                 target.resize(w1,h1)
                 target.getSourceObj().next(w1,h1)
-        # use the Detect class decect() method to get which object is in the frame (if any)
-        detect = Detect(webcam, targets)
-        result = detect.detect()
-        if result != None:
+        else:
+            # use the Detect class decect() method to get which object is in the frame (if any)
+            detect = Detect(webcam, targets)
+            result = detect.detect()
+        if result is not None:
             successfullMatches, detectedTarget = result
             border = Border(detectedTarget, webcam, successfullMatches)
             destinationPoints, homographyMatrix = border.border()
@@ -178,7 +182,7 @@ def main():
                 sys.exit()
         else:
             # if there is no detected target, we still display the plain webcam to keep motion smooth
-            cv2.imshow("webcamRaw",webcam.getFrame())
+            cv2.imshow("Ouput",webcam.getFrame())
             buttonPress = cv2.waitKey(1)
             if buttonPress == 81 or buttonPress == 113:
                 sys.exit()

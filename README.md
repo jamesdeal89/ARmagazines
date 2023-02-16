@@ -162,7 +162,10 @@ A list of areas I could add functionality to/ improve on are:
 - Allow the user to select a 'performance' mode that only loads the first detected target and ignores other --> increases framerate
 
 ### Graphical Interface:
+#### Using PySimpleGUI for concept
 For my program, I need to create a user-friendly interface. This is as my client is the schools media studies department who might not have time or the knowledge to hard-code filepaths or to navigate a command-line. Therefore from my research I've found that PySimpleGUI is an effective library to use for this purpose. It allows me to create graphical windows and input boxes which are essential. However, as the name suggests, it keeps the code required to get it working at a minimum. Therefore allowing me to focus on the backend further while still having an effective user interface.
+
+#### Using Tkinter for full implementation
 
 ### Making a bitwise operator class
 I want to remove some of the OpenCV library methods and instead make my own algorithms to enhance my project. In this stage I want to start with creating my own bitwsie operator class for OpenCV images. 
