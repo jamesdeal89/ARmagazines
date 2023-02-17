@@ -297,12 +297,16 @@ This means that any colour variation caused by viewing the target through a webc
 <a href="https://www.youtube.com/watch?v=i76B1pBoN4Y">YouTube Video By Ritvik Math</a>
 I used this video above to understand the basic elements of creating pass filters. He uses a purely mathematical aproach and explains thata kernel should be used to scan linearly across the 'time' of the input data. An example of a kernel for sound data would be [-1,1]. The majority of this video contextualises it using sound, however the exact same principle can be used for images. He even applies this at the end briefly. Instead of using the 'time' as the plain to apply across, we use the 'space' of the image. Furthermore a high-pass kernel for images would be multi-dimensional. For example, 
 
-[-1,0,1
--2,0,2
+[-1,0,1,
+
+-2,0,2,
+
 -1,0,1]
 
-[1,2,1
-0,0,0
+[1,2,1,
+
+0,0,0,
+
 -1,-2,-1]
 
 The main concept is that, in the example of the more simple kernel: [-1,1], the left value is applied to the value on the left of the current position while the right value is applied to the right. In essence this creates a a differential between the two values next to each other, allowing us to capture data on the contrast between these two datapoints. 
