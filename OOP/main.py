@@ -108,6 +108,8 @@ def loadPairs():
         return targets
 
 def main():
+    # TODO: Create a 'performance' mode the user can select in GUI -> only load or check for first detected source/target
+    # TODO: Create own image recognition class
     while True:
         loadOrGen = GUI()
         #loadOrGen = input("Do you want to load, generate, or update a target-source pair file? (L,G, or U)").strip().lower()

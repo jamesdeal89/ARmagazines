@@ -20,6 +20,7 @@ class Detect():
         for target in self.targetsList:
             print("CHECK......")
             # load and create keypoints+descriptors for each target object using it's methods
+            # TODO: can be made more efficient by generating points only once in main()
             target.genPoints()
             self.webcam.genPoints()
             # Scan images to compare keypoints based on descriptors attributes
@@ -37,3 +38,11 @@ class Detect():
                 print("MATCHED")
                 # If so, break the for loop and return the list of matches and the matched target object from the Detect method
                 return resultMatches[0], resultMatches[1]
+
+    def myDetect():
+        """
+        This class is intended to create my own implementation of OpenCV's image matcher and keypoint generator.
+        My initial ideas are to use a 'high-pass' filter on the target images to only get B&W data on hard edges.
+        This means that any colour variation caused by viewing the target through a webcam can be avoided.
+        From this high-pass version, I will take the most significant keypoints by scanning over the image and then using the portions with high variety in pixels. These will be compared to scans across the target webcam frame to find the detected target. 
+        """

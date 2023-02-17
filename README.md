@@ -327,8 +327,14 @@ While it could be interesting to pursue making my own implementation of these bi
 - Multiprocessing --> Multiple functions can be executed at once using multiple threads/cores. Therefore I could run several rows at a time. 
 - Async --> While waiting on one task, another can be started. Therefore I could start on the next row before the first finished. 
 - Pypy --> JIT('Just In Time') compiler for Python would allow me to execute my code faster as it keeps the machine code for already run functions.
+- ShaderToy --> Shader software which would allow me to acess GPU computation power to apply a 'shader' to carry out these operators.
+Nonetheless, this experience gave me an infinitely better understanding of how the modules I will end up using in my final project achieve what they do.
 
-Nonetheless, this experience gave me an infinitely better understanding of how the modules I will end up using in my final project achieve what they do. 
+### Image Detection Implementation
+#### Initial Aproach
+This class is intended to create my own implementation of OpenCV's image matcher and keypoint generator.
+My initial ideas are to use a 'high-pass' filter on the target images to only get B&W data on hard edges.
+This means that any colour variation caused by viewing the target through a webcam can be avoided.
 
 ## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
@@ -384,3 +390,6 @@ https://www.youtube.com/watch?v=X7vBbelRXn0
 
 https://www.geeksforgeeks.org/python-gui-tkinter/
 - Lists the possible elements for user input in Tkinter for GUI
+
+https://aishack.in/tutorials/image-convolution-examples/
+- Short web article which explains several convolution image filters
