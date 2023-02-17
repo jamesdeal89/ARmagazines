@@ -6,17 +6,10 @@
 
 ## Analysis:
 ### Introduction:
-My project idea is to create either an investigation into, or a finalized app
-product which overlays a video of a pre-recorded magazine cover where the 
-main image model is moving. This video is to be overlain on top of a printed
-magazine in real life (Augmented Reality). It should follow and adapt to the movements
-and angling that the camera is taking footage from.
+My project idea is to create either an investigation into, or a finalized app product which overlays a video of a pre-recorded magazine cover where the main image model is moving. This video is to be overlain on top of a printed magazine in real life (Augmented Reality). It should follow and adapt to the movements and angling that the camera is taking footage from.
 
 ### Who is the product for?
-I want to create this product to help the school's Media Studies department, specifically Mr.Robson, create new, innovative
-interaction methods for student's GCSE, AS, and A level coursework. The coursework all involve creating either a magazine 
-or a 'digipack' which also features a cover similar to a magazine. My product will allow them to deepen user 
-imersion with their magazine or digipack while joining reality with digital. 
+I want to create this product to help the school's Media Studies department, specifically Mr.Robson, create new, innovative interaction methods for student's GCSE, AS, and A level coursework. The coursework all involve creating either a magazine or a 'digipack' which also features a cover similar to a magazine. My product will allow them to deepen user imersion with their magazine or digipack while joining reality with digital. 
 
 ### Interview with Client:
 #### What would you like the project to achieve?
@@ -40,51 +33,28 @@ INSERT ANSWER HERE
 ### Already existing AR products:
 #### Example 1: IKEA Place
 <img src="/assets/ikea.webp" alt="IKEA Place example image" width="500"/>
-Ikea Place is an app provided by the Swedish furniture company. It allows users who are browsing for furniture
-to place it inside of their home using their smartphone's camera. Allowing them to compare the size and aesthetic
-of the items. It also enourages users to create a more personal connection with the item being placed into their home
-via AR; making the app an effective sales technique. This relates to my project as it uses a projection in AR
-through a phone camera/webcam. It adjusts based on the movement of the camera. However my project does differ
-in some ways. Firstly, I would also have to adjust for when the camera is steady but the target (magazine) is moving. 
-In IKEA Place, it's unlikely the target (floor or desk) would move instead of the camera. I also am using a different
-source. My AR is using a video feed whereas this uses a 3D model. The applications of my product are also different,
-being made for art and entertainment rather than commercial sales. 
+Ikea Place is an app provided by the Swedish furniture company. It allows users who are browsing for furniture to place it inside of their home using their smartphone's camera. Allowing them to compare the size and aesthetic of the items. It also enourages users to create a more personal connection with the item being placed into their home via AR; making the app an effective sales technique. This relates to my project as it uses a projection in AR through a phone camera/webcam. It adjusts based on the movement of the camera. However my project does differ in some ways. Firstly, I would also have to adjust for when the camera is steady but the target (magazine) is moving. In IKEA Place, it's unlikely the target (floor or desk) would move instead of the camera. I also am using a different source. My AR is using a video feed whereas this uses a 3D model. The applications of my product are also different, being made for art and entertainment rather than commercial sales. 
 <hr/>
 
 #### Example 2: Snapchat filters
 <img src="/assets/snap.webp" alt="Snapchat filter example image" width="500"/>
-Snapchat filters are much more different to my project than Ikea Place. These AR filters track a users face to project
-things like masks, beards, tatoos and more onto them. It can be both 2D or 3D projections and they can respond to the 
-users (for example some have physics implementations like to make wobbly noses when a persons head moves). I think the 
-purpose of this product is more towards entertainment than Ikea Place, but much more so than my project. Snapchat filters
-are purely entertainment and novelty whereas AR magazine covers would be also informational. And of course theres the
-obvious difference in mine being non-3D model based.
+Snapchat filters are much more different to my project than Ikea Place. These AR filters track a users face to project things like masks, beards, tatoos and more onto them. It can be both 2D or 3D projections and they can respond to the users (for example some have physics implementations like to make wobbly noses when a persons head moves). I think the purpose of this product is more towards entertainment than Ikea Place, but much more so than my project. Snapchat filters are purely entertainment and novelty whereas AR magazine covers would be also informational. And of course theres the obvious difference in mine being non-3D model based.
 <hr/>
 
 #### Example 3: Pokemon GO
 <img src="/assets/poke.webp" alt="Pokemon GO example image" width="500"/>
-Pokemon Go is a 2016 mobile app which uses the iconic characters from Pokemon to make a location based video game.
-Users would have to physically move outside and the phone's GPS would register their location and move their character.
-Based on this they would encounter 'Pokemon' which they could try to 'capture'; capturing them is where AR and the link
-to my project arises as it would use the phones camera to AR project a 3D pokemon model. The user can also drag their
-finger across the screen to 'throw' a ball to catch them. My project doesn't involve this level of interactivity with
-the AR projection which could be something I need to consider implementing. 
+Pokemon Go is a 2016 mobile app which uses the iconic characters from Pokemon to make a location based video game. Users would have to physically move outside and the phone's GPS would register their location and move their character. Based on this they would encounter 'Pokemon' which they could try to 'capture'; capturing them is where AR and the link to my project arises as it would use the phones camera to AR project a 3D pokemon model. The user can also drag their finger across the screen to 'throw' a ball to catch them. My project doesn't involve this level of interactivity with the AR projection which could be something I need to consider implementing. 
 <hr/>
 
 #### Example 4: Google Maps Live View
 <img src="/assets/liveView.webp" alt="Google Live View example image" width=500>
-Google in the past few years have rolled out a new feature in Google Maps on mobile. It's called 'Live View' and is used to 
-allow you to see floating directional arrows and prompts for where to go if you're unsure in built-up areas with many alleys and possible
-routes. This stays tracked in position no matter where you point the smartphone as shown in the example image above. When first hearing of 
-this idea it can feel somewhat gimmicky as holding up your phone in front of your face as a viewfinder for naviagtion could be distracting. 
-However Google has developed the feature to use Google Street View data, another project where 360 cameras document city streets into a global
-database. Therefore when you use the AR Live View feature it not only creates these projections based on GPS, but also calibrates your location
-based on the camera feed data; making it useful even as purely a calibration tool. This is especially useful in built-up urban areas with poor
-signal.
+Google in the past few years have rolled out a new feature in Google Maps on mobile. It's called 'Live View' and is used to allow you to see floating directional arrows and prompts for where to go if you're unsure in built-up areas with many alleys and possible routes. This stays tracked in position no matter where you point the smartphone as shown in the example image above. When first hearing of this idea it can feel somewhat gimmicky as holding up your phone in front of your face as a viewfinder for naviagtion could be distracting. However Google has developed the feature to use Google Street View data, another project where 360 cameras document city streets into a global database. Therefore when you use the AR Live View feature it not only creates these projections based on GPS, but also calibrates your location based on the camera feed data; making it useful even as purely a calibration tool. This is especially useful in built-up urban areas with poor signal.
 
 ### Software To Aid Development:
 #### VSCodium:
-This is a free and open-source fork of the Microsoft VSCode Integrated Development Environment. It has the same features as the main branch however the open-source aproach makes it more attractive. It can be found here: https://github.com/VSCodium/vscodium
+This is a free and open-source fork of the Microsoft VSCode Integrated Development Environment. It has the same features as the main branch however the open-source aproach makes it more attractive. This is used for debugging my code. It can be found here: https://github.com/VSCodium/vscodium
+#### NeoVim:
+This is a code editor which is extremely light-weight and focuses on streamlining the development process. This is used in unison with VSCodium for debugging. It allows for almost all input through the keyboard. 
 #### Python3:
 Python is a high-level programming language with a focus on simple, 'English-like' syntax. While it's back-end is often considered inefficient in comparison to others, it's still a powerful language with many API and libraries avaliable which will no doubt be useful for a project which will need to integrate with webcams and other hardware.  
 
@@ -92,7 +62,7 @@ Python is a high-level programming language with a focus on simple, 'English-lik
 #### OpenCV Documentation - Displaying Video And Capturing Camera Feeds:
 Source: https://docs.opencv.org/4.x/dd/de7/group__videoio.html
 
-This page holds detailed information on how the Open Computer Vision Python library can used to load and write video information.
+This page holds detailed information on how the Open Computer Vision Python library can used to load and write video information. 
 It states that the syntax for the VideoCapture() method is:
 
 ~~~
@@ -111,22 +81,12 @@ Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
 ### Prototype Proof-Of-Concept:
 #### Detecting a target magazine
 <img src="/assets/keypoints.png" alt="Keypoint markers drawn using OpenCV" width="500"/>
-Above is an example of how OpenCV and it's ORB methods can be used to create a series of keypoints.
-These keypoints can uniquely indentify a target image. It even works through a webcam with non-ideal alignment or lighting
-thanks to being able to allow a certain degree of inaccuracy to still be accepted as a match. In the image above, OpenCV draws the matching points 
-to demonstrate which areas correlate to the same points on the source. This will be important for my project as I need to recognize several magazine
-covers apart and load specific source videos to overlay on top. The way this works is by taking features of the magazine cover and making that a keypoint from the relationship between groups of pixels. For example you can see the bottom of the letters in MUSK are being used to identify the image from how the white pixels are spaced. The source code for this can be found in keypointDetection.py. 
+Above is an example of how OpenCV and it's ORB methods can be used to create a series of keypoints. These keypoints can uniquely indentify a target image. It even works through a webcam with non-ideal alignment or lighting thanks to being able to allow a certain degree of inaccuracy to still be accepted as a match. In the image above, OpenCV draws the matching points to demonstrate which areas correlate to the same points on the source. This will be important for my project as I need to recognize several magazine covers apart and load specific source videos to overlay on top. The way this works is by taking features of the magazine cover and making that a keypoint from the relationship between groups of pixels. For example you can see the bottom of the letters in MUSK are being used to identify the image from how the white pixels are spaced. The source code for this can be found in keypointDetection.py. 
 <hr/>
 
 #### Finding the border of the magazine
 <img src="/assets/border.png" alt="Border detection with homography in OpenCV" width="500"/>
-Here I add onto the above python file by taking the keypoints and relating them to the same keypoints found through the webcam.
-The difference in their distances allows for a homography matrix to be calculated. To do this I created a numpy array of the successful
-keypoints and used .reshape() to format it as a 2D array of 2 keypoints each. This is the accepted format for matching homography using cv2. 
-This numpy array has to also be made for the keypoints in the original image. From this calculation we get a homography matrix.
-If done successfully this gives the data to perform a warp which matches to the image in the webcam. I then use cv2.perspectiveTransform to 
-apply this warp to the border coordinates of the target image. This is then projected onto the webcam frame and can be seen above as the white
-box. 
+Here I add onto the above python file by taking the keypoints and relating them to the same keypoints found through the webcam. The difference in their distances allows for a homography matrix to be calculated. To do this I created a numpy array of the successful keypoints and used .reshape() to format it as a 2D array of 2 keypoints each. This is the accepted format for matching homography using cv2. This numpy array has to also be made for the keypoints in the original image. From this calculation we get a homography matrix. If done successfully this gives the data to perform a warp which matches to the image in the webcam. I then use cv2.perspectiveTransform to apply this warp to the border coordinates of the target image. This is then projected onto the webcam frame and can be seen above as the white box. 
 <hr/>
 
 #### Creating a mask
@@ -303,10 +263,7 @@ The solution I arrived at can be seen below:
 
 #### Review of my implementation
 
-The solution I used above, while technically correct, has many major drawbacks. Firstly, the majority of the OpenCV based modules which achieve this task use
-external C language based programs. This is as the execution time for Python is just too slow for tasks which require rapid computation. In my project, I need to 
-have this run every frame for at least ~20 frames per second to create a smooth motion for the user. Having a process like this take more than a second will make the program unusable for augmented reality purposes. 
-When I tested this implementation using Python's built-in Time module, I found that a single execution of the bitAnd() method on a high resolution image took just under 500 seconds. This is without even using my own implementation of denary to binary conversion which would have slowed it down even more. The method I used for conversion can be seen below and used recursion:
+The solution I used above, while technically correct, has many major drawbacks. Firstly, the majority of the OpenCV based modules which achieve this task use external C language based programs. This is as the execution time for Python is just too slow for tasks which require rapid computation. In my project, I need to have this run every frame for at least ~20 frames per second to create a smooth motion for the user. Having a process like this take more than a second will make the program unusable for augmented reality purposes. When I tested this implementation using Python's built-in Time module, I found that a single execution of the bitAnd() method on a high resolution image took just under 500 seconds. This is without even using my own implementation of denary to binary conversion which would have slowed it down even more. The method I used for conversion can be seen below and used recursion:
 
 ~~~
     def decimalToBinary(self,num,output=[]): 
@@ -332,9 +289,21 @@ Nonetheless, this experience gave me an infinitely better understanding of how t
 
 ### Image Detection Implementation
 #### Initial Aproach
-This class is intended to create my own implementation of OpenCV's image matcher and keypoint generator.
+I want to create my own implementation of OpenCV's image matcher and keypoint generator.
 My initial ideas are to use a 'high-pass' filter on the target images to only get B&W data on hard edges.
 This means that any colour variation caused by viewing the target through a webcam can be avoided.
+
+#### High-Pass Filter
+<a href="https://www.youtube.com/watch?v=i76B1pBoN4Y">YouTube Video By Ritvik Math</a>
+I used this video above to understand the basic elements of creating pass filters. He uses a purely mathematical aproach and explains thata kernel should be used to scan linearly across the 'time' of the input data. An example of a kernel for sound data would be [-1,1]. The majority of this video contextualises it using sound, however the exact same principle can be used for images. He even applies this at the end briefly. Instead of using the 'time' as the plain to apply across, we use the 'space' of the image. Furthermore a high-pass kernel for images would be multi-dimensional. For example, 
+[-1,0,1
+-2,0,2
+-1,0,1]
+[1,2,1
+0,0,0
+-1,-2,-1]
+The main concept is that, in the example of the more simple kernel: [-1,1], the left value is applied to the value on the left of the current position while the right value is applied to the right. In essence this creates a a differential between the two values next to each other, allowing us to capture data on the contrast between these two datapoints. 
+We can then set a tolerance for how high the contrast has to be before being accepted or blocked by our filter. If high contrast is blocked, we create a low-pass filter which blurs the image. Whereas if low contrast is blocked, we create a high-pass filter which only shows hard edges. 
 
 ## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
@@ -393,3 +362,6 @@ https://www.geeksforgeeks.org/python-gui-tkinter/
 
 https://aishack.in/tutorials/image-convolution-examples/
 - Short web article which explains several convolution image filters
+
+https://www.youtube.com/watch?v=i76B1pBoN4Y
+- YouTube video explaining high/low pass filters in CS
