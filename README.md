@@ -318,6 +318,30 @@ Whereas if low contrast is blocked, we create a high-pass filter which only show
 
 <img src="/assets/highPass.png" alt="example of high pass" width="500" />
 
+
+~~~
+    def myHighPass(self,size,img):
+        # size paramter limits how much of the image we filter and use
+        # this can improve performance if image is high resolution
+        # create a blank mask of empty zero values in size of sample
+        mask = np.zeros(shape=(size,size))
+        print(mask)
+        # iterate through each position in the empty matrix
+        for i in range(0,size):
+            for j in range(0,size):
+                # change each position in the empty image to be the difference between the values in a 9*9 grid around the central current position
+                mask[i][j]= -1*img[i][j]-1*img[i][j+1]-1*img[i][j+2]-1*img[i+1][j]+8*img[i+1][j+1]-1*img[i+1][j+2]-1*img[i+2][j]-img[i+2][j+1]-1*img[i+2][j+2]
+
+        # output the differentials between the pixels. 
+        # later to be used with a threshold accept value.
+        print(mask)
+        cv2.imshow("mask", mask)
+        cv2.waitKey(0)
+~~~
+
+
+<img src="/assets/beforethreshold.png" alt="data sample before filter" width="500" />
+
 ## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
 - OpenCV homography documentation

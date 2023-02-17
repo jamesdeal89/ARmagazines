@@ -1,5 +1,7 @@
 """This is the file for the detection class"""
 import cv2
+import numpy as np 
+
 class Detect():
     def __init__(self,webcam, targetsList):
         """
@@ -39,10 +41,40 @@ class Detect():
                 # If so, break the for loop and return the list of matches and the matched target object from the Detect method
                 return resultMatches[0], resultMatches[1]
 
-    def myDetect():
+    
+    def myHighPass(self,size,img):
+        # size paramter limits how much of the image we filter and use
+        # this can improve performance if image is high resolution
+        # create a blank mask of empty zero values in size of sample
+        mask = np.zeros(shape=(size,size))
+        print(mask)
+        # iterate through each position in the empty matrix
+        for i in range(0,size):
+            for j in range(0,size):
+                # change each position in the empty image to be the difference between the values in a 9*9 grid around the central current position
+                mask[i][j]= -1*img[i][j]-1*img[i][j+1]-1*img[i][j+2]-1*img[i+1][j]+8*img[i+1][j+1]-1*img[i+1][j+2]-1*img[i+2][j]-img[i+2][j+1]-1*img[i+2][j+2]
+
+        # output the differentials between the pixels. 
+        # later to be used with a threshold accept value.
+        print(mask)
+        cv2.imshow("mask", mask)
+        cv2.waitKey(0)
+
+
+
+    def myDetect(self):
         """
         This class is intended to create my own implementation of OpenCV's image matcher and keypoint generator.
         My initial ideas are to use a 'high-pass' filter on the target images to only get B&W data on hard edges.
         This means that any colour variation caused by viewing the target through a webcam can be avoided.
         From this high-pass version, I will take the most significant keypoints by scanning over the image and then using the portions with high variety in pixels. These will be compared to scans across the target webcam frame to find the detected target. 
         """
+        pass
+
+
+img = cv2.imread('../target.jpg',0)
+cv2.imshow('example',img)
+cv2.waitKey(0)
+detect = Detect(None, None)
+detect.myHighPass(300,img)
+        
