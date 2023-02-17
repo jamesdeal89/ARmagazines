@@ -318,6 +318,7 @@ Whereas if low contrast is blocked, we create a high-pass filter which only show
 
 <img src="/assets/highPass.png" alt="example of high pass" width="500" />
 
+<img src="/assets/formulaHP.png" alt="formula I implemented" width="300" />
 
 ~~~
     def myHighPass(self,size,img):
