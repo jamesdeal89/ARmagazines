@@ -293,7 +293,7 @@ I want to create my own implementation of OpenCV's image matcher and keypoint ge
 My initial ideas are to use a 'high-pass' filter on the target images to only get B&W data on hard edges.
 This means that any colour variation caused by viewing the target through a webcam can be avoided.
 
-#### High-Pass Filter
+#### High-Pass Filter + Convolution
 <a href="https://www.youtube.com/watch?v=i76B1pBoN4Y">YouTube Video By Ritvik Math</a>
 I used this video above to understand the basic elements of creating pass filters. He uses a purely mathematical aproach and explains thata kernel should be used to scan linearly across the 'time' of the input data. An example of a kernel for sound data would be [-1,1]. The majority of this video contextualises it using sound, however the exact same principle can be used for images. He even applies this at the end briefly. Instead of using the 'time' as the plain to apply across, we use the 'space' of the image. Furthermore a high-pass kernel for images would be multi-dimensional. For example, 
 
@@ -310,7 +310,13 @@ I used this video above to understand the basic elements of creating pass filter
 -1,-2,-1]
 
 The main concept is that, in the example of the more simple kernel: [-1,1], the left value is applied to the value on the left of the current position while the right value is applied to the right. In essence this creates a a differential between the two values next to each other, allowing us to capture data on the contrast between these two datapoints. 
-We can then set a tolerance for how high the contrast has to be before being accepted or blocked by our filter. If high contrast is blocked, we create a low-pass filter which blurs the image. Whereas if low contrast is blocked, we create a high-pass filter which only shows hard edges. 
+We can then set a tolerance for how high the contrast has to be before being accepted or blocked by our filter. If high contrast is blocked, we create a low-pass filter which blurs the image. 
+
+<img src="/assets/lowPass.png" alt="example of low pass" width="500" />
+
+Whereas if low contrast is blocked, we create a high-pass filter which only shows hard edges. 
+
+<img src="/assets/highPass.png" alt="example of high pass" width="500" />
 
 ## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
