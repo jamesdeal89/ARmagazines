@@ -51,9 +51,12 @@ class Detect():
         # iterate through each position in the empty matrix
         for i in range(0,size):
             for j in range(0,size):
-                # change each position in the empty image to be the difference between the values in a 9*9 grid around the central current position
-                mask[i][j]= -1*img[i][j]-1*img[i][j+1]-1*img[i][j+2]-1*img[i+1][j]+8*img[i+1][j+1]-1*img[i+1][j+2]-1*img[i+2][j]-img[i+2][j+1]-1*img[i+2][j+2]
-
+                # find the overall summed difference between the values in a 9*9 grid around the central current position
+                differential = -1*img[i][j]-1*img[i][j+1]-1*img[i][j+2]-1*img[i+1][j]+8*img[i+1][j+1]-1*img[i+1][j+2]-1*img[i+2][j]-img[i+2][j+1]-1*img[i+2][j+2]
+                
+                # if this overall differences with the surrounding pixels is greater than 80, we accept it as a hard edge and adjust that pixel to be shown equal to how hard the edge is.
+                if differential > 80:
+                    mask[i][j] = differential
         # output the differentials between the pixels. 
         # later to be used with a threshold accept value.
         print(mask)
