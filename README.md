@@ -322,6 +322,10 @@ From my research I found that this is one the most popular convolution kernels f
 
 <img src="/assets/formulaHP.png" alt="formula I implemented" width="300" />
 
+Below is python code which I used to implement the formula onto target images in my project. I used index locations to access surrounding pixel values. This is more efficient than storing them and iterating. I then multiply each by their respective kernel values. This is summed to create the single differntial value.
+
+The paramter 'size' gives the resolution width and height of the square sample we want to create. This can be used to create several unique samples across the target image. For example, four smaller high-pass images from the four corners of the image.
+
 ~~~
     def myHighPass(self,size,img):
         # size paramter limits how much of the image we filter and use
@@ -342,8 +346,11 @@ From my research I found that this is one the most popular convolution kernels f
         cv2.waitKey(0)
 ~~~
 
+The result of this program run using a sample size of 500 is shown in the screenshot below. This leads to the diffential values being saved as pixel values and displayed. As you can see this isn't quite the result we need as we've yet to set a boundary accept value for the filter. 
 
 <img src="/assets/beforethreshold.png" alt="data sample before filter" width="500" />
+
+My code is now adjusted to only set pixel values if the differential is above 80. This leave only very hard edges in the final output.
 
 ~~~
     def myHighPass(self,size,img):
@@ -365,6 +372,9 @@ From my research I found that this is one the most popular convolution kernels f
         print(mask)
         cv2.imshow("mask", mask)
 ~~~
+
+The output is now shown here after adding a boundary threshold.
+
 <img src="/assets/highPassDone.png" alt="data sample before filter" width="500" />
 
 
