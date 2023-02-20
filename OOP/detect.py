@@ -46,17 +46,20 @@ class Detect():
         # size paramter limits how much of the image we filter and use
         # this can improve performance if image is high resolution
         # create a blank mask of empty zero values in size of sample
-        mask = np.zeros(shape=(size,size))
+        mask = np.zeros(shape=(size[1],size[1]))
         print(mask)
         # iterate through each position in the empty matrix
-        for i in range(0,size):
-            for j in range(0,size):
+        for i in range(size[0],size[1]):
+            for j in range(size[0],size[1]):
                 # find the overall summed difference between the values in a 9*9 grid around the central current position
                 differential = -1*img[i][j]-1*img[i][j+1]-1*img[i][j+2]-1*img[i+1][j]+8*img[i+1][j+1]-1*img[i+1][j+2]-1*img[i+2][j]-img[i+2][j+1]-1*img[i+2][j+2]
                 
                 # if this overall differences with the surrounding pixels is greater than 80, we accept it as a hard edge and adjust that pixel to be shown equal to how hard the edge is.
                 if differential > 80:
                     mask[i][j] = differential
+
+        # crop the mask to only show the sampled area
+        mask = mask[size[0]:size[1],size[0]:size[1]]
         return mask
 
 
@@ -68,6 +71,9 @@ class Detect():
         This means that any colour variation caused by viewing the target through a webcam can be avoided.
         From this high-pass version, I will take the most significant keypoints by scanning over the image and then using the portions with high variety in pixels. These will be compared to scans across the target webcam frame to find the detected target. 
         """
+        
+
+
         pass
 
 
@@ -75,5 +81,6 @@ img = cv2.imread('../target.jpg',0)
 cv2.imshow('example',img)
 cv2.waitKey(0)
 detect = Detect(None, None)
-detect.myHighPass(300,img)
+cv2.imshow('result',detect.myHighPass([300,500],img))
+cv2.waitKey(0)
         
