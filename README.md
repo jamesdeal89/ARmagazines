@@ -318,6 +318,8 @@ Whereas if low contrast is blocked, we create a high-pass filter which only show
 
 <img src="/assets/highPass.png" alt="example of high pass" width="500" />
 
+From my research I found that this is one the most popular convolution kernels for image high-pass filters. In essence, it means that we take the current pixel (represented by the middle kernel value), multiply it's greyscaled value by 8, then we access the pixels around that current pixel in memory and multiply all those values by -1. The result of each calculation should be summed as the differential between the current versus surrounding pixels. 
+
 <img src="/assets/formulaHP.png" alt="formula I implemented" width="300" />
 
 ~~~
@@ -426,3 +428,9 @@ https://aishack.in/tutorials/image-convolution-examples/
 
 https://www.youtube.com/watch?v=i76B1pBoN4Y
 - YouTube video explaining high/low pass filters in CS
+
+https://stackoverflow.com/questions/29133085/what-are-keypoints-in-image-processing
+- Stackoverflow thread on how keypoints/descriptors are generated
+
+https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/viola-cvpr-01.pdf
+- Paper on Viola-Jones algorithm for facial detection; useful for understanding integral images

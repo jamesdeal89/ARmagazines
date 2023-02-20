@@ -57,11 +57,7 @@ class Detect():
                 # if this overall differences with the surrounding pixels is greater than 80, we accept it as a hard edge and adjust that pixel to be shown equal to how hard the edge is.
                 if differential > 80:
                     mask[i][j] = differential
-        # output the differentials between the pixels. 
-        # later to be used with a threshold accept value.
-        print(mask)
-        cv2.imshow("mask", mask)
-        cv2.waitKey(0)
+        return mask
 
 
 
