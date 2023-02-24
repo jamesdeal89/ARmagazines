@@ -322,6 +322,8 @@ From my research I found that this is one the most popular convolution kernels f
 
 <img src="/assets/formulaHP.png" alt="formula I implemented" width="300" />
 
+##### Intial attempt
+
 Below is python code which I used to implement the formula onto target images in my project. I used index locations to access surrounding pixel values. This is more efficient than storing them and iterating. I then multiply each by their respective kernel values. This is summed to create the single differntial value.
 
 The paramter 'size' gives the resolution width and height of the square sample we want to create. This can be used to create several unique samples across the target image. For example, four smaller high-pass images from the four corners of the image.
@@ -350,6 +352,8 @@ The result of this program run using a sample size of 500 is shown in the screen
 
 <img src="/assets/beforethreshold.png" alt="data sample before filter" width="500" />
 
+##### Setting a threshold filter value
+
 My code is now adjusted to only set pixel values if the differential is above 80. This leave only very hard edges in the final output.
 
 ~~~
@@ -377,6 +381,7 @@ The output is now shown here after adding a boundary threshold.
 
 <img src="/assets/highPassDone.png" alt="data sample before filter" width="500" />
 
+##### Linking to OOP structure
 
 ## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
