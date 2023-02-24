@@ -64,13 +64,19 @@ class Detect():
 
 
 
-    def myDetect(self):
+    def myDetect(self,targetsList):
         """
         This class is intended to create my own implementation of OpenCV's image matcher and keypoint generator.
         My initial ideas are to use a 'high-pass' filter on the target images to only get B&W data on hard edges.
         This means that any colour variation caused by viewing the target through a webcam can be avoided.
         From this high-pass version, I will take the most significant keypoints by scanning over the image and then using the portions with high variety in pixels. These will be compared to scans across the target webcam frame to find the detected target. 
         """
+        
+        # create highpass of webcam
+        # scan over webcam 
+        # compare each section with details in each keypoint --> make keypoints small and vague, false positive is okay as we set a threshold anyways
+        # if one matches add the match to a tally
+        # return the target object with the highest tally
         
         pass
 
