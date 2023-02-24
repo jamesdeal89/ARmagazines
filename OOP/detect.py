@@ -42,7 +42,7 @@ class Detect():
                 return resultMatches[0], resultMatches[1]
 
     
-    def myHighPass(self,size,img):
+    def myHighPass(self,size,target):
         # size paramter limits how much of the image we filter and use
         # this can improve performance if image is high resolution
         # create a blank mask of empty zero values in size of sample
@@ -60,7 +60,7 @@ class Detect():
 
         # crop the mask to only show the sampled area
         mask = mask[size[0]:size[1],size[0]:size[1]]
-        return mask
+        target.mySetPoints(mask)
 
 
 
@@ -72,8 +72,6 @@ class Detect():
         From this high-pass version, I will take the most significant keypoints by scanning over the image and then using the portions with high variety in pixels. These will be compared to scans across the target webcam frame to find the detected target. 
         """
         
-
-
         pass
 
 

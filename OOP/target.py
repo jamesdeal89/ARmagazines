@@ -11,12 +11,17 @@ class Target(File):
         # Intialize the parent class, File using the filepath Parameter
         super().__init__(filepath)
         self._sourceObj = sourceObj
+        self._myPoints = []
 
     # Method to generate the descriptors and keypoints
     def genPoints(self):
         orb = cv2.ORB_create(nfeatures=1000)
         # Create descriptor and keypoint attributes which can be used for target detection later
         self._keyPoints, self._descriptors = orb.detectAndCompute(self.getLoadedObj(),None)
+
+    def mySetPoints(self,sample):
+        # Using my own implementation of image detection which can be used when in 'performance' mode.
+        self._myPoints.append(sample)
 
     def getSourceObj(self):
         return self._sourceObj
