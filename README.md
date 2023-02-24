@@ -383,6 +383,40 @@ The output is now shown here after adding a boundary threshold.
 
 ##### Linking to OOP structure
 
+In order to link this filter into my plans for my greater project I need to link it to the target object. This is to allow samples to be accessed when detecting and also to allow these keypoints to be linked to a specific magazine. 
+
+The code below is a setter for a new attribute I've added in my target objects initialisation. The '\_myPoints' attribute is an empty list by default which we can append values into to be set as samples to look for when detecting for that respective magazine cover.
+
+~~~
+    def mySetPoints(self,sample):
+        # Using my own implementation of image detection which can be used when in 'performance' mode.
+        self._myPoints.append(sample)
+~~~
+
+Furthermore, my implementation of the high-pass sample generator has been amended to take a target object instead of an image object and instead of returning, it will use the above setter.
+
+~~~    def myHighPass(self,size,target):
+        # size paramter limits how much of the image we filter and use
+        # this can improve performance if image is high resolution
+        # create a blank mask of empty zero values in size of sample
+        mask = np.zeros(shape=(size[1],size[1]))
+        print(mask)
+        # iterate through each position in the empty matrix
+        for i in range(size[0],size[1]):
+            for j in range(size[0],size[1]):
+                # find the overall summed difference between the values in a 9*9 grid around the central current position
+                differential = -1*img[i][j]-1*img[i][j+1]-1*img[i][j+2]-1*img[i+1][j]+8*img[i+1][j+1]-1*img[i+1][j+2]-1*img[i+2][j]-img[i+2][j+1]-1*img[i+2][j+2]
+                
+                # if this overall differences with the surrounding pixels is greater than 80, we accept it as a hard edge and adjust that pixel to be shown equal to how hard the edge is.
+                if differential > 80:
+                    mask[i][j] = differential
+
+        # crop the mask to only show the sampled area
+        mask = mask[size[0]:size[1],size[0]:size[1]]
+        target.mySetPoints(mask)
+
+~~~
+
 ## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
 - OpenCV homography documentation
