@@ -166,6 +166,7 @@ def main():
         else:
             # use the Detect class decect() method to get which object is in the frame (if any)
             detect = Detect(webcam, targets)
+            detect.myDetect()
             result = detect.detect()
         if result is not None:
             successfullMatches, detectedTarget = result

@@ -52,7 +52,7 @@ class Detect():
         for i in range(size[0],size[1]):
             for j in range(size[0],size[1]):
                 # find the overall summed difference between the values in a 9*9 grid around the central current position
-                differential = -1*img[i][j]-1*img[i][j+1]-1*img[i][j+2]-1*img[i+1][j]+8*img[i+1][j+1]-1*img[i+1][j+2]-1*img[i+2][j]-img[i+2][j+1]-1*img[i+2][j+2]
+                differential = -1*target[i][j]-1*target[i][j+1]-1*target[i][j+2]-1*target[i+1][j]+8*target[i+1][j+1]-1*target[i+1][j+2]-1*target[i+2][j]-target[i+2][j+1]-1*target[i+2][j+2]
                 
                 # if this overall differences with the surrounding pixels is greater than 80, we accept it as a hard edge and adjust that pixel to be shown equal to how hard the edge is.
                 if differential > 80:
@@ -60,11 +60,11 @@ class Detect():
 
         # crop the mask to only show the sampled area
         mask = mask[size[0]:size[1],size[0]:size[1]]
-        target.mySetPoints(mask)
+        return mask
 
 
 
-    def myDetect(self,targetsList):
+    def myDetect(self):
         """
         This class is intended to create my own implementation of OpenCV's image matcher and keypoint generator.
         My initial ideas are to use a 'high-pass' filter on the target images to only get B&W data on hard edges.
@@ -73,6 +73,10 @@ class Detect():
         """
         
         # create highpass of webcam
+        webcamHP = self.myHighPass(size=[self.webcam.getFrame().shape[1]-10,self.webcam.getFrame().shape[0]-10],target=self.webcam.getFrame())
+
+        cv2.imshow("HIGHPASS",webcamHP)
+        cv2.waitKey(0)
         # scan over webcam 
         # compare each section with details in each keypoint --> make keypoints small and vague, false positive is okay as we set a threshold anyways
         # if one matches add the match to a tally
@@ -81,10 +85,6 @@ class Detect():
         pass
 
 
-img = cv2.imread('../target.jpg',0)
-cv2.imshow('example',img)
-cv2.waitKey(0)
-detect = Detect(None, None)
-cv2.imshow('result',detect.myHighPass([300,500],img))
-cv2.waitKey(0)
         
+
+

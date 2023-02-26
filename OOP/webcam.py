@@ -40,3 +40,4 @@ class Webcam(File):
     def next(self):
         # Here loadedBool is a True/False of whether the feed is ended
         self._loadedBool, self._frame = self._loadedWeb.read()
+
