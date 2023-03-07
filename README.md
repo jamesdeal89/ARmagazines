@@ -287,6 +287,70 @@ While it could be interesting to pursue making my own implementation of these bi
 - ShaderToy --> Shader software which would allow me to acess GPU computation power to apply a 'shader' to carry out these operators.
 Nonetheless, this experience gave me an infinitely better understanding of how the modules I will end up using in my final project achieve what they do.
 
+#### Higher-level implementation
+As the recursive binary converter was too complex to be calculated at a suitable framerate, I've adjusted the code so that it works faster. This is done by using Python's bitwise operators rather than my own binary converter. This is slightly higher-level and allows Python to do some of the hard work for me. Nonetheless this uses no external libraries which was my main goal. 
+
+~~~
+    def bitAnd(self,img, img2):
+        # perform a bitwise AND between the two images
+        height = img.shape[0]
+        width = img.shape[1]
+        if img.shape != img2.shape:
+            sys.exit("ERROR - images are not the same size")
+        # iterate through each row
+        for column in range(0,height):
+            # iterate through each column
+            for row in range(0,width):
+                # list to hold each pixels, RGB values after operation
+                values = []
+                # iterate and hold each images pixel colour values one by one for each colour
+                for value in img[column, row]:
+                    for value2 in img2[column,row]:
+                        values.append(value&value2)
+                # ammend the pixel values in the respective pixel with the ANDed values
+                img[column,row] = (values[0],values[1],values[2])
+        # return the amended first image which now holds the values after being ANDed with all of image 2
+        return img
+
+
+    def bitOr(self, img, img2):
+        # perform a bitwise OR between the two images
+        height = img.shape[0]
+        width = img.shape[1]
+        if img.shape != img2.shape:
+            sys.exit("ERROR - images are not the same size")
+        # iterate through each row
+        for column in range(0,height):
+            # iterate through each column
+            for row in range(0,width):
+                # list to hold each pixels, RGB values after operation
+                values = []
+                # iterate and hold each images pixel colour values one by one for each colour
+                for value in img[column, row]:
+                    for value2 in img2[column,row]:
+                        # perform OR operation on the bits and add to this pixels values
+                        values.append(value|value2)
+                # ammend the pixel values in the respective pixel with the ORed values
+                img[column,row] = (values[0],values[1],values[2])
+        # return the amended first image which now holds the values after being ORed with all of image 2
+        return img
+
+    def bitNot(self, img):
+        # perfrom a bitwise NOT on an image
+        height = (img.shape[0])
+        width = (img.shape[1])
+        for column in range(0,height):
+            for row in range(0,width):
+                # iterate through every pixel value
+                # create list to store new values for this pixel
+                values = []
+                for value in img[column,row]:
+                    # iterate through every pixel's RGB values, using a loop here as sometimes images have more than 3 values (CMYK)
+                    # use a bitwise NOT on the value
+                    values.append(~value)
+                img[column,row] = (values[0],values[1],values[2])
+~~~
+
 ### Image Detection Implementation
 #### Initial Aproach
 I want to create my own implementation of OpenCV's image matcher and keypoint generator.
