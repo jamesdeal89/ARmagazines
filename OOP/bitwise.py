@@ -33,25 +33,7 @@ class Bitwise():
                 # iterate and hold each images pixel colour values one by one for each colour
                 for value in img[column, row]:
                     for value2 in img2[column,row]:
-                        # use my binary converter to get binary values
-                        value = self.decimalToBinary(value) 
-                        value2 = self.decimalToBinary(value2)
-                        # adjust the length of the values so that both have the same number of bits
-                        if value > value2:
-                            # .zfill(desiredLength) can be used on an str to fill with leading 0's
-                            value2 = int(str(value2).zfill(len(str(value))))
-                        elif value2 > value:
-                            value = int(str(value).zfill(len(str(value2))))
-                        # iterate through each bit in each value
-                        for bit in value:
-                            for bit in value2:
-                                # perform a bitwise AND operation using if conditions
-                                if value == 1 and value2 == 1:
-                                    values.append(1)
-                                else:
-                                    values.append(0)
-                        # perform AND operation on the bits and add to this pixels values
-                        #values.append(value&value2)
+                        values.append(value&value2)
                 # ammend the pixel values in the respective pixel with the ANDed values
                 img[column,row] = (values[0],values[1],values[2])
         # return the amended first image which now holds the values after being ANDed with all of image 2
@@ -73,25 +55,8 @@ class Bitwise():
                 # iterate and hold each images pixel colour values one by one for each colour
                 for value in img[column, row]:
                     for value2 in img2[column,row]:
-                        # use my binary converter to get binary values
-                        value = self.decimalToBinary(value) 
-                        value2 = self.decimalToBinary(value2)
-                        # adjust the length of the values so that both have the same number of bits
-                        if value > value2:
-                            # .zfill(desiredLength) can be used on an str to fill with leading 0's
-                            value2 = int(str(value2).zfill(len(str(value))))
-                        elif value2 > value:
-                            value = int(str(value).zfill(len(str(value2))))
-                        # iterate through each bit in each value
-                        for bit in value:
-                            for bit in value2:
-                                # perform a bitwise AND operation using if conditions
-                                if value == 1 or value2 == 1:
-                                    values.append(1)
-                                else:
-                                    values.append(0)
                         # perform OR operation on the bits and add to this pixels values
-                        # values.append(value|value2)
+                        values.append(value|value2)
                 # ammend the pixel values in the respective pixel with the ORed values
                 img[column,row] = (values[0],values[1],values[2])
         # return the amended first image which now holds the values after being ORed with all of image 2
@@ -108,14 +73,14 @@ class Bitwise():
                 values = []
                 for value in img[column,row]:
                     # iterate through every pixel's RGB values, using a loop here as sometimes images have more than 3 values (CMYK)
-                    # convert to binary using my converter method
-                    value = self.decimalToBinary(value)
                     # use a bitwise NOT on the value
-                    # values.append(~value)
-                    for bit in str(value):
-                        if int(bit) == 0:
-                            values.append(1)
-                        else:
-                            values.append(0)
+                    values.append(~value)
                 img[column,row] = (values[0],values[1],values[2])
         return img
+
+if __name__ == "__main__":
+    bitwise = Bitwise()
+    bitwise.decimalToBinary(4)
+    # due to pass by reference need to pass in an empty list to replace old lst
+    a = bitwise.decimalToBinary(5,[])
+    print(a)

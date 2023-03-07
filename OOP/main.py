@@ -164,9 +164,9 @@ def main():
                 target.resize(w1,h1)
                 target.getSourceObj().next(w1,h1)
         else:
-            # use the Detect class decect() method to get which object is in the frame (if any)
+            # use the Detect class detect() method to get which object is in the frame (if any)
             detect = Detect(webcam, targets)
-            detect.myDetect()
+            #detect.myDetect()
             result = detect.detect()
         if result is not None:
             successfullMatches, detectedTarget = result

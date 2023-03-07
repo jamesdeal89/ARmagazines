@@ -60,3 +60,15 @@ class Project():
         #self._final = bitwise.bitOr(self.warpedSource, self._masked_image2)
         self._final = cv2.bitwise_or(self.warpedSource, self._masked_image2)
         cv2.imshow("Ouput", self._final)
+
+    def myProject(self):
+        bitwise = Bitwise()
+        # create a blank mask of 0s in the dimensions of the webcam frame
+        self._mask2 = np.zeros(self.webFrame.shape, dtype=np.uint8)
+        # create a white mask with a black box where the target was detected
+        cv2.fillConvexPoly(self._mask2, np.int32(self.destinationPoints), (255,255,255))
+        # the following all use my own pure python implementation of openCV's bitwise operations
+        self._mask2 = bitwise.bitNot(self._mask2)
+        self._masked_image2 = bitwise.bitAnd(self.webFrame, self._mask2)
+        self._final = bitwise.bitOr(self.warpedSource, self._masked_image2)
+        cv2.imshow("Ouput", self._final)
