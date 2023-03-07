@@ -17,7 +17,6 @@ class Detect():
         # Intialize the bruteforce matcher which scans entire webcam frame for keypoints of targets
         bruteForce = cv2.BFMatcher()
         # Iterate through each target object
-        print(self.targetsList) 
         Matches = []
         for target in self.targetsList:
             print("CHECK......")
@@ -47,7 +46,6 @@ class Detect():
         # this can improve performance if image is high resolution
         # create a blank mask of empty zero values in size of sample
         mask = np.zeros(shape=(size[1],size[1]))
-        print(mask)
         # iterate through each position in the empty matrix
         for i in range(size[0],size[1]):
             for j in range(size[0],size[1]):
