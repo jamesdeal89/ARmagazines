@@ -166,7 +166,7 @@ def main():
         else:
             # use the Detect class detect() method to get which object is in the frame (if any)
             detect = Detect(webcam, targets)
-            #detect.myDetect()
+            print(detect.myDetect())
             result = detect.detect()
         if result is not None:
             successfullMatches, detectedTarget = result
@@ -178,14 +178,14 @@ def main():
             warpedSource = warp.warp()
             print("SOURCE WARPED")
             project = Project(webcam.getFrame(), warpedSource, destinationPoints)
-            project.project()
+            project.myProject()
             print("PROJECTED ONTO WEBCAM")
             buttonPress = cv2.waitKey(1)
             if buttonPress == 81 or buttonPress == 113:
                 sys.exit()
         else:
             # if there is no detected target, we still display the plain webcam to keep motion smooth
-            cv2.imshow("Ouput",webcam.getFrame())
+            cv2.imshow("Output",webcam.getFrame())
             buttonPress = cv2.waitKey(1)
             if buttonPress == 81 or buttonPress == 113:
                 sys.exit()

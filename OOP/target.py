@@ -22,6 +22,9 @@ class Target(File):
     def mySetPoints(self,sample):
         # Using my own implementation of image detection which can be used when in 'performance' mode.
         self._myPoints.append(sample)
+    
+    def myGetPoints(self):
+        return self._myPoints
 
     def getSourceObj(self):
         return self._sourceObj

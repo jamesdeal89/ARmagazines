@@ -3,7 +3,7 @@ import cv2
 import numpy as np 
 
 class Detect():
-    def __init__(self,webcam, targetsList):
+    def __init__(self,webcam=None, targetsList=None):
         """
         Parameters:
         - webcam: the webcam object.
@@ -46,6 +46,8 @@ class Detect():
         # this can improve performance if image is high resolution
         # create a blank mask of empty zero values in size of sample
         mask = np.zeros(shape=(size[1],size[1]))
+        # change to greyscale
+        target = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
         # iterate through each position in the empty matrix
         for i in range(size[0],size[1]):
             for j in range(size[0],size[1]):
@@ -53,9 +55,8 @@ class Detect():
                 differential = -1*target[i][j]-1*target[i][j+1]-1*target[i][j+2]-1*target[i+1][j]+8*target[i+1][j+1]-1*target[i+1][j+2]-1*target[i+2][j]-target[i+2][j+1]-1*target[i+2][j+2]
                 
                 # if this overall differences with the surrounding pixels is greater than 80, we accept it as a hard edge and adjust that pixel to be shown equal to how hard the edge is.
-                if differential > 80:
+                if differential > 60:
                     mask[i][j] = differential
-
         # crop the mask to only show the sampled area
         mask = mask[size[0]:size[1],size[0]:size[1]]
         return mask
@@ -71,18 +72,29 @@ class Detect():
         """
         
         # create highpass of webcam
-        webcamHP = self.myHighPass(size=[self.webcam.getFrame().shape[1]-10,self.webcam.getFrame().shape[0]-10],target=self.webcam.getFrame())
+        webcamHP = cv2.convertScaleAbs(self.myHighPass(size=[0,self.webcam.getFrame().shape[0]-10],target=self.webcam.getFrame()))
+        self.targetsList[0].mySetPoints(cv2.convertScaleAbs(self.myHighPass(size=[0,100],target=self.targetsList[0].getLoadedObj())))
 
         cv2.imshow("HIGHPASS",webcamHP)
-        cv2.waitKey(0)
-        # scan over webcam 
         # compare each section with details in each keypoint --> make keypoints small and vague, false positive is okay as we set a threshold anyways
         # if one matches add the match to a tally
         # return the target object with the highest tally
-        
-        pass
+
+        result = cv2.matchTemplate(webcamHP, self.targetsList[0].myGetPoints()[0], cv2.TM_CCOEFF_NORMED)
+
+        threshold = 0.8
+        locations = np.where(result >= threshold)
+
+        if len(locations[0]) > 0:
+            return True
+        else:
+            return False
 
 
         
+
+
+
+
 
 
