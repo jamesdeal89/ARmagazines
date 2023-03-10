@@ -40,4 +40,7 @@ class Webcam(File):
     def next(self):
         # Here loadedBool is a True/False of whether the feed is ended
         self._loadedBool, self._frame = self._loadedWeb.read()
+        dimensions = self._frame.shape
+        # Resize the image to increase framerate
+        self._frame = cv2.resize(self._frame, (int(dimensions[1]/2), int(dimensions[0]/2)))
 
