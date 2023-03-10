@@ -1,6 +1,8 @@
 """This is file for the target class which inherits from the file class"""
 import cv2
 from file import File
+from detect import Detect
+
 class Target(File):
     """
     This is the Target class. It inherits from the File class. 
@@ -19,9 +21,17 @@ class Target(File):
         # Create descriptor and keypoint attributes which can be used for target detection later
         self._keyPoints, self._descriptors = orb.detectAndCompute(self.getLoadedObj(),None)
 
+    def myGetPoints(self):
+        return self._myPoints
+
     def mySetPoints(self,sample):
         # Using my own implementation of image detection which can be used when in 'performance' mode.
         self._myPoints.append(sample)
+    
+    def myGenPoints(self):
+        # generates keypoints using my own implementation in Detect class
+        detect = Detect()
+        self._myPoints.append(cv2.convertScaleAbs(detect.myHighPass(size=[0,100],target=self.getLoadedObj())))
     
     def myGetPoints(self):
         return self._myPoints

@@ -42,5 +42,5 @@ class Webcam(File):
         self._loadedBool, self._frame = self._loadedWeb.read()
         dimensions = self._frame.shape
         # Resize the image to increase framerate
-        self._frame = cv2.resize(self._frame, (int(dimensions[1]/2), int(dimensions[0]/2)))
+        self._frame = cv2.resize(self._frame, (int(dimensions[1]*0.7), int(dimensions[0]*0.7)))
 

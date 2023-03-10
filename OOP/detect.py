@@ -1,5 +1,6 @@
 """This is the file for the detection class"""
 import cv2
+import copy
 import numpy as np 
 
 class Detect():
@@ -45,9 +46,11 @@ class Detect():
         # size paramter limits how much of the image we filter and use
         # this can improve performance if image is high resolution
         # create a blank mask of empty zero values in size of sample
+        """
         mask = np.zeros(shape=(size[1],size[1]))
+        targetCOPY = copy.deepcopy(target)
         # change to greyscale
-        target = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
+        target = cv2.cvtColor(targetCOPY, cv2.COLOR_BGR2GRAY)
         # iterate through each position in the empty matrix
         for i in range(size[0],size[1]):
             for j in range(size[0],size[1]):
@@ -60,7 +63,24 @@ class Detect():
         # crop the mask to only show the sampled area
         mask = mask[size[0]:size[1],size[0]:size[1]]
         return mask
-
+        """
+        # create a blank mask of empty zero values in size of sample
+        mask = np.zeros(shape=(size[1]+10,size[1]+10), dtype=np.float32)
+        # create a deep copy of the target so that the original image is not affected, and change to grayscale
+        target_gray = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY).astype(np.float32)
+        # calculate the kernel for the 9x9 grid
+        kernel = np.array([
+                        [-1, -1, -1],
+                        [-1,  8, -1],
+                        [-1, -1, -1],], dtype=np.float32)
+        # use OpenCV's filter2D function to convolve the kernel with the image to calculate the overall summed difference
+        differential = cv2.filter2D(target_gray, -1, kernel, borderType=cv2.BORDER_CONSTANT)
+        differential = differential[0:size[1]+10,0:size[1]+10]
+        # if the overall difference with the surrounding pixels is greater than 60, adjust that pixel to be shown equal to how hard the edge is
+        mask[differential > 50] = differential[differential > 50]
+        # crop the mask to only show the sampled area
+        mask = mask[size[0]:size[1],size[0]:size[1]]
+        return mask
 
 
     def myDetect(self):
@@ -71,27 +91,25 @@ class Detect():
         From this high-pass version, I will take the most significant keypoints by scanning over the image and then using the portions with high variety in pixels. These will be compared to scans across the target webcam frame to find the detected target. 
         """
         
-        # create highpass of webcam
+        # create highpass of webcam --> convertScaleAbs makes it uniform absolute values for detection
         webcamHP = cv2.convertScaleAbs(self.myHighPass(size=[0,self.webcam.getFrame().shape[0]-10],target=self.webcam.getFrame()))
-        self.targetsList[0].mySetPoints(cv2.convertScaleAbs(self.myHighPass(size=[0,100],target=self.targetsList[0].getLoadedObj())))
 
         cv2.imshow("HIGHPASS",webcamHP)
         # compare each section with details in each keypoint --> make keypoints small and vague, false positive is okay as we set a threshold anyways
         # if one matches add the match to a tally
         # return the target object with the highest tally
+        for target in self.targetsList:
+            for sample in target.myGetPoints():
+                result = cv2.matchTemplate(webcamHP, sample, cv2.TM_CCOEFF_NORMED)
 
-        result = cv2.matchTemplate(webcamHP, self.targetsList[0].myGetPoints()[0], cv2.TM_CCOEFF_NORMED)
+                threshold = 0.5
+                locations = np.where(result >= threshold)
 
-        threshold = 0.8
-        locations = np.where(result >= threshold)
-
-        if len(locations[0]) > 0:
-            return True
-        else:
-            return False
+                if len(locations[0]) > 0:
+                    return target
 
 
-        
+
 
 
 

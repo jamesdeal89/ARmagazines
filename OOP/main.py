@@ -109,7 +109,7 @@ def loadPairs():
 
 def main():
     # TODO: Create a 'performance' mode the user can select in GUI -> only load or check for first detected source/target
-    # TODO: Create own image recognition class
+    # TODO: Create own image recognition class <- almost done
     while True:
         loadOrGen = GUI()
         #loadOrGen = input("Do you want to load, generate, or update a target-source pair file? (L,G, or U)").strip().lower()
@@ -138,6 +138,8 @@ def main():
     webcam.load()
     targets[0].load()
     targets[0].getSourceObj().load()
+    # resize to be 1/4 size to increase framerate
+    targets[0].resize(int(targets[0].getLoadedObj().shape[1]*0.7),int(targets[0].getLoadedObj().shape[0]*0.7))
     h1,w1,c1 = targets[0].getLoadedObj().shape
     for target in targets[1:]:
         target.getSourceObj().load()
