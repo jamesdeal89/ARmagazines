@@ -480,6 +480,68 @@ Furthermore, my implementation of the high-pass sample generator has been amende
         target.mySetPoints(mask)
 
 ~~~
+##### Performance Improvements Using OpenCV 2DFilter
+
+To speed up the application of my convolution I've adjusted my code to now use OpenCV's 2DFilter method which takes a convolution matrix I defined and applies it to an image. I then further speed up my code by using boolean indexing to filter out any values which do not meet my highpass threshold.
+
+~~~
+        # create a blank mask of empty zero values in size of sample
+        mask = np.zeros(shape=(size[1]+10,size[1]+10), dtype=np.float32)
+        # create a deep copy of the target so that the original image is not affected, and change to grayscale
+        target_gray = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY).astype(np.float32)
+        # calculate the kernel for the 3x3 grid
+        kernel = np.array([
+                        [-1, -1, -1],
+                        [-1,  8, -1],
+                        [-1, -1, -1],], dtype=np.float32)
+        # use OpenCV's filter2D function to convolve the kernel with the image to calculate the overall summed difference
+        differential = cv2.filter2D(target_gray, -1, kernel, borderType=cv2.BORDER_CONSTANT)
+        differential = differential[0:size[1]+10,0:size[1]+10]
+        # if the overall difference with the surrounding pixels is greater than 60, adjust that pixel to be shown equal to how hard the edge is
+        mask[differential > 50] = differential[differential > 50]
+        # crop the mask to only show the sampled area
+        mask = mask[size[0]:size[1],size[0]:size[1]]
+~~~
+
+I've also further optimised the framerate of my program by having webcam resolutions and target resolutions reduced (currently to 70% their original size) using cv2.resize()
+
+~~~
+    targets[0].resize(int(targets[0].getLoadedObj().shape[1]*0.7),int(targets[0].getLoadedObj().shape[0]*0.7))
+~~~
+##### Smart Sample Selection
+
+To improve the quality of samples I generate I made the target method myGenPoints() use a system which parses diagonally across the target and only takes samples with a combined pixel value above 150,000, otherwise it takes the next best previous sample.
+
+~~~
+    def myGenPoints(self):
+        # generates keypoints using my own implementation in Detect class
+        # this also ensures that the samples generated have enough features within them using .sum()
+        detect = Detect()
+        sum_of_pixels = 0
+        # this holds previous samples, if we fail to get a good match, we take this next best choice
+        previous = {}
+        position = 100 
+        h,w,c = self.getLoadedObj().shape
+        while sum_of_pixels < 150000:
+            # prevent going over edge of image
+            if position + 99 > w:
+                # if we go over edge, take the best previous sample
+                key = max(previous.keys())
+                self._myPoints[0] = previous[key]
+                break
+            self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[position,100+position],target=self.getLoadedObj()))
+            sum_of_pixels = np.sum(self._myPoints[0])
+            cv2.imshow("parsing",self._myPoints[0])
+            cv2.waitKey(0)
+            # save the current sample incase we overrun
+            previous[sum_of_pixels] = copy.deepcopy(self._myPoints[0])
+            # move our parse
+            position += 100
+        cv2.imshow("sample gen", self._myPoints[0])
+        cv2.waitKey(0)
+~~~
+
+
 
 ## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html

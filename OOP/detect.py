@@ -21,9 +21,6 @@ class Detect():
         Matches = []
         for target in self.targetsList:
             print("CHECK......")
-            # load and create keypoints+descriptors for each target object using it's methods
-            # TODO: can be made more efficient by generating points only once in main()
-            target.genPoints()
             self.webcam.genPoints()
             # Scan images to compare keypoints based on descriptors attributes
             matches = bruteForce.knnMatch(target.getDescriptors(),self.webcam.getDescriptors(),k=2)
@@ -38,8 +35,8 @@ class Detect():
         for resultMatches in Matches:
             if len(resultMatches[0]) > 20:
                 print("MATCHED")
-                # If so, break the for loop and return the list of matches and the matched target object from the Detect method
-                return resultMatches[0], resultMatches[1]
+                # If so, break the for loop and return the list of matches from the Detect method
+                return resultMatches[0],resultMatches[1]
 
     
     def myHighPass(self,size,target):
@@ -68,7 +65,7 @@ class Detect():
         mask = np.zeros(shape=(size[1]+10,size[1]+10), dtype=np.float32)
         # create a deep copy of the target so that the original image is not affected, and change to grayscale
         target_gray = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY).astype(np.float32)
-        # calculate the kernel for the 9x9 grid
+        # calculate the kernel for the 3x3 grid
         kernel = np.array([
                         [-1, -1, -1],
                         [-1,  8, -1],
@@ -78,6 +75,8 @@ class Detect():
         differential = differential[0:size[1]+10,0:size[1]+10]
         # if the overall difference with the surrounding pixels is greater than 60, adjust that pixel to be shown equal to how hard the edge is
         mask[differential > 50] = differential[differential > 50]
+        # any values above 255 will be 'clipped' to make validating quality of samples better (see targets.myGenPoints)
+        mask = np.clip(mask, 0, 255)
         # crop the mask to only show the sampled area
         mask = mask[size[0]:size[1],size[0]:size[1]]
         return mask
@@ -96,16 +95,18 @@ class Detect():
 
         cv2.imshow("HIGHPASS",webcamHP)
         # compare each section with details in each keypoint --> make keypoints small and vague, false positive is okay as we set a threshold anyways
-        # if one matches add the match to a tally
-        # return the target object with the highest tally
         for target in self.targetsList:
             for sample in target.myGetPoints():
+                # match the smaller sample we created to the template
                 result = cv2.matchTemplate(webcamHP, sample, cv2.TM_CCOEFF_NORMED)
 
                 threshold = 0.5
+                # using a thershold accuracy we check where the match is similar enough
                 locations = np.where(result >= threshold)
 
+                # if we have more than 1 good match we return the detected target
                 if len(locations[0]) > 0:
+                    print("MY MATCHED")
                     return target
 
 

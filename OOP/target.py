@@ -2,6 +2,8 @@
 import cv2
 from file import File
 from detect import Detect
+import numpy as np
+import copy
 
 class Target(File):
     """
@@ -13,7 +15,7 @@ class Target(File):
         # Intialize the parent class, File using the filepath Parameter
         super().__init__(filepath)
         self._sourceObj = sourceObj
-        self._myPoints = []
+        self._myPoints = [None]
 
     # Method to generate the descriptors and keypoints
     def genPoints(self):
@@ -30,8 +32,30 @@ class Target(File):
     
     def myGenPoints(self):
         # generates keypoints using my own implementation in Detect class
+        # this also ensures that the samples generated have enough features within them using .sum()
         detect = Detect()
-        self._myPoints.append(cv2.convertScaleAbs(detect.myHighPass(size=[0,100],target=self.getLoadedObj())))
+        sum_of_pixels = 0
+        # this holds previous samples, if we fail to get a good match, we take this next best choice
+        previous = {}
+        position = 100 
+        h,w,c = self.getLoadedObj().shape
+        while sum_of_pixels < 150000:
+            # prevent going over edge of image
+            if position + 99 > w:
+                # if we go over edge, take the best previous sample
+                key = max(previous.keys())
+                self._myPoints[0] = previous[key]
+                break
+            self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[position,100+position],target=self.getLoadedObj()))
+            sum_of_pixels = np.sum(self._myPoints[0])
+            cv2.imshow("parsing",self._myPoints[0])
+            cv2.waitKey(0)
+            # save the current sample incase we overrun
+            previous[sum_of_pixels] = copy.deepcopy(self._myPoints[0])
+            # move our parse
+            position += 100
+        cv2.imshow("sample gen", self._myPoints[0])
+        cv2.waitKey(0)
     
     def myGetPoints(self):
         return self._myPoints

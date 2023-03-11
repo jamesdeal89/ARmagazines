@@ -37,6 +37,7 @@ class Bitwise():
                 # ammend the pixel values in the respective pixel with the ANDed values
                 img[column,row] = (values[0],values[1],values[2])
         # return the amended first image which now holds the values after being ANDed with all of image 2
+        cv2.imshow("AND",img)
         return img
 
 
@@ -60,6 +61,7 @@ class Bitwise():
                 # ammend the pixel values in the respective pixel with the ORed values
                 img[column,row] = (values[0],values[1],values[2])
         # return the amended first image which now holds the values after being ORed with all of image 2
+        cv2.imshow("OR",img)
         return img
 
     def bitNot(self, img):
@@ -76,6 +78,7 @@ class Bitwise():
                     # use a bitwise NOT on the value
                     values.append(~value)
                 img[column,row] = (values[0],values[1],values[2])
+        cv2.imshow("NOT",img)
         return img
 
 if __name__ == "__main__":

@@ -138,13 +138,18 @@ def main():
     webcam.load()
     targets[0].load()
     targets[0].getSourceObj().load()
-    # resize to be 1/4 size to increase framerate
+    # resize to be 0.7x size to increase framerate
     targets[0].resize(int(targets[0].getLoadedObj().shape[1]*0.7),int(targets[0].getLoadedObj().shape[0]*0.7))
     h1,w1,c1 = targets[0].getLoadedObj().shape
+    targets[0].myGenPoints()
+    targets[0].genPoints()
     for target in targets[1:]:
         target.getSourceObj().load()
         target.load()
         target.resize(w1,h1)
+        # this generates the samples for target detection. This has recently be changed to be outside the loop to increase framerate
+        target.myGenPoints()
+        target.genPoints()
         # use the Detect class decect() method to get which object is in the frame (if any)
     # now we can create a loop based on each frame of the webcam we load
     while True:
@@ -157,21 +162,25 @@ def main():
                 target.getSourceObj().next(w1,h1)
         except cv2.error:
             # if we fail to load the next frame we should loop the source videos by reloading them now
-            targets[0].load()
             targets[0].getSourceObj().load()
-            h1,w1,c1 = targets[0].getLoadedObj().shape
+            targets[0].getSourceObj().next(w1,h1)
             for target in targets[1:]:
                 target.getSourceObj().load()
-                target.load()
-                target.resize(w1,h1)
                 target.getSourceObj().next(w1,h1)
         else:
             # use the Detect class detect() method to get which object is in the frame (if any)
             detect = Detect(webcam, targets)
-            print(detect.myDetect())
+            # this uses a lower level implementation which gets just which target is in the webcam
+            detectedTarget = detect.myDetect()
+            # this uses a higher level OpenCV implementation which also gets matches for a homography calculation
             result = detect.detect()
-        if result is not None:
-            successfullMatches, detectedTarget = result
+            try:
+                successfullMatches,detectedTargetCheck = result
+            except:
+                successfullMatches = None
+                detectedTargetCheck = None
+        # if there is a targetted magazine detected
+        if successfullMatches is not None and detectedTarget is not None:
             border = Border(detectedTarget, webcam, successfullMatches)
             destinationPoints, homographyMatrix = border.border()
             print("BORDER CALCULATED")
@@ -180,7 +189,7 @@ def main():
             warpedSource = warp.warp()
             print("SOURCE WARPED")
             project = Project(webcam.getFrame(), warpedSource, destinationPoints)
-            project.myProject()
+            project.project()
             print("PROJECTED ONTO WEBCAM")
             buttonPress = cv2.waitKey(1)
             if buttonPress == 81 or buttonPress == 113:
