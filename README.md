@@ -543,7 +543,7 @@ To improve the quality of samples I generate I made the target method myGenPoint
 
 A visualisation of this process can be seen below:
 
-<img src="assets/smartSample.png">
+<img src="assets/smartSample.png" width=500>
 
 
 
