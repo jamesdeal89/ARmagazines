@@ -1,6 +1,7 @@
 # Computer Science NEA - AR Video Magazine Covers
 ## Requirements:
  - Python 3.XX
+ - Numpy
  - OpenCV (pip3 install opencv-python)
  - PySimpleGUI (pip3 install PySimpleGUI)
 
@@ -32,22 +33,22 @@ INSERT ANSWER HERE
 
 ### Already existing AR products:
 #### Example 1: IKEA Place
-<img src="/assets/ikea.webp" alt="IKEA Place example image" width="500"/>
+<img src="/assets/ikea.jpg" alt="IKEA Place example image" width="500"/>
 Ikea Place is an app provided by the Swedish furniture company. It allows users who are browsing for furniture to place it inside of their home using their smartphone's camera. Allowing them to compare the size and aesthetic of the items. It also enourages users to create a more personal connection with the item being placed into their home via AR; making the app an effective sales technique. This relates to my project as it uses a projection in AR through a phone camera/webcam. It adjusts based on the movement of the camera. However my project does differ in some ways. Firstly, I would also have to adjust for when the camera is steady but the target (magazine) is moving. In IKEA Place, it's unlikely the target (floor or desk) would move instead of the camera. I also am using a different source. My AR is using a video feed whereas this uses a 3D model. The applications of my product are also different, being made for art and entertainment rather than commercial sales. 
 <hr/>
 
 #### Example 2: Snapchat filters
-<img src="/assets/snap.webp" alt="Snapchat filter example image" width="500"/>
+<img src="/assets/snap.png" alt="Snapchat filter example image" width="500"/>
 Snapchat filters are much more different to my project than Ikea Place. These AR filters track a users face to project things like masks, beards, tatoos and more onto them. It can be both 2D or 3D projections and they can respond to the users (for example some have physics implementations like to make wobbly noses when a persons head moves). I think the purpose of this product is more towards entertainment than Ikea Place, but much more so than my project. Snapchat filters are purely entertainment and novelty whereas AR magazine covers would be also informational. And of course theres the obvious difference in mine being non-3D model based.
 <hr/>
 
 #### Example 3: Pokemon GO
-<img src="/assets/poke.webp" alt="Pokemon GO example image" width="500"/>
+<img src="/assets/poke.jpg" alt="Pokemon GO example image" width="500"/>
 Pokemon Go is a 2016 mobile app which uses the iconic characters from Pokemon to make a location based video game. Users would have to physically move outside and the phone's GPS would register their location and move their character. Based on this they would encounter 'Pokemon' which they could try to 'capture'; capturing them is where AR and the link to my project arises as it would use the phones camera to AR project a 3D pokemon model. The user can also drag their finger across the screen to 'throw' a ball to catch them. My project doesn't involve this level of interactivity with the AR projection which could be something I need to consider implementing. 
 <hr/>
 
 #### Example 4: Google Maps Live View
-<img src="/assets/liveView.webp" alt="Google Live View example image" width=500>
+<img src="/assets/liveView.jpg" alt="Google Live View example image" width=500>
 Google in the past few years have rolled out a new feature in Google Maps on mobile. It's called 'Live View' and is used to allow you to see floating directional arrows and prompts for where to go if you're unsure in built-up areas with many alleys and possible routes. This stays tracked in position no matter where you point the smartphone as shown in the example image above. When first hearing of this idea it can feel somewhat gimmicky as holding up your phone in front of your face as a viewfinder for naviagtion could be distracting. However Google has developed the feature to use Google Street View data, another project where 360 cameras document city streets into a global database. Therefore when you use the AR Live View feature it not only creates these projections based on GPS, but also calibrates your location based on the camera feed data; making it useful even as purely a calibration tool. This is especially useful in built-up urban areas with poor signal.
 
 ### Software To Aid Development:
