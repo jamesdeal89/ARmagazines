@@ -93,21 +93,19 @@ class Detect():
         # create highpass of webcam --> convertScaleAbs makes it uniform absolute values for detection
         webcamHP = cv2.convertScaleAbs(self.myHighPass(size=[0,self.webcam.getFrame().shape[0]-10],target=self.webcam.getFrame()))
 
-        cv2.imshow("HIGHPASS",webcamHP)
         # compare each section with details in each keypoint --> make keypoints small and vague, false positive is okay as we set a threshold anyways
         for target in self.targetsList:
-            for sample in target.myGetPoints():
-                # match the smaller sample we created to the template
-                result = cv2.matchTemplate(webcamHP, sample, cv2.TM_CCOEFF_NORMED)
+            # match the smaller sample we created to the template
+            result = cv2.matchTemplate(webcamHP, target.myGetPoints()[0], cv2.TM_CCOEFF_NORMED)
 
-                threshold = 0.5
-                # using a thershold accuracy we check where the match is similar enough
-                locations = np.where(result >= threshold)
+            threshold = 0.5
+            # using a thershold accuracy we check where the match is similar enough
+            locations = np.where(result >= threshold)
 
-                # if we have more than 1 good match we return the detected target
-                if len(locations[0]) > 0:
-                    print("MY MATCHED")
-                    return target
+            # if we have a good match after filtering we return the detected target
+            if len(locations[0]) > 0:
+                print("MY MATCHED")
+                return target
 
 
 

@@ -28,7 +28,11 @@ from search import Search
 
 def GUIgen():
     """The second GUI to get the target and source file locations"""
-    event, values = sg.Window('Provide the files', [[sg.Text("This will pop-up continously until 'finish' button is pressed")],[sg.Text('File for target magazine cover')], [sg.Input(), sg.FileBrowse()],[sg.Text('File for source video to be projected')], [sg.Input(), sg.FileBrowse()], [sg.OK(), sg.Button('Finish')] ]).read(close=True)
+    event, values = sg.Window('Provide the files', [[sg.Text("This will pop-up continously until 'finish' button is pressed")],
+                                                    [sg.Text('File for target magazine cover')], 
+                                                    [sg.Input(), sg.FileBrowse()],[sg.Text('File for source video to be projected')], 
+                                                    [sg.Input(), sg.FileBrowse()], 
+                                                    [sg.OK(), sg.Button('Finish')] ]).read(close=True)
     if event == 'Finish':
         return None, None
     else:
@@ -40,6 +44,8 @@ def GUI():
     sg.theme('DarkAmber') 
     # sets the layout of the GUI
     layout = [  [sg.Text('For the AR to work, a savefile of source videos and target magazine cover images needs to be loaded.')],
+                [sg.Text('Enter filename (ending in .csv):')],
+                [sg.Input()],
                 [sg.Text('How to continue?:')],
                 [sg.Button('Load'), sg.Button('Generate'), sg.Button("Update") ]  ]
     # makes a window
@@ -50,18 +56,21 @@ def GUI():
         if event == sg.WIN_CLOSED: 
             break
         elif event == 'Load':
-            return "l"
+            window.close()
+            return "l",values[0]
         elif event == 'Generate':
-            return "g"
+            window.close()
+            return "g",values[0]
         elif event == 'Update':
-            return "u"
+            window.close()
+            return "u",values[0]
     # close the window if the user breaks the event check loop
     window.close()
 
-def generateCSV(pairings, createOrUpdate):
+def generateCSV(pairings, createOrUpdate,fileName):
     # this will use file I/O and the csv library to take the pairing dictionary list and either write or append to 
     # a pairs.csv file.
-    with open("pairs.csv",createOrUpdate) as file:
+    with open(fileName,createOrUpdate) as file:
         # use the csv library's dictionary writer to make the .csv file's heading (if creating) and for later writing each dict
         dictwriter = csv.DictWriter(file, fieldnames=pairings[0].keys())
         if createOrUpdate == "w":
@@ -69,15 +78,16 @@ def generateCSV(pairings, createOrUpdate):
         # iterate through the pairs list to get each dictionary 
         for pair in pairings:
             dictwriter.writerow(pair)
-        return loadPairs()
+    return loadPairs(fileName)
 
-def generatePairs(createOrUpdate):
+def generatePairs(createOrUpdate, fileName):
     # create a csv file of the target and source pairs if one does not exist
     # allow user to keep entering target and source pair filenames with .mp4 and .jpeg images until ctrl+D
     # verify input using regex
     targetSource = []
+    userNotDone = True
+    pairing = {}
     while True:
-        pairing = {}
         fileTarget, fileSource = GUIgen()
         if fileTarget == None:
             break
@@ -93,10 +103,10 @@ def generatePairs(createOrUpdate):
         else:
             sg.popup('ERROR', 'File extension must be .jpeg/.jpg for the target and .mp4 for the source')
     # once loop is broken we call the file generator function
-    return generateCSV(targetSource,createOrUpdate)
+    return generateCSV(targetSource,createOrUpdate,fileName)
 
-def loadPairs():
-    with open("pairs.csv", "r") as file:
+def loadPairs(fileName):
+    with open(fileName, "r") as file:
         reader = csv.DictReader(file)
         targets = []
         sources = []
@@ -111,12 +121,16 @@ def main():
     # TODO: Create a 'performance' mode the user can select in GUI -> only load or check for first detected source/target
     # TODO: Create own image recognition class <- almost done
     while True:
-        loadOrGen = GUI()
-        #loadOrGen = input("Do you want to load, generate, or update a target-source pair file? (L,G, or U)").strip().lower()
-        if loadOrGen == "l":
+        loadOrGen, fileName = GUI()
+        name, ext = os.path.splitext(fileName)
+        correctInput = True
+        if ext != ".csv":
+            sg.popup('error','File extension must be .csv')
+            correctInput = False
+        if loadOrGen == "l" and correctInput == True:
             # create an instance of the search class ass set the target as the pairs file and the files to search as the current working directory
             path = os.getcwd()
-            search = Search("pairs.csv", os.listdir(path))
+            search = Search(fileName, os.listdir(path))
             search.sort()
             if search.search():
                 # get the tuple of loaded target cv2 objects and loaded source cv2 objects
@@ -124,13 +138,13 @@ def main():
                 break
             else:
                 sys.exit("ERROR - pairs.csv file not found. please generate first.")
-        elif loadOrGen == "g":
+        elif loadOrGen == "g" and correctInput == True:
             # call the generate function and pass in "w" to create or overwrite a pairs.csv file
-            targets = generatePairs("w")
+            targets = generatePairs("w",fileName)
             break
-        elif loadOrGen == "u":
+        elif loadOrGen == "u" and correctInput == True:
             # using the same generate function except pass in "a" to append to an already exisiting pairs.csv file
-            targets = generatePairs("a")
+            targets = generatePairs("a",fileName)
             break
     # now that we have the data for every target and source intialized in a dictionary we can begin using the class methods to create the ouput
     # first we intialize the webcam
@@ -180,6 +194,10 @@ def main():
                 successfullMatches = None
                 detectedTargetCheck = None
         # if there is a targetted magazine detected
+        if successfullMatches is None:
+            print("successfullMatches is None")
+        if detectedTarget is None:
+            print("target is None")
         if successfullMatches is not None and detectedTarget is not None:
             border = Border(detectedTarget, webcam, successfullMatches)
             destinationPoints, homographyMatrix = border.border()
@@ -189,7 +207,7 @@ def main():
             warpedSource = warp.warp()
             print("SOURCE WARPED")
             project = Project(webcam.getFrame(), warpedSource, destinationPoints)
-            project.project()
+            project.myProject()
             print("PROJECTED ONTO WEBCAM")
             buttonPress = cv2.waitKey(1)
             if buttonPress == 81 or buttonPress == 113:

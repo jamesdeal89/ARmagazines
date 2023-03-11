@@ -48,14 +48,10 @@ class Target(File):
                 break
             self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[position,100+position],target=self.getLoadedObj()))
             sum_of_pixels = np.sum(self._myPoints[0])
-            cv2.imshow("parsing",self._myPoints[0])
-            cv2.waitKey(0)
             # save the current sample incase we overrun
             previous[sum_of_pixels] = copy.deepcopy(self._myPoints[0])
             # move our parse
             position += 100
-        cv2.imshow("sample gen", self._myPoints[0])
-        cv2.waitKey(0)
     
     def myGetPoints(self):
         return self._myPoints
