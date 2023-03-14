@@ -86,6 +86,9 @@ Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
 ### GUI Diagrams
 <img src="assets/UI.jpg" alt="image of several GUI diagrams" width="700">
 
+### State Transistion Diagram
+<img src="assets/stateDiagram.jpg" alt="image of state transisition diagram" width="700">
+
 TODO: Structure Diagram
 TODO: State transisition diagram
 TODO: UI diagrams
