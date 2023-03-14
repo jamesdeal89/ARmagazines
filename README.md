@@ -84,6 +84,7 @@ Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
 
 Below is a UML diagram to demonstrate how I plan to structure my program: 
 <img src="assets/UML.jpg" alt="image of a UML class diagram" width="700">
+
 I would like to highlight some areas of this:
 
 Firstly, the Target and Webcam classes inherit from the File class. This is as both of these need to use the filepath attribute and the load()/getLoadedObj() methods. However they cannot be the same object as Target only needs to be for images, whereas Webcam needs additional methods like next() and getFrame() to iterate through the frames.
