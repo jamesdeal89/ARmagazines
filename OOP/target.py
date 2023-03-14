@@ -23,9 +23,6 @@ class Target(File):
         # Create descriptor and keypoint attributes which can be used for target detection later
         self._keyPoints, self._descriptors = orb.detectAndCompute(self.getLoadedObj(),None)
 
-    def myGetPoints(self):
-        return self._myPoints
-
     def mySetPoints(self,sample):
         # Using my own implementation of image detection which can be used when in 'performance' mode.
         self._myPoints.append(sample)

@@ -79,6 +79,15 @@ Source: https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
 Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
 
 ## Documented Design:
+
+### UML Class Diagram
+<img src="assets/UML.jpg" alt="image of a UML class diagram" width="700">
+
+TODO: Structure Diagram
+TODO: State transisition diagram
+TODO: UI diagrams
+TODO: Dataflow diagrams
+
 ### Prototype Proof-Of-Concept:
 #### Detecting a target magazine
 <img src="/assets/keypoints.png" alt="Keypoint markers drawn using OpenCV" width="500"/>
@@ -352,6 +361,10 @@ As the recursive binary converter was too complex to be calculated at a suitable
                 img[column,row] = (values[0],values[1],values[2])
 ~~~
 
+#### Fixing B&W Error
+
+When projecting an image using this bitwise class, it makes the final output black and white. I debugged my code and found the error. Mainly this was due to performing an operation using a mask with only one value will make other colour channels be removed. Therefore I adjusted my code to account for more colour channels individually. A snipped of this can be seen below.
+
 ### Image Detection Implementation
 #### Initial Aproach
 I want to create my own implementation of OpenCV's image matcher and keypoint generator.
@@ -509,7 +522,7 @@ I've also further optimised the framerate of my program by having webcam resolut
 ~~~
     targets[0].resize(int(targets[0].getLoadedObj().shape[1]*0.7),int(targets[0].getLoadedObj().shape[0]*0.7))
 ~~~
-##### Smart Sample Selection
+#### Smart Sample Selection
 
 To improve the quality of samples I generate I made the target method myGenPoints() use a system which parses diagonally across the target and only takes samples with a combined pixel value above 150,000, otherwise it takes the next best previous sample.
 

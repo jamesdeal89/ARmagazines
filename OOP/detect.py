@@ -36,7 +36,7 @@ class Detect():
             if len(resultMatches[0]) > 20:
                 print("MATCHED")
                 # If so, break the for loop and return the list of matches from the Detect method
-                return resultMatches[0],resultMatches[1]
+                return resultMatches[0], resultMatches[1]
 
     
     def myHighPass(self,size,target):
@@ -98,7 +98,7 @@ class Detect():
             # match the smaller sample we created to the template
             result = cv2.matchTemplate(webcamHP, target.myGetPoints()[0], cv2.TM_CCOEFF_NORMED)
 
-            threshold = 0.5
+            threshold = 0.2
             # using a thershold accuracy we check where the match is similar enough
             locations = np.where(result >= threshold)
 

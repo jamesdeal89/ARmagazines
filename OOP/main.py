@@ -134,7 +134,7 @@ def main():
             search.sort()
             if search.search():
                 # get the tuple of loaded target cv2 objects and loaded source cv2 objects
-                targets = loadPairs()
+                targets = loadPairs(fileName)
                 break
             else:
                 sys.exit("ERROR - pairs.csv file not found. please generate first.")
@@ -188,30 +188,24 @@ def main():
             detectedTarget = detect.myDetect()
             # this uses a higher level OpenCV implementation which also gets matches for a homography calculation
             result = detect.detect()
-            try:
-                successfullMatches,detectedTargetCheck = result
-            except:
-                successfullMatches = None
-                detectedTargetCheck = None
         # if there is a targetted magazine detected
-        if successfullMatches is None:
-            print("successfullMatches is None")
-        if detectedTarget is None:
-            print("target is None")
-        if successfullMatches is not None and detectedTarget is not None:
-            border = Border(detectedTarget, webcam, successfullMatches)
-            destinationPoints, homographyMatrix = border.border()
-            print("BORDER CALCULATED")
-            h,w,c = webcam.getFrame().shape
-            warp = Warp(target.getSourceObj().getFrame(), homographyMatrix, [w,h])
-            warpedSource = warp.warp()
-            print("SOURCE WARPED")
-            project = Project(webcam.getFrame(), warpedSource, destinationPoints)
-            project.myProject()
-            print("PROJECTED ONTO WEBCAM")
-            buttonPress = cv2.waitKey(1)
-            if buttonPress == 81 or buttonPress == 113:
-                sys.exit()
+        if detectedTarget is not None and result is not None:
+            # ensure both my detect and OpenCV's detect are in agreement
+            successfullMatches, detectedTargetCheck = result
+            if detectedTarget == detectedTargetCheck:
+                border = Border(detectedTarget, webcam, successfullMatches)
+                destinationPoints, homographyMatrix = border.border()
+                print("BORDER CALCULATED")
+                h,w,c = webcam.getFrame().shape
+                warp = Warp(target.getSourceObj().getFrame(), homographyMatrix, [w,h])
+                warpedSource = warp.warp()
+                print("SOURCE WARPED")
+                project = Project(webcam.getFrame(), warpedSource, destinationPoints)
+                project.myProject()
+                print("PROJECTED ONTO WEBCAM")
+                buttonPress = cv2.waitKey(1)
+                if buttonPress == 81 or buttonPress == 113:
+                    sys.exit()
         else:
             # if there is no detected target, we still display the plain webcam to keep motion smooth
             cv2.imshow("Output",webcam.getFrame())

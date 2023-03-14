@@ -1,4 +1,6 @@
 """This class is for the bitwise operations which have to be performed on the webcam and source video to create a projection effect."""
+import cv2
+
 class Bitwise():
     def __init__(self):
         pass
