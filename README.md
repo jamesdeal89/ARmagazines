@@ -83,6 +83,7 @@ Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
 ### UML Class Diagram
 
 Below is a UML diagram to demonstrate how I plan to structure my program: 
+
 <img src="assets/UML.jpg" alt="image of a UML class diagram" width="700">
 
 I would like to highlight some areas of this:
@@ -94,7 +95,16 @@ Furthermore, Source inherits from Webcam as it also uses video data. The Source 
 The rest of the classes serve the purpose of manipulating/analysing data from the others. For example, Detect takes the Webcam instance and several Target instances and uses them to determine which image from Target can be seen in the data from Webcam. This data is then used by Border to find which coordinates in the Webcam data hold the detected Target, which is passed to Warp and Project, which uses Bitwise to manipulate the data and overlay the two. 
 
 ### GUI Diagrams
+
+Below is a series of GUI diagrams to show how the user will interact and interface with my program. This serves to obfuscate the complexity of my code:
+
 <img src="assets/UI.jpg" alt="image of several GUI diagrams" width="700">
+
+The top left diagram demonstrates how the program starts intially. It gives the user a textbox to enter a filename and three buttons. One button allows you to 'load' a .csv file which links target magazine covers with source video files to be projected onto them. The other two buttons, 'generate' and 'update' create a new .csv file if one has not been made previously.
+
+When 'generate' or 'update' is clicked to leads to the top right diagram which provides two text boxes for filenames. If 'OK' is pressed it repeats this screen until 'Finish' is pressed to complete data entry. This then leads to the left middle screen titled 'Output'. The image it shows is the webcam with the AR effect applied. 
+
+Furthermore my diagram contains three example error pop-ups. These include a file not found error and two file extension errors. 
 
 ### State Transistion Diagram
 <img src="assets/stateDiagram.jpg" alt="image of state transisition diagram" width="700">
