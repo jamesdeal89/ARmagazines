@@ -23,13 +23,23 @@ INSERT ANSWER HERE
 INSERT ANSWER HERE
 
 ### Main Objectives:
-- Read video feeds from a webcam or smartphone camera
-- Load source videos of pre-recorded moving covers 
+- Load target magazine image data
+    - store in an object
+- Load source videos of pre-recorded moving covers in addition to webcam video 
+    - store source in an object which links to the target object (composition) 
+    - create methods to iterate frames 
 - Detect and recognize which of the source videos matches to the magazine/digipack shown
+    - Create unique samples for detection of magazine covers
+    - Create my own sample detection system to match the samples to the webcam frame
 - Detect edges and borders of the magazine/digipack
+    - Ensure the co-ordinates can be used in warping (generating homography)
 - Frame by frame overlay and adjust the warping of the source to match the one in the video
-- Thereby creating an AR effect
-- Finally adapt the project for a user friendly interface on laptops or a mobile application
+    - Warp the source video into the shape of the magazine in the webcam (applying homography)
+    - Creating my own bit-wise image operation methods
+- Finally adapt the project for a user friendly interface GUI
+    - File-name input in GUI
+    - Pairs file generation in GUI so they don't have to be re-entered every time
+    - Batching of pairs via GUI into seperate groups - per client demands
 
 ### Already existing AR products:
 #### Example 1: IKEA Place
