@@ -107,7 +107,14 @@ When 'generate' or 'update' is clicked to leads to the top right diagram which p
 Furthermore my diagram contains three example error pop-ups. These include a file not found error and two file extension errors. 
 
 ### State Transistion Diagram
+
+Below is a ST diagram which shows how inputs and return values affect the state the program is in:
+
 <img src="assets/stateDiagram.jpg" alt="image of state transisition diagram" width="700">
+
+The program starts on the 'Start Menu' state. If the user presses the 'Load' button it leads to the 'Load Files' state. This will lead to the 'File Not Found Pop-up' state if an error is returned, otherwise it will lead to the 'Detect' state. This state loops if the return is 'File Not Found' and enters the 'Show Webcam' state which loops back repeatedly until 'Target Found' is returned. This leads to the final accepting state, 'Project Onto Webcam'.  
+
+On the other hand, if at the starting state the user selects the 'generate' or 'update' buttons, it will enter the 'Pairs Input' state. If 'OK' is input it will loop in this state until 'Finish' is input. This returns to the path taken above by enterting the 'Load Files' state.
 
 TODO: Structure Diagram
 TODO: Entity Relationship Diagram
