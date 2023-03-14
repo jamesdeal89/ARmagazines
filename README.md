@@ -81,7 +81,16 @@ Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
 ## Documented Design:
 
 ### UML Class Diagram
+
+Below is a UML diagram to demonstrate how I plan to structure my program: 
 <img src="assets/UML.jpg" alt="image of a UML class diagram" width="700">
+I would like to highlight some areas of this:
+
+Firstly, the Target and Webcam classes inherit from the File class. This is as both of these need to use the filepath attribute and the load()/getLoadedObj() methods. However they cannot be the same object as Target only needs to be for images, whereas Webcam needs additional methods like next() and getFrame() to iterate through the frames.
+
+Furthermore, Source inherits from Webcam as it also uses video data. The Source class is then used as a composition inside of Target as it creates a link between magazine targets and the AR video that needs to be projected onto it; making storing the source inside of the target effectice. 
+
+The rest of the classes serve the purpose of manipulating/analysing data from the others. For example, Detect takes the Webcam instance and several Target instances and uses them to determine which image from Target can be seen in the data from Webcam. This data is then used by Border to find which coordinates in the Webcam data hold the detected Target, which is passed to Warp and Project, which uses Bitwise to manipulate the data and overlay the two. 
 
 ### GUI Diagrams
 <img src="assets/UI.jpg" alt="image of several GUI diagrams" width="700">
@@ -90,9 +99,8 @@ Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
 <img src="assets/stateDiagram.jpg" alt="image of state transisition diagram" width="700">
 
 TODO: Structure Diagram
-TODO: State transisition diagram
-TODO: UI diagrams
-TODO: Dataflow diagrams
+TODO: Entity Relationship Diagram
+TODO: Dataflow Diagram
 
 ### Prototype Proof-Of-Concept:
 #### Detecting a target magazine
