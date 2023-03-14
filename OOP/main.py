@@ -137,6 +137,7 @@ def main():
                 targets = loadPairs(fileName)
                 break
             else:
+                sg.popup('ERROR', 'File not found')
                 sys.exit("ERROR - pairs.csv file not found. please generate first.")
         elif loadOrGen == "g" and correctInput == True:
             # call the generate function and pass in "w" to create or overwrite a pairs.csv file

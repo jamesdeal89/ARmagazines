@@ -83,6 +83,9 @@ Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
 ### UML Class Diagram
 <img src="assets/UML.jpg" alt="image of a UML class diagram" width="700">
 
+### GUI Diagrams
+<img src="assets/UI.jpg" alt="image of several GUI diagrams" width="700">
+
 TODO: Structure Diagram
 TODO: State transisition diagram
 TODO: UI diagrams
