@@ -14,13 +14,15 @@ I want to create this product to help the school's Media Studies department, spe
 
 ### Interview with Client:
 #### What would you like the project to achieve?
-INSERT ANSWER HERE
+"I'm looking for a project which can help the students of both GCSE and A Level Media Studies display their coursework. Most importantly I want something interactive to encourage engagement."
 #### What are the key features of a program like this?
-INSERT ANSWER HERE
+"It surely needs to easy to use as both myself and students will need to use the program to add their magazines. It also needs to be usable by people who visit who aren't students. This is as they need to experience the AR quickly and painlessly."
 #### Are there any additional features you would be interested in?
-INSERT ANSWER HERE
+"I think a 'batching' system to allow me to categorise classes would be useful. I could then organise AR products into yeargroups which would make it easy to manage."
 #### What already exisiting AR or other related products interest you?
-INSERT ANSWER HERE
+"Mainly I would say Google Maps is the only major AR product I use. It helps a lot with city navigation."
+#### How do your current students display their magazine work?
+"Right now they add their coursework onto their website portfolio. We also print out their work for displays and to allow us to see the work in print quality to make improvements more obvious."
 
 ### Main Objectives:
 - Load target magazine image data
