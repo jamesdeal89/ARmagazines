@@ -128,6 +128,18 @@ The program starts on the 'Start Menu' state. If the user presses the 'Load' but
 
 On the other hand, if at the starting state the user selects the 'generate' or 'update' buttons, it will enter the 'Pairs Input' state. If 'OK' is input it will loop in this state until 'Finish' is input. This returns to the path taken above by enterting the 'Load Files' state.
 
+### Flowcharts
+
+#### Border() class flowchart
+
+<img src="assets/flowchartBorder.png" alt="flowchart image" width="800">
+
+#### Denary to Binary flowchart
+
+<img src="assets/binaryFlowchart.png" alt="flowchart image" width="400">
+
+#### Bitwise AND flowchart
+
 TODO: Structure Diagram
 TODO: Entity Relationship Diagram
 TODO: Dataflow Diagram
