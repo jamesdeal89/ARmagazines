@@ -146,6 +146,7 @@ Below is a structure diagram which demonstrates the procedural decomposition of 
 
 #### Sample selection flowchart
 
+<img src="assets/sampleFlowchart.png" alt="flowchart image" width = "400">
 
 ### Prototype Proof-Of-Concept:
 #### Detecting a target magazine
