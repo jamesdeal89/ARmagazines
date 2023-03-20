@@ -128,6 +128,12 @@ The program starts on the 'Start Menu' state. If the user presses the 'Load' but
 
 On the other hand, if at the starting state the user selects the 'generate' or 'update' buttons, it will enter the 'Pairs Input' state. If 'OK' is input it will loop in this state until 'Finish' is input. This returns to the path taken above by enterting the 'Load Files' state.
 
+### Structure Diagram
+
+Below is a structure diagram which demonstrates the procedural decomposition of my problem into smaller and smaller chunks. This will greatly help me in understanding and developing my larger, overall project of an AR Magazine Projector. Therefore larger tasks seem more aproachable as it becomes a series of easier ones.
+
+<img src="assets/structureDiagram.png" alt="image of a structure diagram" width="1100">
+
 ### Flowcharts
 
 #### Border() class flowchart
