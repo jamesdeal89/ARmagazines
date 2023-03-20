@@ -138,17 +138,14 @@ Below is a structure diagram which demonstrates the procedural decomposition of 
 
 #### Border() class flowchart
 
-<img src="assets/flowchartBorder.png" alt="flowchart image" width="800">
+<img src="assets/flowchartBorder.png" alt="flowchart image" width="200">
 
 #### Denary to Binary flowchart
 
 <img src="assets/binaryFlowchart.png" alt="flowchart image" width="400">
 
-#### Bitwise AND flowchart
+#### Sample selection flowchart
 
-TODO: Structure Diagram
-TODO: Entity Relationship Diagram
-TODO: Dataflow Diagram
 
 ### Prototype Proof-Of-Concept:
 #### Detecting a target magazine
