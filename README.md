@@ -206,13 +206,13 @@ According to my source, https://datahacker.rs/how-to-access-and-edit-pixel-value
 In this layout the top left corner is considered the origin of the matrix and each value has an inverted (blue, green, red) tuple.
 This method can be used to split an image into 3 seperated b,g,r values in different images. The usage is shown here:
 
-~~~
+~~~python
 b, g, r = cv2.split(img)
 ~~~
 
 Changining individual pixel colour can be done via the following syntax:
 
-~~~
+~~~python
 img[50, 50] = (0, 0, 255)
 ~~~
 
@@ -222,7 +222,7 @@ The solution I arrived at can be seen below:
 
 #### My implementation of bitwise operators on OpenCV images
 
-~~~
+~~~python
    def bitAnd(self,img, img2):
         # perform a bitwise AND between the two images
         # time speed of execution (for comparison with multiprocessing)
@@ -334,7 +334,7 @@ The solution I arrived at can be seen below:
 
 The solution I used above, while technically correct, has many major drawbacks. Firstly, the majority of the OpenCV based modules which achieve this task use external C language based programs. This is as the execution time for Python is just too slow for tasks which require rapid computation. In my project, I need to have this run every frame for at least ~20 frames per second to create a smooth motion for the user. Having a process like this take more than a second will make the program unusable for augmented reality purposes. When I tested this implementation using Python's built-in Time module, I found that a single execution of the bitAnd() method on a high resolution image took just under 500 seconds. This is without even using my own implementation of denary to binary conversion which would have slowed it down even more. The method I used for conversion can be seen below and used recursion:
 
-~~~
+~~~python
     def decimalToBinary(self,num,output=[]): 
         """takes a decimal number and uses recursion to return the binary value """
         # if the number is greater than 1
@@ -359,7 +359,7 @@ Nonetheless, this experience gave me an infinitely better understanding of how t
 #### Higher-level implementation
 As the recursive binary converter was too complex to be calculated at a suitable framerate, I've adjusted the code so that it works faster. This is done by using Python's bitwise operators rather than my own binary converter. This is slightly higher-level and allows Python to do some of the hard work for me. Nonetheless this uses no external libraries which was my main goal. 
 
-~~~
+~~~python
     def bitAnd(self,img, img2):
         # perform a bitwise AND between the two images
         height = img.shape[0]
@@ -465,7 +465,7 @@ Below is python code which I used to implement the formula onto target images in
 
 The paramter 'size' gives the resolution width and height of the square sample we want to create. This can be used to create several unique samples across the target image. For example, four smaller high-pass images from the four corners of the image.
 
-~~~
+~~~python
     def myHighPass(self,size,img):
         # size paramter limits how much of the image we filter and use
         # this can improve performance if image is high resolution
@@ -493,7 +493,7 @@ The result of this program run using a sample size of 500 is shown in the screen
 
 My code is now adjusted to only set pixel values if the differential is above 80. This leave only very hard edges in the final output.
 
-~~~
+~~~python
     def myHighPass(self,size,img):
         # size paramter limits how much of the image we filter and use
         # this can improve performance if image is high resolution
@@ -524,7 +524,7 @@ In order to link this filter into my plans for my greater project I need to link
 
 The code below is a setter for a new attribute I've added in my target objects initialisation. The '\_myPoints' attribute is an empty list by default which we can append values into to be set as samples to look for when detecting for that respective magazine cover.
 
-~~~
+~~~python
     def mySetPoints(self,sample):
         # Using my own implementation of image detection which can be used when in 'performance' mode.
         self._myPoints.append(sample)
@@ -532,7 +532,8 @@ The code below is a setter for a new attribute I've added in my target objects i
 
 Furthermore, my implementation of the high-pass sample generator has been amended to take a target object instead of an image object and instead of returning, it will use the above setter.
 
-~~~    def myHighPass(self,size,target):
+~~~python  
+    def myHighPass(self,size,target):   
         # size paramter limits how much of the image we filter and use
         # this can improve performance if image is high resolution
         # create a blank mask of empty zero values in size of sample
@@ -557,7 +558,7 @@ Furthermore, my implementation of the high-pass sample generator has been amende
 
 To speed up the application of my convolution I've adjusted my code to now use OpenCV's 2DFilter method which takes a convolution matrix I defined and applies it to an image. I then further speed up my code by using boolean indexing to filter out any values which do not meet my highpass threshold.
 
-~~~
+~~~python
         # create a blank mask of empty zero values in size of sample
         mask = np.zeros(shape=(size[1]+10,size[1]+10), dtype=np.float32)
         # create a deep copy of the target so that the original image is not affected, and change to grayscale
@@ -578,14 +579,14 @@ To speed up the application of my convolution I've adjusted my code to now use O
 
 I've also further optimised the framerate of my program by having webcam resolutions and target resolutions reduced (currently to 70% their original size) using cv2.resize()
 
-~~~
+~~~python
     targets[0].resize(int(targets[0].getLoadedObj().shape[1]*0.7),int(targets[0].getLoadedObj().shape[0]*0.7))
 ~~~
 #### Smart Sample Selection
 
 To improve the quality of samples I generate I made the target method myGenPoints() use a system which parses diagonally across the target and only takes samples with a combined pixel value above 150,000, otherwise it takes the next best previous sample.
 
-~~~
+~~~python
     def myGenPoints(self):
         # generates keypoints using my own implementation in Detect class
         # this also ensures that the samples generated have enough features within them using .sum()
