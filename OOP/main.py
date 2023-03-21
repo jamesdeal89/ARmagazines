@@ -47,7 +47,8 @@ def GUI():
                 [sg.Text('Enter filename (ending in .csv):')],
                 [sg.Input()],
                 [sg.Text('How to continue?:')],
-                [sg.Button('Load'), sg.Button('Generate'), sg.Button("Update") ]  ]
+                [sg.Button('Load'), sg.Button('Generate'), sg.Button("Update") ],  
+                [sg.Checkbox('Enable low-level mode? (slower)', default=False, key='lowLevel')]]
     # makes a window
     window = sg.Window('AR Magazine Projector', layout)
     # loops to scan for events and capture user inputs
@@ -57,13 +58,14 @@ def GUI():
             break
         elif event == 'Load':
             window.close()
-            return "l",values[0]
+            # values["-IN-"] returns the boolean value of the checkbox, True meaning ticked
+            return "l",values[0],values["lowLevel"]
         elif event == 'Generate':
             window.close()
-            return "g",values[0]
+            return "g",values[0],values["lowLevel"]
         elif event == 'Update':
             window.close()
-            return "u",values[0]
+            return "u",values[0],values["lowLevel"]
     # close the window if the user breaks the event check loop
     window.close()
 
@@ -121,7 +123,8 @@ def main():
     # TODO: Create a 'performance' mode the user can select in GUI -> only load or check for first detected source/target
     # TODO: Create own image recognition class <- almost done
     while True:
-        loadOrGen, fileName = GUI()
+        # Here loadOrGen tells us whether we load fileName or generate a file called fileName. lowLevel determines if we use a mix of my own implementation and OpenCV (slow) or all OpenCV's (fast)
+        loadOrGen, fileName, lowLevel = GUI()
         name, ext = os.path.splitext(fileName)
         correctInput = True
         if ext != ".csv":

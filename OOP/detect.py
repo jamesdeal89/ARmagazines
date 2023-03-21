@@ -39,7 +39,7 @@ class Detect():
                 return resultMatches[0], resultMatches[1]
 
     
-    def myHighPass(self,size,target):
+    def myHighPass(self,size,target,threshold=210, x=0,y=0):
         # size paramter limits how much of the image we filter and use
         # this can improve performance if image is high resolution
         # create a blank mask of empty zero values in size of sample
@@ -62,7 +62,7 @@ class Detect():
         return mask
         """
         # create a blank mask of empty zero values in size of sample
-        mask = np.zeros(shape=(size[1]+10,size[1]+10), dtype=np.float32)
+        mask = np.zeros(shape=(size[1], size[0]), dtype=np.float32)
         # create a deep copy of the target so that the original image is not affected, and change to grayscale
         target_gray = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY).astype(np.float32)
         # calculate the kernel for the 3x3 grid
@@ -70,15 +70,14 @@ class Detect():
                         [-1, -1, -1],
                         [-1,  8, -1],
                         [-1, -1, -1],], dtype=np.float32)
+        # select the target region based on the x and y coordinates
+        target_region = target_gray[y:y+size[1], x:x+size[0]]
         # use OpenCV's filter2D function to convolve the kernel with the image to calculate the overall summed difference
-        differential = cv2.filter2D(target_gray, -1, kernel, borderType=cv2.BORDER_CONSTANT)
-        differential = differential[0:size[1]+10,0:size[1]+10]
-        # if the overall difference with the surrounding pixels is greater than 60, adjust that pixel to be shown equal to how hard the edge is
-        mask[differential > 50] = differential[differential > 50]
+        differential = cv2.filter2D(target_region, -1, kernel, borderType=cv2.BORDER_CONSTANT)
+        # if the overall difference with the surrounding pixels is greater than the threshold value, adjust that pixel to be shown equal to how hard the edge is
+        mask[differential > threshold] = differential[differential > threshold]
         # any values above 255 will be 'clipped' to make validating quality of samples better (see targets.myGenPoints)
         mask = np.clip(mask, 0, 255)
-        # crop the mask to only show the sampled area
-        mask = mask[size[0]:size[1],size[0]:size[1]]
         return mask
 
 
@@ -91,7 +90,8 @@ class Detect():
         """
         
         # create highpass of webcam --> convertScaleAbs makes it uniform absolute values for detection
-        webcamHP = cv2.convertScaleAbs(self.myHighPass(size=[0,self.webcam.getFrame().shape[0]-10],target=self.webcam.getFrame()))
+        # idea here is that we keep the x and y as the default co-ordinate (0,0) and them set the sample size to be size of the whole webcam. Thereby giving a sample of the whole thing.
+        webcamHP = cv2.convertScaleAbs(self.myHighPass(size=[self.webcam.getFrame().shape[1]-10,self.webcam.getFrame().shape[0]-10],target=self.webcam.getFrame()))
 
         # compare each section with details in each keypoint --> make keypoints small and vague, false positive is okay as we set a threshold anyways
         for target in self.targetsList:

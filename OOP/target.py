@@ -34,21 +34,48 @@ class Target(File):
         sum_of_pixels = 0
         # this holds previous samples, if we fail to get a good match, we take this next best choice
         previous = {}
-        position = 100 
-        h,w,c = self.getLoadedObj().shape
-        while sum_of_pixels < 150000:
-            # prevent going over edge of image
-            if position + 99 > w:
-                # if we go over edge, take the best previous sample
-                key = max(previous.keys())
-                self._myPoints[0] = previous[key]
+        h, w, c = self.getLoadedObj().shape
+        # scan horizontally
+        for y in range(0, h, 100):
+            for x in range(0, w, 100):
+                # prevent going over edge of image
+                if x + 99 > w or y + 99 > h:
+                    continue
+                self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[100, 100], target=self.getLoadedObj(), x=x, y=y))
+                sum_of_pixels = np.sum(self._myPoints[0])
+                # save the current sample incase we overrun
+                cv2.imshow("current",self._myPoints[0])
+                cv2.waitKey(0)
+                previous[sum_of_pixels] = copy.deepcopy(self._myPoints[0])
+                # if we found a good sample, break out of loops
+                if sum_of_pixels >= 2000000:
+                    break
+            if sum_of_pixels >= 2000000:
                 break
-            self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[position,100+position],target=self.getLoadedObj()))
-            sum_of_pixels = np.sum(self._myPoints[0])
-            # save the current sample incase we overrun
-            previous[sum_of_pixels] = copy.deepcopy(self._myPoints[0])
-            # move our parse
-            position += 100
+        # if we haven't found a good sample yet, scan vertically
+        if sum_of_pixels < 2000000:
+            for x in range(0, w, 100):
+                for y in range(0, h, 100):
+                    # prevent going over edge of image
+                    if x + 99 > w or y + 99 > h:
+                        continue
+                    self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[100, 100], target=self.getLoadedObj(), x=x, y=y))
+                    sum_of_pixels = np.sum(self._myPoints[0])
+
+                    cv2.imshow("current",self._myPoints[0])
+                    cv2.waitKey(0)
+                    # save the current sample incase we overrun
+                    previous[sum_of_pixels] = copy.deepcopy(self._myPoints[0])
+                    # if we found a good sample, break out of loops
+                    if sum_of_pixels >= 2000000:
+                        break
+                if sum_of_pixels >= 2000000:
+                    break
+        # if we still haven't found a good sample, take the best previous sample
+        if sum_of_pixels < 2000000:
+            key = max(previous.keys())
+            self._myPoints[0] = previous[key]
+        cv2.imshow("chosen",self._myPoints[0])
     
     def myGetPoints(self):
         return self._myPoints
