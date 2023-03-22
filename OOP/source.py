@@ -30,9 +30,11 @@ class Source(Webcam):
         # for each detected word
         for boxIndex in range(len(self._text['text'])):
             # get that word's detected location in x and y
-            x,y = self._text['width'][boxIndex], self._text['height'][boxIndex]
+            x,y = self._text['left'][boxIndex], self._text['top'][boxIndex]
             # insert text at that location with the same content
-            cv2.putText(self._frame,self._text['text'][boxIndex],(x,y),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,255))
+            cv2.putText(self._frame,self._text['text'][boxIndex],(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255,255,255))
+            cv2.imshow("texted",self._frame)
+            cv2.waitKey(0)
     
     def setText(self,data):
         self._text = data

@@ -15,13 +15,6 @@ class Text():
         # location co-ordinates and confidence scores --> this can be used later to relicate this text in the same location on the source frame
         data = pytesseract.image_to_data(self._processedTarget, output_type=pytesseract.Output.DICT)
         self._data = data
-        n_boxes = len(data['text'])
-        for i in range(n_boxes):
-            if int(data['conf'][i]) > 10:
-                (x, y, w, h) = (data['left'][i], data['top'][i], data['width'][i], data['height'][i])
-                self._processedTarget = cv2.rectangle(self._processedTarget, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        cv2.imshow("detected text",self._processedTarget)
-        cv2.waitKey(0)
 
     def addText(self):
         self._target.getSourceObj().setText(self._data)
