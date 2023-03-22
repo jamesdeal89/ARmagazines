@@ -17,6 +17,7 @@ import PySimpleGUI as sg
 import csv
 import os
 import sys
+import copy
 from warp import Warp
 from project import Project
 from detect import Detect
@@ -101,9 +102,9 @@ def generatePairs(createOrUpdate, fileName, autoText):
         # check that both file extensions are valid to avoid OpenCV compatability errors
         if ext in [".jpg",".jpeg"] and ext1 == ".mp4":
             # if valid update the dictionary pair and append it to the list
-            pairing["target"] = fileTarget
-            pairing["source"] = fileSource
-            targetSource.append(pairing)
+            pairing["target"] = copy.deepcopy(fileTarget)
+            pairing["source"] = copy.deepcopy(fileSource)
+            targetSource.append(copy.deepcopy(pairing))
         else:
             sg.popup('ERROR', 'File extension must be .jpeg/.jpg for the target and .mp4 for the source')
     # once loop is broken we call the file generator function
@@ -166,12 +167,12 @@ def main():
     for target in targets[1:]:
         target.getSourceObj().load()
         target.load()
-        target.resize(w1,h1)
+        target.resize(h1,w1)
         # this generates the samples for target detection. This has recently be changed to be outside the loop to increase framerate
         target.myGenPoints()
         target.genPoints()
-        target.replicatetext()
-        # use the Detect class decect() method to get which object is in the frame (if any)
+        target.replicateText()
+        # use the Detect class detect() method to get which object is in the frame (if any)
     # now we can create a loop based on each frame of the webcam we load
     while True:
         # call the method which loads the next frame
