@@ -163,6 +163,7 @@ def main():
     h1,w1,c1 = targets[0].getLoadedObj().shape
     targets[0].myGenPoints()
     targets[0].genPoints()
+    targets[0].replicateText()
     for target in targets[1:]:
         target.getSourceObj().load()
         target.load()
@@ -170,6 +171,7 @@ def main():
         # this generates the samples for target detection. This has recently be changed to be outside the loop to increase framerate
         target.myGenPoints()
         target.genPoints()
+        target.replicatetext()
         # use the Detect class decect() method to get which object is in the frame (if any)
     # now we can create a loop based on each frame of the webcam we load
     while True:

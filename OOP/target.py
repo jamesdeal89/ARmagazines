@@ -4,6 +4,7 @@ from file import File
 from detect import Detect
 import numpy as np
 import copy
+from text import Text
 
 class Target(File):
     """
@@ -70,6 +71,14 @@ class Target(File):
         if sum_of_pixels < 2000000:
             key = max(previous.keys())
             self._myPoints[0] = previous[key]
+
+    def replicateText(self):
+        # intialise the text class and set it's target as this instance
+        text = Text(self)
+        # process this target image
+        text.process()
+        # extract data from the processed image
+        text.extract()
     
     def myGetPoints(self):
         return self._myPoints
