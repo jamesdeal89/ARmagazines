@@ -5,13 +5,14 @@ class Webcam(File):
     """
     This is the Webcam class which inherits from the File class
     """
-    def __init__(self,filepath=None):
+    def __init__(self,filepath=None,lowRes=False):
         super().__init__(filepath)
         self._frame = None
         self._descriptors = None
         self._keyPoints = None
         self._loadedBool = None
         self._loadedWeb = None
+        self._lowRes = lowRes
 
     # Method to generate the descriptors and keypoints
     def genPoints(self):
@@ -41,6 +42,7 @@ class Webcam(File):
         # Here loadedBool is a True/False of whether the feed is ended
         self._loadedBool, self._frame = self._loadedWeb.read()
         dimensions = self._frame.shape
-        # Resize the image to increase framerate
-        self._frame = cv2.resize(self._frame, (int(dimensions[1]*0.7), int(dimensions[0]*0.7)))
+        if self._lowRes:
+            # Resize the image to increase framerate
+            self._frame = cv2.resize(self._frame, (int(dimensions[1]*0.7), int(dimensions[0]*0.7)))
 

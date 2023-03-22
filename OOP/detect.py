@@ -2,6 +2,7 @@
 import cv2
 import copy
 import numpy as np 
+import imutils
 
 class Detect():
     def __init__(self,webcam=None, targetsList=None):
@@ -39,27 +40,28 @@ class Detect():
                 return resultMatches[0], resultMatches[1]
 
     
-    def myHighPass(self,size,target,threshold=210, x=0,y=0):
+    def myHighPass(self,size,target,threshold=80, x=0,y=0):
         # size paramter limits how much of the image we filter and use
         # this can improve performance if image is high resolution
         # create a blank mask of empty zero values in size of sample
         """
-        mask = np.zeros(shape=(size[1],size[1]))
-        targetCOPY = copy.deepcopy(target)
-        # change to greyscale
-        target = cv2.cvtColor(targetCOPY, cv2.COLOR_BGR2GRAY)
-        # iterate through each position in the empty matrix
-        for i in range(size[0],size[1]):
-            for j in range(size[0],size[1]):
-                # find the overall summed difference between the values in a 9*9 grid around the central current position
-                differential = -1*target[i][j]-1*target[i][j+1]-1*target[i][j+2]-1*target[i+1][j]+8*target[i+1][j+1]-1*target[i+1][j+2]-1*target[i+2][j]-target[i+2][j+1]-1*target[i+2][j+2]
-                
-                # if this overall differences with the surrounding pixels is greater than 80, we accept it as a hard edge and adjust that pixel to be shown equal to how hard the edge is.
-                if differential > 60:
-                    mask[i][j] = differential
-        # crop the mask to only show the sampled area
-        mask = mask[size[0]:size[1],size[0]:size[1]]
-        return mask
+        if lowLevel:
+            mask = np.zeros(shape=(size[1],size[1]))
+            targetCOPY = copy.deepcopy(target)
+            # change to greyscale
+            target = cv2.cvtColor(targetCOPY, cv2.COLOR_BGR2GRAY)
+            # iterate through each position in the empty matrix
+            for i in range(size[0],size[1]):
+                for j in range(size[0],size[1]):
+                    # find the overall summed difference between the values in a 9*9 grid around the central current position
+                    differential = -1*target[i][j]-1*target[i][j+1]-1*target[i][j+2]-1*target[i+1][j]+8*target[i+1][j+1]-1*target[i+1][j+2]-1*target[i+2][j]-target[i+2][j+1]-1*target[i+2][j+2]
+                    
+                    # if this overall differences with the surrounding pixels is greater than 80, we accept it as a hard edge and adjust that pixel to be shown equal to how hard the edge is.
+                    if differential > 60:
+                        mask[i][j] = differential
+            # crop the mask to only show the sampled area
+            mask = mask[size[0]:size[1],size[0]:size[1]]
+            return mask
         """
         # create a blank mask of empty zero values in size of sample
         mask = np.zeros(shape=(size[1], size[0]), dtype=np.float32)
@@ -88,24 +90,48 @@ class Detect():
         This means that any colour variation caused by viewing the target through a webcam can be avoided.
         From this high-pass version, I will take the most significant keypoints by scanning over the image and then using the portions with high variety in pixels. These will be compared to scans across the target webcam frame to find the detected target. 
         """
-        
-        # create highpass of webcam --> convertScaleAbs makes it uniform absolute values for detection
-        # idea here is that we keep the x and y as the default co-ordinate (0,0) and them set the sample size to be size of the whole webcam. Thereby giving a sample of the whole thing.
-        webcamHP = cv2.convertScaleAbs(self.myHighPass(size=[self.webcam.getFrame().shape[1]-10,self.webcam.getFrame().shape[0]-10],target=self.webcam.getFrame()))
 
-        # compare each section with details in each keypoint --> make keypoints small and vague, false positive is okay as we set a threshold anyways
+
+        # apply highpass filter to webcam image
+        webcamHP = cv2.convertScaleAbs(self.myHighPass(size=[self.webcam.getFrame().shape[1]-10,self.webcam.getFrame().shape[0]-10],target=self.webcam.getFrame(), threshold=20))
+
+        # Apply contrast normalization to image
+        webcamHP = cv2.normalize(webcamHP, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
+
+        # Apply noise reduction to image
+        webcamHP = cv2.GaussianBlur(webcamHP, (5, 5), 0)
+
+        # rotate the target image by different angles and perform template matching on each rotated version
         for target in self.targetsList:
-            # match the smaller sample we created to the template
-            result = cv2.matchTemplate(webcamHP, target.myGetPoints()[0], cv2.TM_CCOEFF_NORMED)
+            for targetHP in target.myGetPoints():
 
-            threshold = 0.2
-            # using a thershold accuracy we check where the match is similar enough
-            locations = np.where(result >= threshold)
+                # Apply contrast normalization to image
+                targetHP = cv2.normalize(targetHP, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
 
-            # if we have a good match after filtering we return the detected target
-            if len(locations[0]) > 0:
-                print("MY MATCHED")
-                return target
+                # Apply noise reduction to image
+                targetHP = cv2.GaussianBlur(targetHP, (5, 5), 0)
+
+                cv2.imshow("1",webcamHP)
+                cv2.imshow("2",targetHP)
+                scores = []
+                angles = np.arange(0, 360, 5) # rotate by 5 degree increments
+                for angle in angles:
+                    rotated = imutils.rotate_bound(targetHP, angle) # rotate the image
+                    result = cv2.matchTemplate(webcamHP, rotated, cv2.TM_CCOEFF_NORMED)
+                    scores.append(np.max(result)) # store the maximum correlation score for each rotation
+
+                # use the maximum score across all rotations as the final score for the template match
+                max_score = np.max(scores)
+                print(max_score)
+
+                threshold = 0.30 # adjust threshold value
+
+                # if the maximum score is above the threshold, return the location of the detected target
+                if max_score >= threshold:
+                    print("MY MATCHED")
+                    return target  # return the target
+                else:
+                    return None # no target detected
 
 
 

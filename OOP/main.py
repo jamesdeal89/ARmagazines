@@ -48,7 +48,8 @@ def GUI():
                 [sg.Input()],
                 [sg.Text('How to continue?:')],
                 [sg.Button('Load'), sg.Button('Generate'), sg.Button("Update") ],  
-                [sg.Checkbox('Enable low-level mode? (slower)', default=False, key='lowLevel')]]
+                [sg.Checkbox('Enable low-level mode? (slower)', default=False, key='lowLevel')],
+                [sg.Checkbox('Compress images? (faster)', default=False, key='lowRes')]]
     # makes a window
     window = sg.Window('AR Magazine Projector', layout)
     # loops to scan for events and capture user inputs
@@ -59,13 +60,13 @@ def GUI():
         elif event == 'Load':
             window.close()
             # values["-IN-"] returns the boolean value of the checkbox, True meaning ticked
-            return "l",values[0],values["lowLevel"]
+            return "l",values[0],values["lowLevel"],values["lowRes"]
         elif event == 'Generate':
             window.close()
-            return "g",values[0],values["lowLevel"]
+            return "g",values[0],values["lowLevel"],values["lowRes"]
         elif event == 'Update':
             window.close()
-            return "u",values[0],values["lowLevel"]
+            return "u",values[0],values["lowLevel"],values["lowRes"]
     # close the window if the user breaks the event check loop
     window.close()
 
@@ -124,7 +125,7 @@ def main():
     # TODO: Create own image recognition class <- almost done
     while True:
         # Here loadOrGen tells us whether we load fileName or generate a file called fileName. lowLevel determines if we use a mix of my own implementation and OpenCV (slow) or all OpenCV's (fast)
-        loadOrGen, fileName, lowLevel = GUI()
+        loadOrGen, fileName, lowLevel, lowRes = GUI()
         name, ext = os.path.splitext(fileName)
         correctInput = True
         if ext != ".csv":
@@ -152,12 +153,13 @@ def main():
             break
     # now that we have the data for every target and source intialized in a dictionary we can begin using the class methods to create the ouput
     # first we intialize the webcam
-    webcam = Webcam()
+    webcam = Webcam(lowRes=lowRes)
     webcam.load()
     targets[0].load()
     targets[0].getSourceObj().load()
-    # resize to be 0.7x size to increase framerate
-    targets[0].resize(int(targets[0].getLoadedObj().shape[1]*0.7),int(targets[0].getLoadedObj().shape[0]*0.7))
+    if lowRes:
+        # resize to be 0.7x size to increase framerate
+        targets[0].resize(int(targets[0].getLoadedObj().shape[1]*0.7),int(targets[0].getLoadedObj().shape[0]*0.7))
     h1,w1,c1 = targets[0].getLoadedObj().shape
     targets[0].myGenPoints()
     targets[0].genPoints()
@@ -189,14 +191,19 @@ def main():
             # use the Detect class detect() method to get which object is in the frame (if any)
             detect = Detect(webcam, targets)
             # this uses a lower level implementation which gets just which target is in the webcam
-            detectedTarget = detect.myDetect()
+            if lowLevel:
+                detectedTarget = detect.myDetect()
+            else:
+                detectedTarget = None
             # this uses a higher level OpenCV implementation which also gets matches for a homography calculation
             result = detect.detect()
         # if there is a targetted magazine detected
-        if detectedTarget is not None and result is not None:
+        if (detectedTarget is not None or lowLevel == False) and (result is not None):
             # ensure both my detect and OpenCV's detect are in agreement
             successfullMatches, detectedTargetCheck = result
-            if detectedTarget == detectedTargetCheck:
+            if detectedTarget == detectedTargetCheck or (lowLevel == False):
+                if lowLevel == False:
+                    detectedTarget = detectedTargetCheck
                 border = Border(detectedTarget, webcam, successfullMatches)
                 destinationPoints, homographyMatrix = border.border()
                 print("BORDER CALCULATED")
@@ -205,7 +212,11 @@ def main():
                 warpedSource = warp.warp()
                 print("SOURCE WARPED")
                 project = Project(webcam.getFrame(), warpedSource, destinationPoints)
-                project.myProject()
+                # check which mode the program is in
+                if lowLevel:
+                    project.myProject()
+                else:
+                    project.project()
                 print("PROJECTED ONTO WEBCAM")
                 buttonPress = cv2.waitKey(1)
                 if buttonPress == 81 or buttonPress == 113:

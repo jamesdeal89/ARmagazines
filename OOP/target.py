@@ -36,16 +36,14 @@ class Target(File):
         previous = {}
         h, w, c = self.getLoadedObj().shape
         # scan horizontally
-        for y in range(0, h, 100):
-            for x in range(0, w, 100):
+        for y in range(0, h, 200):
+            for x in range(0, w, 200):
                 # prevent going over edge of image
-                if x + 99 > w or y + 99 > h:
+                if x + 299 > w or y + 299 > h:
                     continue
-                self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[100, 100], target=self.getLoadedObj(), x=x, y=y))
+                self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[300, 300], target=self.getLoadedObj(), x=x, y=y))
                 sum_of_pixels = np.sum(self._myPoints[0])
                 # save the current sample incase we overrun
-                cv2.imshow("current",self._myPoints[0])
-                cv2.waitKey(0)
                 previous[sum_of_pixels] = copy.deepcopy(self._myPoints[0])
                 # if we found a good sample, break out of loops
                 if sum_of_pixels >= 2000000:
@@ -54,16 +52,13 @@ class Target(File):
                 break
         # if we haven't found a good sample yet, scan vertically
         if sum_of_pixels < 2000000:
-            for x in range(0, w, 100):
-                for y in range(0, h, 100):
+            for x in range(0, w, 200):
+                for y in range(0, h, 200):
                     # prevent going over edge of image
-                    if x + 99 > w or y + 99 > h:
+                    if x + 299 > w or y + 299 > h:
                         continue
-                    self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[100, 100], target=self.getLoadedObj(), x=x, y=y))
+                    self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[300, 300], target=self.getLoadedObj(), x=x, y=y))
                     sum_of_pixels = np.sum(self._myPoints[0])
-
-                    cv2.imshow("current",self._myPoints[0])
-                    cv2.waitKey(0)
                     # save the current sample incase we overrun
                     previous[sum_of_pixels] = copy.deepcopy(self._myPoints[0])
                     # if we found a good sample, break out of loops
@@ -75,7 +70,6 @@ class Target(File):
         if sum_of_pixels < 2000000:
             key = max(previous.keys())
             self._myPoints[0] = previous[key]
-        cv2.imshow("chosen",self._myPoints[0])
     
     def myGetPoints(self):
         return self._myPoints
