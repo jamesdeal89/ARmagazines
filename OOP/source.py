@@ -6,10 +6,11 @@ class Source(Webcam):
     This is the Source class which inherits from the Webcam class.
     It similarly loads frames however from a file rather than a video capture device.
     """
-    def __init__(self, filepath):
+    def __init__(self, filepath,autoText):
         # intialize the filepath from the parent class which is Webcam which then passes into that parent class which is File
         super().__init__(filepath=filepath)
         self._frame = None   
+        self._autoText = autoText
     
     # Getter for frame 
     def getFrame(self):
@@ -26,15 +27,14 @@ class Source(Webcam):
         # Here loadedBool is a True/False of whether the video has ended
         self._loadedBool, self._frame = self._loadedVid.read()
         self._frame = cv2.resize(self._frame,(w,h))
-        # add the detected OCR text onto the source frame
-        # for each detected word
-        for boxIndex in range(len(self._text['text'])):
-            # get that word's detected location in x and y
-            x,y = self._text['left'][boxIndex], self._text['top'][boxIndex]
-            # insert text at that location with the same content
-            cv2.putText(self._frame,self._text['text'][boxIndex],(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255,255,255))
-            cv2.imshow("texted",self._frame)
-            cv2.waitKey(0)
-    
+        if self._autoText:
+            # add the detected OCR text onto the source frame
+            # for each detected word
+            for boxIndex in range(len(self._text['text'])):
+                # get that word's detected location in x and y
+                x,y = self._text['left'][boxIndex], self._text['top'][boxIndex]
+                # insert text at that location with the same content
+                cv2.putText(self._frame,self._text['text'][boxIndex],(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255,255,255))
+        
     def setText(self,data):
         self._text = data

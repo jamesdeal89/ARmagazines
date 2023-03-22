@@ -49,7 +49,8 @@ def GUI():
                 [sg.Text('How to continue?:')],
                 [sg.Button('Load'), sg.Button('Generate'), sg.Button("Update") ],  
                 [sg.Checkbox('Enable low-level mode? (slower)', default=False, key='lowLevel')],
-                [sg.Checkbox('Compress images? (faster)', default=False, key='lowRes')]]
+                [sg.Checkbox('Compress images? (faster)', default=False, key='lowRes')],
+                [sg.Checkbox('Auto-generate text? (imperfect)', default=False, key='autoText')]]
     # makes a window
     window = sg.Window('AR Magazine Projector', layout)
     # loops to scan for events and capture user inputs
@@ -60,17 +61,17 @@ def GUI():
         elif event == 'Load':
             window.close()
             # values["-IN-"] returns the boolean value of the checkbox, True meaning ticked
-            return "l",values[0],values["lowLevel"],values["lowRes"]
+            return "l",values[0],values["lowLevel"],values["lowRes"],values["autoText"]
         elif event == 'Generate':
             window.close()
-            return "g",values[0],values["lowLevel"],values["lowRes"]
+            return "g",values[0],values["lowLevel"],values["lowRes"],values["autoText"]
         elif event == 'Update':
             window.close()
-            return "u",values[0],values["lowLevel"],values["lowRes"]
+            return "u",values[0],values["lowLevel"],values["lowRes"],values["autoText"]
     # close the window if the user breaks the event check loop
     window.close()
 
-def generateCSV(pairings, createOrUpdate,fileName):
+def generateCSV(pairings, createOrUpdate,fileName,autoText):
     # this will use file I/O and the csv library to take the pairing dictionary list and either write or append to 
     # a pairs.csv file.
     with open(fileName,createOrUpdate) as file:
@@ -81,9 +82,9 @@ def generateCSV(pairings, createOrUpdate,fileName):
         # iterate through the pairs list to get each dictionary 
         for pair in pairings:
             dictwriter.writerow(pair)
-    return loadPairs(fileName)
+    return loadPairs(fileName,autoText)
 
-def generatePairs(createOrUpdate, fileName):
+def generatePairs(createOrUpdate, fileName, autoText):
     # create a csv file of the target and source pairs if one does not exist
     # allow user to keep entering target and source pair filenames with .mp4 and .jpeg images until ctrl+D
     # verify input using regex
@@ -106,9 +107,9 @@ def generatePairs(createOrUpdate, fileName):
         else:
             sg.popup('ERROR', 'File extension must be .jpeg/.jpg for the target and .mp4 for the source')
     # once loop is broken we call the file generator function
-    return generateCSV(targetSource,createOrUpdate,fileName)
+    return generateCSV(targetSource,createOrUpdate,fileName,autoText)
 
-def loadPairs(fileName):
+def loadPairs(fileName,autoText):
     with open(fileName, "r") as file:
         reader = csv.DictReader(file)
         targets = []
@@ -116,14 +117,14 @@ def loadPairs(fileName):
         counter = 0
         for row in reader:
             # we make an append to an array of each object we create for target and source respectively
-            targets.append(Target(row["target"],sourceObj=Source([row["source"]])))
+            targets.append(Target(row["target"],sourceObj=Source([row["source"]],autoText)))
             counter += 1
         return targets
 
 def main():
     while True:
         # Here loadOrGen tells us whether we load fileName or generate a file called fileName. lowLevel determines if we use a mix of my own implementation and OpenCV (slow) or all OpenCV's (fast)
-        loadOrGen, fileName, lowLevel, lowRes = GUI()
+        loadOrGen, fileName, lowLevel, lowRes, autoText = GUI()
         name, ext = os.path.splitext(fileName)
         correctInput = True
         if ext != ".csv":
@@ -136,18 +137,18 @@ def main():
             search.sort()
             if search.search():
                 # get the tuple of loaded target cv2 objects and loaded source cv2 objects
-                targets = loadPairs(fileName)
+                targets = loadPairs(fileName,autoText)
                 break
             else:
                 sg.popup('ERROR', 'File not found')
                 sys.exit("ERROR - pairs.csv file not found. please generate first.")
         elif loadOrGen == "g" and correctInput == True:
             # call the generate function and pass in "w" to create or overwrite a pairs.csv file
-            targets = generatePairs("w",fileName)
+            targets = generatePairs("w",fileName,autoText)
             break
         elif loadOrGen == "u" and correctInput == True:
             # using the same generate function except pass in "a" to append to an already exisiting pairs.csv file
-            targets = generatePairs("a",fileName)
+            targets = generatePairs("a",fileName,autoText)
             break
     # now that we have the data for every target and source intialized in a dictionary we can begin using the class methods to create the ouput
     # first we intialize the webcam

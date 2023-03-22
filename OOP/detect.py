@@ -111,8 +111,6 @@ class Detect():
                 # Apply noise reduction to image
                 targetHP = cv2.GaussianBlur(targetHP, (5, 5), 0)
 
-                cv2.imshow("1",webcamHP)
-                cv2.imshow("2",targetHP)
                 scores = []
                 angles = np.arange(0, 360, 5) # rotate by 5 degree increments
                 for angle in angles:
