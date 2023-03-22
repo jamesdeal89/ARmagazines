@@ -79,6 +79,8 @@ class Target(File):
         text.process()
         # extract data from the processed image
         text.extract()
+        # apply to source
+        text.addText()
     
     def myGetPoints(self):
         return self._myPoints

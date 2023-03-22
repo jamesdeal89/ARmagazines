@@ -26,3 +26,13 @@ class Source(Webcam):
         # Here loadedBool is a True/False of whether the video has ended
         self._loadedBool, self._frame = self._loadedVid.read()
         self._frame = cv2.resize(self._frame,(w,h))
+        # add the detected OCR text onto the source frame
+        # for each detected word
+        for boxIndex in range(len(self._text['text'])):
+            # get that word's detected location in x and y
+            x,y = self._text['width'][boxIndex], self._text['height'][boxIndex]
+            # insert text at that location with the same content
+            cv2.putText(self._frame,self._text['text'][boxIndex],(x,y),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,255))
+    
+    def setText(self,data):
+        self._text = data

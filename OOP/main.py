@@ -121,8 +121,6 @@ def loadPairs(fileName):
         return targets
 
 def main():
-    # TODO: Create a 'performance' mode the user can select in GUI -> only load or check for first detected source/target
-    # TODO: Create own image recognition class <- almost done
     while True:
         # Here loadOrGen tells us whether we load fileName or generate a file called fileName. lowLevel determines if we use a mix of my own implementation and OpenCV (slow) or all OpenCV's (fast)
         loadOrGen, fileName, lowLevel, lowRes = GUI()
