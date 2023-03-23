@@ -50,8 +50,9 @@ def GUI():
                 [sg.Text('How to continue?:')],
                 [sg.Button('Load'), sg.Button('Generate'), sg.Button("Update") ],  
                 [sg.Checkbox('Enable low-level mode? (slower)', default=False, key='lowLevel')],
-                [sg.Checkbox('Compress images? (faster)', default=False, key='lowRes')],
-                [sg.Checkbox('Auto-generate text? (imperfect)', default=False, key='autoText')]]
+                [sg.Checkbox('Auto-generate text? (imperfect)', default=False, key='autoText')],
+                [sg.Text('Compression size (lower is smaller):')],
+                [sg.Slider(range=(0.7, 1.0), resolution=0.1, orientation='horizontal', key='lowRes', default_value=100)]]
     # makes a window
     window = sg.Window('AR Magazine Projector', layout)
     # loops to scan for events and capture user inputs
@@ -158,8 +159,8 @@ def main():
     targets[0].load()
     targets[0].getSourceObj().load()
     if lowRes:
-        # resize to be 0.7x size to increase framerate
-        targets[0].resize(int(targets[0].getLoadedObj().shape[1]*0.7),int(targets[0].getLoadedObj().shape[0]*0.7))
+        # resize to be 0.8x size to increase framerate
+        targets[0].resize(int(targets[0].getLoadedObj().shape[1]*lowRes),int(targets[0].getLoadedObj().shape[0]*lowRes))
     h1,w1,c1 = targets[0].getLoadedObj().shape
     targets[0].myGenPoints()
     targets[0].genPoints()

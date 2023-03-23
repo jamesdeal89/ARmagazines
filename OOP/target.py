@@ -37,12 +37,12 @@ class Target(File):
         previous = {}
         h, w, c = self.getLoadedObj().shape
         # scan horizontally
-        for y in range(0, h, 200):
-            for x in range(0, w, 200):
+        for y in range(0, h, w//4):
+            for x in range(0, w, w//4):
                 # prevent going over edge of image
-                if x + 299 > w or y + 299 > h:
+                if x + (w//4-1) > w or y + (w//4-1) > h:
                     continue
-                self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[300, 300], target=self.getLoadedObj(), x=x, y=y))
+                self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[w//4, w//4], target=self.getLoadedObj(), x=x, y=y))
                 sum_of_pixels = np.sum(self._myPoints[0])
                 # save the current sample incase we overrun
                 previous[sum_of_pixels] = copy.deepcopy(self._myPoints[0])
@@ -53,12 +53,12 @@ class Target(File):
                 break
         # if we haven't found a good sample yet, scan vertically
         if sum_of_pixels < 2000000:
-            for x in range(0, w, 200):
-                for y in range(0, h, 200):
+            for x in range(0, w, w//4):
+                for y in range(0, h, w//4):
                     # prevent going over edge of image
-                    if x + 299 > w or y + 299 > h:
+                    if x + (w//4-1) > w or y + (w//4-1) > h:
                         continue
-                    self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[300, 300], target=self.getLoadedObj(), x=x, y=y))
+                    self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[w//4, w//4], target=self.getLoadedObj(), x=x, y=y))
                     sum_of_pixels = np.sum(self._myPoints[0])
                     # save the current sample incase we overrun
                     previous[sum_of_pixels] = copy.deepcopy(self._myPoints[0])

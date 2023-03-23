@@ -24,8 +24,6 @@ class Detect():
         for target in self.targetsList:
             print("CHECK......")
             # Scan images to compare keypoints based on descriptors attributes
-            print(target.getDescriptors().dtype, target.getDescriptors().shape)
-            print(self.webcam.getDescriptors().dtype, self.webcam.getDescriptors().shape)
             matches = bruteForce.knnMatch(target.getDescriptors(),self.webcam.getDescriptors(),k=2)
             successfullMatches = []
             # Iterate through the matches and add them to a list of good matches if they're within a certain simiarity
@@ -36,7 +34,7 @@ class Detect():
             Matches.append([successfullMatches, target])
         # Over 15 good matches will be considered a complete match
         for resultMatches in Matches:
-            if len(resultMatches[0]) > 30:
+            if len(resultMatches[0]) > 20:
                 print("MATCHED")
                 # If so, break the for loop and return the list of matches from the Detect method
                 return resultMatches[0], resultMatches[1]
@@ -124,7 +122,7 @@ class Detect():
                 max_score = np.max(scores)
                 print(max_score)
 
-                threshold = 0.30 # adjust threshold value
+                threshold = 0.29 # adjust threshold value
 
                 # if the maximum score is above the threshold, return the location of the detected target
                 if max_score >= threshold:
