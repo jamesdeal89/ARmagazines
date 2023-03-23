@@ -1,6 +1,7 @@
 """This is the file for the detection class"""
 import cv2
 import copy
+import sys
 import numpy as np 
 import imutils
 
@@ -22,7 +23,9 @@ class Detect():
         # Iterate through each target object
         Matches = []
         for target in self.targetsList:
-            print("CHECK......")
+            cv2.imshow("target",target.getLoadedObj())
+            cv2.waitKey()
+            print("CHECK......"+ str(target._filepath) + str(len(target.getDescriptors())))
             # Scan images to compare keypoints based on descriptors attributes
             matches = bruteForce.knnMatch(target.getDescriptors(),self.webcam.getDescriptors(),k=2)
             successfullMatches = []
@@ -34,7 +37,8 @@ class Detect():
             Matches.append([successfullMatches, target])
         # Over 15 good matches will be considered a complete match
         for resultMatches in Matches:
-            if len(resultMatches[0]) > 20:
+            print(str(len(resultMatches[0])) + str(resultMatches[1]._filepath))
+            if len(resultMatches[0]) > 15:
                 print("MATCHED")
                 # If so, break the for loop and return the list of matches from the Detect method
                 return resultMatches[0], resultMatches[1]

@@ -168,7 +168,7 @@ def main():
     for target in targets[1:]:
         target.getSourceObj().load()
         target.load()
-        target.resize(h1,w1)
+        target.resize(w1,h1)
         # this generates the samples for target detection. This has recently be changed to be outside the loop to increase framerate
         target.myGenPoints()
         target.genPoints()
