@@ -108,12 +108,21 @@ cv::VideoCapture::VideoCapture(int -> index, int -> apiPreference = CAP_ANY)
 ~~~
 
 In laymans terms this notation means that this is a part of the CV library which has a VideoCapture method. This can take two parameters:
-The index which is an integer and your 'api preference' which is also an integer. The documentation page further elaborates to say that passing in 
-a value of '0' will capture from to the systems default video device; typically the webcam. 
+The index which is an integer and your 'api preference' which is also an integer. The documentation page further elaborates to say that passing in a value of '0' will capture from to the systems default video device; typically the webcam. 
+
 #### OpenCV Documentation - Homography Algorithms:
 Source: https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
+
 #### OpenCV Documentation - Bitwise Operators:
 Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
+
+#### OpenCV Documentation - Perspective Warp:
+
+#### OpenCV Documentation - Aruco Markers:
+
+#### PyTesseract - Optical Character Recognition:
+
+#### 
 
 ## Documented Design:
 
@@ -217,10 +226,30 @@ A list of areas I could add functionality to/ improve on are:
 - Allow the user to select a 'performance' mode that only loads the first detected target and ignores other --> increases framerate
 
 ### Graphical Interface:
-#### Using PySimpleGUI for concept
+#### Using PySimpleGUI
 For my program, I need to create a user-friendly interface. This is as my client is the schools media studies department who might not have time or the knowledge to hard-code filepaths or to navigate a command-line. Therefore from my research I've found that PySimpleGUI is an effective library to use for this purpose. It allows me to create graphical windows and input boxes which are essential. However, as the name suggests, it keeps the code required to get it working at a minimum. Therefore allowing me to focus on the backend further while still having an effective user interface.
 
-#### Using Tkinter for full implementation
+As per https://www.pysimplegui.org/en/latest/#pysimplegui-users-manual we can utilise the following GUI elements for my project:
+~~~
+sg.Text("Text to be displayed")
+~~~
+This allows us to put text into the GUI window. This can help the user understand how to interface with the buttons and other interactive elements I use.
+~~~
+sg.OK(), sg.Cancel()
+~~~
+These elements can be used to create buttons which can be listened to detect interaction via .read() which returns a tuple of (event, values). These need to be read for every frame in a while loop to constantly detect whether either of these buttons are pressed in the events variable. Values on the other hand holds any data the user inputs.
+~~~
+sg.InputText()
+~~~
+Above is an example of how user inputs can be used to capture user generated data. This method allows a textbox to be added to the GUI which allows the user to type any text which can be captured via, as mentioned before, the values variable. 
+~~~
+sg.Slider(range, default_value, resolution, size, orientation)
+~~~
+This is an incredibly useful method for creating an interactive slider. This has several parameters which allow it to be customised. For example range allows the start and end values of the slider to be defined, default_value defines where the slider should start by default, resolution defines the step of the slider, for example in steps of 5 from 0 to 10 would give two options.
+~~~
+sg.FileBrowse()
+~~~
+Method which allows the user to select any file from their computer via a GUI based file browser. This is a nice way to allow filenames to be input with a more pleasant UX. 
 
 ### Making a bitwise operator class
 I want to remove some of the OpenCV library methods and instead make my own algorithms to enhance my project. In this stage I want to start with creating my own bitwsie operator class for OpenCV images. 
