@@ -1,9 +1,34 @@
 # Computer Science NEA - AR Video Magazine Covers
-## Requirements:
+## General Requirements:
  - Python 3.XX
- - Numpy
- - OpenCV (pip3 install opencv-python)
- - PySimpleGUI (pip3 install PySimpleGUI)
+ - PyTesseract 
+ - OpenCV 
+ - PySimpleGUI
+
+## Exhaustive Requirements (as per requirements.txt)
+ - docopt==0.6.2
+ - exceptiongroup==1.1.0
+ - grip==4.6.1
+ - hepunits==2.3.1
+ - imutils==0.5.4
+ - iniconfig==2.0.0
+ - numpy==1.24.2
+ - opencv-python==4.7.0.68
+ - packaging==23.0
+ - particle==0.21.2
+ - path-and-address==2.0.1
+ - pluggy==1.0.0
+ - PySimpleGUI==4.60.4
+ - pytesseract==0.3.10
+ - pytest==7.2.1
+ - tk==0.1.0
+ - tomli==2.0.1
+
+Automatic installation of all pre-requisites can be done using the included requirements.txt file:
+~~~
+pip3 install -r requirements.txt
+~~~
+The exhaustive requirements includes many which are already included with other packages. 
 
 ## Analysis:
 ### Introduction:
