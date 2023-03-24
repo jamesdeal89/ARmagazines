@@ -203,27 +203,29 @@ def main():
         # if there is a targetted magazine detected
         if (detectedTarget is not None or lowLevel == False) and (result is not None):
             # ensure both my detect and OpenCV's detect are in agreement
-            successfullMatches, detectedTargetCheck = result
+            successfullMatches, detectedTargetCheck, arucoBorders = result
             if detectedTarget == detectedTargetCheck or (lowLevel == False):
                 if lowLevel == False:
                     detectedTarget = detectedTargetCheck
-                border = Border(detectedTarget, webcam, successfullMatches)
-                destinationPoints, homographyMatrix = border.border()
-                print("BORDER CALCULATED")
-                h,w,c = webcam.getFrame().shape
-                warp = Warp(target.getSourceObj().getFrame(), homographyMatrix, [w,h])
-                warpedSource = warp.warp()
-                print("SOURCE WARPED")
-                project = Project(webcam.getFrame(), warpedSource, destinationPoints)
-                # check which mode the program is in
-                if lowLevel:
-                    project.myProject()
-                else:
-                    project.project()
-                print("PROJECTED ONTO WEBCAM")
-                buttonPress = cv2.waitKey(1)
-                if buttonPress == 81 or buttonPress == 113:
-                    sys.exit()
+                border = Border(detectedTarget, webcam, successfullMatches, arucoBorders)
+                borderResult = border.border()
+                if borderResult != None:
+                    destinationPoints, homographyMatrix = borderResult
+                    print("BORDER CALCULATED")
+                    h,w,c = webcam.getFrame().shape
+                    warp = Warp(target.getSourceObj().getFrame(), homographyMatrix, [w,h])
+                    warpedSource = warp.warp()
+                    print("SOURCE WARPED")
+                    project = Project(webcam.getFrame(), warpedSource, destinationPoints)
+                    # check which mode the program is in
+                    if lowLevel:
+                        project.myProject()
+                    else:
+                        project.project()
+                    print("PROJECTED ONTO WEBCAM")
+                    buttonPress = cv2.waitKey(1)
+                    if buttonPress == 81 or buttonPress == 113:
+                        sys.exit()
         else:
             # if there is no detected target, we still display the plain webcam to keep motion smooth
             cv2.imshow("Output",webcam.getFrame())
