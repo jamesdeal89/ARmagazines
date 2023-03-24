@@ -674,7 +674,1013 @@ A visualisation of this process can be seen below:
 
 <img src="assets/smartSample.png" width=500>
 
+## Technical Solution
+Below are seperated sections for each file of my overall project. 
+According to CLOC, a program which counts lines of code, this contains just under 1000 lines including comments.
 
+### main.py
+~~~python
+"""In this file I want to create a class structure for my code. This is based upon the projectvideo.py file.
+My plan is to create a 'file' class which then allows for a source, target and webcam class to inherit from. 
+Then a main() function will create instances of these classes and run the iteration and processesing for some aspects.
+I want to make processing inside class methods as much as I can so I'm going to make the warping of images, projection and 
+detection into their own objects.  
+Some classes will be placed in a filesystem of objects which are in this folder.
+Overall this file will be focused on GUI implementation and calling class methods."""
+
+# import our external libraries of:
+# OpenCV for image manipulation, 
+# PySimpleGUI for GUI, 
+# os is for identify filepaths,
+# sys is for error handling,
+# and built-in python csv library for saving and loading data
+import cv2
+import PySimpleGUI as sg
+import csv
+import os
+import sys
+import copy
+from warp import Warp
+from project import Project
+from detect import Detect
+from border import Border
+from webcam import Webcam
+from source import Source
+from target import Target
+from search import Search
+
+def GUIgen():
+    """The second GUI to get the target and source file locations"""
+    event, values = sg.Window('Provide the files', [[sg.Text("This will pop-up continously until 'finish' button is pressed")],
+                                                    [sg.Text('File for target magazine cover')], 
+                                                    [sg.Input(), sg.FileBrowse()],[sg.Text('File for source video to be projected')], 
+                                                    [sg.Input(), sg.FileBrowse()], 
+                                                    [sg.OK(), sg.Button('Finish')] ]).read(close=True)
+    if event == 'Finish':
+        return None, None
+    else:
+        return values[0], values[1]
+
+def GUI():
+    """This is the first GUI page which gets the user to either provide or generate a .csv pair file"""
+    # set the theme
+    sg.theme('DarkAmber') 
+    # sets the layout of the GUI
+    layout = [  [sg.Text('For the AR to work, a savefile of source videos and target magazine cover images needs to be loaded.')],
+                [sg.Text('Enter filename (ending in .csv):')],
+                [sg.Input()],
+                [sg.Text('How to continue?:')],
+                [sg.Button('Load'), sg.Button('Generate'), sg.Button("Update") ],  
+                [sg.Checkbox('Enable low-level mode? (slower)', default=False, key='lowLevel')],
+                [sg.Checkbox('Auto-generate text? (imperfect)', default=False, key='autoText')],
+                [sg.Text('Compression size (lower is smaller):')],
+                [sg.Slider(range=(0.7, 1.0), resolution=0.1, orientation='horizontal', key='lowRes', default_value=100)]]
+    # makes a window
+    window = sg.Window('AR Magazine Projector', layout)
+    # loops to scan for events and capture user inputs
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED: 
+            break
+        elif event == 'Load':
+            window.close()
+            # values["-IN-"] returns the boolean value of the checkbox, True meaning ticked
+            return "l",values[0],values["lowLevel"],values["lowRes"],values["autoText"]
+        elif event == 'Generate':
+            window.close()
+            return "g",values[0],values["lowLevel"],values["lowRes"],values["autoText"]
+        elif event == 'Update':
+            window.close()
+            return "u",values[0],values["lowLevel"],values["lowRes"],values["autoText"]
+    # close the window if the user breaks the event check loop
+    window.close()
+
+def generateCSV(pairings, createOrUpdate,fileName,autoText):
+    # this will use file I/O and the csv library to take the pairing dictionary list and either write or append to 
+    # a pairs.csv file.
+    with open(fileName,createOrUpdate) as file:
+        # use the csv library's dictionary writer to make the .csv file's heading (if creating) and for later writing each dict
+        dictwriter = csv.DictWriter(file, fieldnames=pairings[0].keys())
+        if createOrUpdate == "w":
+            dictwriter.writeheader()
+        # iterate through the pairs list to get each dictionary 
+        for pair in pairings:
+            dictwriter.writerow(pair)
+    return loadPairs(fileName,autoText)
+
+def generatePairs(createOrUpdate, fileName, autoText):
+    # create a csv file of the target and source pairs if one does not exist
+    # allow user to keep entering target and source pair filenames with .mp4 and .jpeg images until ctrl+D
+    # verify input using regex
+    targetSource = []
+    userNotDone = True
+    pairing = {}
+    while True:
+        fileTarget, fileSource = GUIgen()
+        if fileTarget == None:
+            break
+        # seperate the file extensions using os library 
+        name,ext = os.path.splitext(fileTarget)
+        name1,ext1 = os.path.splitext(fileSource)
+        # check that both file extensions are valid to avoid OpenCV compatability errors
+        if ext in [".jpg",".jpeg"] and ext1 == ".mp4":
+            # if valid update the dictionary pair and append it to the list
+            pairing["target"] = copy.deepcopy(fileTarget)
+            pairing["source"] = copy.deepcopy(fileSource)
+            targetSource.append(copy.deepcopy(pairing))
+        else:
+            sg.popup('ERROR', 'File extension must be .jpeg/.jpg for the target and .mp4 for the source')
+    # once loop is broken we call the file generator function
+    return generateCSV(targetSource,createOrUpdate,fileName,autoText)
+
+def loadPairs(fileName,autoText):
+    with open(fileName, "r") as file:
+        reader = csv.DictReader(file)
+        targets = []
+        sources = []
+        counter = 0
+        for row in reader:
+            # we make an append to an array of each object we create for target and source respectively
+            targets.append(Target(row["target"],sourceObj=Source([row["source"]],autoText)))
+            counter += 1
+        return targets
+
+def main():
+    while True:
+        # Here loadOrGen tells us whether we load fileName or generate a file called fileName. lowLevel determines if we use a mix of my own implementation and OpenCV (slow) or all OpenCV's (fast)
+        loadOrGen, fileName, lowLevel, lowRes, autoText = GUI()
+        name, ext = os.path.splitext(fileName)
+        correctInput = True
+        if ext != ".csv":
+            sg.popup('error','File extension must be .csv')
+            correctInput = False
+        if loadOrGen == "l" and correctInput == True:
+            # create an instance of the search class ass set the target as the pairs file and the files to search as the current working directory
+            path = os.getcwd()
+            search = Search(fileName, os.listdir(path))
+            search.sort()
+            if search.search():
+                # get the tuple of loaded target cv2 objects and loaded source cv2 objects
+                targets = loadPairs(fileName,autoText)
+                break
+            else:
+                sg.popup('ERROR', 'File not found')
+                sys.exit("ERROR - pairs.csv file not found. please generate first.")
+        elif loadOrGen == "g" and correctInput == True:
+            # call the generate function and pass in "w" to create or overwrite a pairs.csv file
+            targets = generatePairs("w",fileName,autoText)
+            break
+        elif loadOrGen == "u" and correctInput == True:
+            # using the same generate function except pass in "a" to append to an already exisiting pairs.csv file
+            targets = generatePairs("a",fileName,autoText)
+            break
+    # now that we have the data for every target and source intialized in a dictionary we can begin using the class methods to create the ouput
+    # first we intialize the webcam
+    webcam = Webcam(lowRes=lowRes)
+    webcam.load()
+    targets[0].load()
+    targets[0].getSourceObj().load()
+    if lowRes:
+        # resize to be 0.8x size to increase framerate
+        targets[0].resize(int(targets[0].getLoadedObj().shape[1]*lowRes),int(targets[0].getLoadedObj().shape[0]*lowRes))
+    h1,w1,c1 = targets[0].getLoadedObj().shape
+    targets[0].myGenPoints()
+    targets[0].genPoints()
+    targets[0].replicateText()
+    for target in targets[1:]:
+        target.getSourceObj().load()
+        target.load()
+        target.resize(w1,h1)
+        # this generates the samples for target detection. This has recently be changed to be outside the loop to increase framerate
+        target.myGenPoints()
+        target.genPoints()
+        target.replicateText()
+        # use the Detect class detect() method to get which object is in the frame (if any)
+    # now we can create a loop based on each frame of the webcam we load
+    while True:
+        # call the method which loads the next frame
+        result = None
+        webcam.next()
+        try:
+            # NOTE: source objects are stored WITHIN their respective target objects
+            for target in targets:
+                target.getSourceObj().next(w1,h1)
+        except cv2.error:
+            # if we fail to load the next frame we should loop the source videos by reloading them now
+            targets[0].getSourceObj().load()
+            targets[0].getSourceObj().next(w1,h1)
+            for target in targets[1:]:
+                target.getSourceObj().load()
+                target.getSourceObj().next(w1,h1)
+        else:
+            # use the Detect class detect() method to get which object is in the frame (if any)
+            detect = Detect(webcam, targets)
+            # this uses a lower level implementation which gets just which target is in the webcam
+            if lowLevel:
+                detectedTarget = detect.myDetect()
+            else:
+                detectedTarget = None
+            # this uses a higher level OpenCV implementation which also gets matches for a homography calculation
+            result = detect.detect()
+        # if there is a targetted magazine detected
+        if (detectedTarget is not None or lowLevel == False) and (result is not None):
+            # ensure both my detect and OpenCV's detect are in agreement
+            successfullMatches, detectedTargetCheck, arucoBorders = result
+            if detectedTarget == detectedTargetCheck or (lowLevel == False):
+                if lowLevel == False:
+                    detectedTarget = detectedTargetCheck
+                border = Border(detectedTarget, webcam, successfullMatches, arucoBorders)
+                borderResult = border.border()
+                if borderResult != None:
+                    destinationPoints, homographyMatrix = borderResult
+                    print("BORDER CALCULATED")
+                    h,w,c = webcam.getFrame().shape
+                    warp = Warp(target.getSourceObj().getFrame(), homographyMatrix, [w,h])
+                    warpedSource = warp.warp()
+                    print("SOURCE WARPED")
+                    project = Project(webcam.getFrame(), warpedSource, destinationPoints)
+                    # check which mode the program is in
+                    if lowLevel:
+                        project.myProject()
+                    else:
+                        project.project()
+                    print("PROJECTED ONTO WEBCAM")
+                    buttonPress = cv2.waitKey(1)
+                    if buttonPress == 81 or buttonPress == 113:
+                        sys.exit()
+        else:
+            # if there is no detected target, we still display the plain webcam to keep motion smooth
+            cv2.imshow("Output",webcam.getFrame())
+            buttonPress = cv2.waitKey(1)
+            if buttonPress == 81 or buttonPress == 113:
+                sys.exit()
+
+
+# if we're running the main.py file, run the main() subroutine
+# this prevents issues with imported files
+if __name__ == "__main__":
+    main()
+~~~
+
+### file.py
+~~~python
+"""The class for files as OpenCV objects"""
+import cv2
+class File():
+    def __init__(self, filepath):
+        self.filepath = filepath
+        self._loadedObj = None
+    
+    # the getter for the filepath attribute
+    @property
+    def filepath(self):
+        return self._filepath
+
+    # the setter for the filepath attribute
+    @filepath.setter
+    def filepath(self,path):
+        try: 
+            # ensure the path isn't an invalid datatype
+            int(path)
+        except (TypeError, ValueError):
+            self._filepath = path
+            return True
+        else:
+            return False
+
+    # getter for the loadedObj attribute
+    def getLoadedObj(self):
+        return self._loadedObj
+
+    # loads the file from the filepath attribute and loads it as an OpenCV object, saved in the loadedObj attribute
+    def load(self):
+        self._loadedObj = cv2.imread(self.filepath)
+~~~
+
+### source.py
+~~~python
+"""This is the class for source videos which inherits from the webcam class"""
+from webcam import Webcam
+import cv2
+class Source(Webcam):
+    """
+    This is the Source class which inherits from the Webcam class.
+    It similarly loads frames however from a file rather than a video capture device.
+    """
+    def __init__(self, filepath,autoText):
+        # intialize the filepath from the parent class which is Webcam which then passes into that parent class which is File
+        super().__init__(filepath=filepath)
+        self._frame = None   
+        self._autoText = autoText
+    
+    # Getter for frame 
+    def getFrame(self):
+        return self._frame
+    
+    # Loads the video file - polymorphism of load() method in File/Webcam class
+    def load(self):
+        # Load the video file from the path and and assign to loadedVid attribute
+        print(self.filepath)
+        self._loadedVid = cv2.VideoCapture(self.filepath[0])
+    
+    # Loads the next frame of the video
+    def next(self,w,h):
+        # Here loadedBool is a True/False of whether the video has ended
+        self._loadedBool, self._frame = self._loadedVid.read()
+        self._frame = cv2.resize(self._frame,(w,h))
+        if self._autoText:
+            # add the detected OCR text onto the source frame
+            # for each detected word
+            for boxIndex in range(len(self._text['text'])):
+                # get that word's detected location in x and y
+                x,y = self._text['left'][boxIndex], self._text['top'][boxIndex]
+                # insert text at that location with the same content
+                cv2.putText(self._frame,self._text['text'][boxIndex],(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255,255,255))
+        
+    def setText(self,data):
+        self._text = data
+~~~
+
+### target.py
+~~~python
+"""This is file for the target class which inherits from the file class"""
+import cv2
+from file import File
+from detect import Detect
+import numpy as np
+import copy
+from text import Text
+
+class Target(File):
+    """
+    This is the Target class. It inherits from the File class. 
+    It holds an OpenCV image object in it's attributes alongside
+    it's keypoint data for later detection and recognition. 
+    """
+    def __init__(self, filepath, sourceObj):
+        # Intialize the parent class, File using the filepath Parameter
+        super().__init__(filepath)
+        self._sourceObj = sourceObj
+        self._myPoints = [None]
+
+    # Method to generate the descriptors and keypoints
+    def genPoints(self):
+        orb = cv2.ORB_create(nfeatures=1000)
+        # Create descriptor and keypoint attributes which can be used for target detection later
+        self._keyPoints, self._descriptors = orb.detectAndCompute(self.getLoadedObj(),None)
+
+    def mySetPoints(self,sample):
+        # Using my own implementation of image detection which can be used when in 'performance' mode.
+        self._myPoints.append(sample)
+    
+    def myGenPoints(self):
+        # generates keypoints using my own implementation in Detect class
+        # this also ensures that the samples generated have enough features within them using .sum()
+        detect = Detect()
+        sum_of_pixels = 0
+        # this holds previous samples, if we fail to get a good match, we take this next best choice
+        previous = {}
+        h, w, c = self.getLoadedObj().shape
+        # scan horizontally
+        for y in range(0, h, w//4):
+            for x in range(0, w, w//4):
+                # prevent going over edge of image
+                if x + (w//4-1) > w or y + (w//4-1) > h:
+                    continue
+                self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[w//4, w//4], target=self.getLoadedObj(), x=x, y=y))
+                sum_of_pixels = np.sum(self._myPoints[0])
+                # save the current sample incase we overrun
+                previous[sum_of_pixels] = copy.deepcopy(self._myPoints[0])
+                # if we found a good sample, break out of loops
+                if sum_of_pixels >= 2000000:
+                    break
+            if sum_of_pixels >= 2000000:
+                break
+        # if we haven't found a good sample yet, scan vertically
+        if sum_of_pixels < 2000000:
+            for x in range(0, w, w//4):
+                for y in range(0, h, w//4):
+                    # prevent going over edge of image
+                    if x + (w//4-1) > w or y + (w//4-1) > h:
+                        continue
+                    self._myPoints[0] = cv2.convertScaleAbs(detect.myHighPass(size=[w//4, w//4], target=self.getLoadedObj(), x=x, y=y))
+                    sum_of_pixels = np.sum(self._myPoints[0])
+                    # save the current sample incase we overrun
+                    previous[sum_of_pixels] = copy.deepcopy(self._myPoints[0])
+                    # if we found a good sample, break out of loops
+                    if sum_of_pixels >= 2000000:
+                        break
+                if sum_of_pixels >= 2000000:
+                    break
+        # if we still haven't found a good sample, take the best previous sample
+        if sum_of_pixels < 2000000:
+            key = max(previous.keys())
+            self._myPoints[0] = previous[key]
+
+    def replicateText(self):
+        # intialise the text class and set it's target as this instance
+        text = Text(self)
+        # process this target image
+        text.process()
+        # extract data from the processed image
+        text.extract()
+        # apply to source
+        text.addText()
+    
+    def myGetPoints(self):
+        return self._myPoints
+
+    def getSourceObj(self):
+        return self._sourceObj
+
+    # getter for descriptors
+    def getDescriptors(self):
+        return self._descriptors
+
+    # getter for keyPoints
+    def getKeyPoints(self):
+        return self._keyPoints
+
+    def resize(self,w,h):
+        self._loadedObj = cv2.resize(self._loadedObj,(w,h))
+~~~
+
+### webcam.py
+~~~python
+"""This is the class for webcam objects which inherits from the file class"""
+from file import File
+import cv2
+class Webcam(File):
+    """
+    This is the Webcam class which inherits from the File class
+    """
+    def __init__(self,filepath=None,lowRes=False):
+        super().__init__(filepath)
+        self._frame = None
+        self._descriptors = None
+        self._keyPoints = None
+        self._loadedBool = None
+        self._loadedWeb = None
+        self._lowRes = lowRes
+
+    # Method to generate the descriptors and keypoints
+    def genPoints(self):
+        orb = cv2.ORB_create(nfeatures=1000)
+        # Create descriptor and keypoint attributes which can be used for target detection later
+        self._keyPoints, self._descriptors = orb.detectAndCompute(self._frame,None)
+
+    # Getter for descriptors
+    def getDescriptors(self):
+        return self._descriptors
+
+    # Getter for keyPoints
+    def getKeyPoints(self):
+        return self._keyPoints
+
+    # Getter for frame 
+    def getFrame(self):
+        return self._frame
+
+    # Loads the webcam feed - polymorphism of load() method in File class
+    def load(self):
+        # Load the default webcam feed and assign to loadedWeb attribute
+        self._loadedWeb = cv2.VideoCapture(0)
+
+    # Loads the next frame of the webcam
+    def next(self):
+        # Here loadedBool is a True/False of whether the feed is ended
+        self._loadedBool, self._frame = self._loadedWeb.read()
+        dimensions = self._frame.shape
+        if self._lowRes:
+            # Resize the image to increase framerate
+            self._frame = cv2.resize(self._frame, (int(dimensions[1]*self._lowRes), int(dimensions[0]*self._lowRes)))
+~~~
+
+### search.py
+~~~python
+""" This is a class for searching a filesystem for a filename. It allows more forgiving user input than default python"
+"""
+class Search():
+    def __init__(self, filename, unordList):
+        self._filename = filename
+        self._unordList = unordList
+        self._sortedDir = None
+
+
+    def sort(self):
+        """
+        this method uses insetion sort to sort the files in the directory currently searching
+        necesary to allow for searching later with binary search
+        in insertion sort we take values in an unsorted list and continously insert them into their appropriate position in a sorted list
+        """
+        # insertion sort --> O(n^2) time complexity 
+        # for each item in the unordered list
+        for i in range(1, len(self._unordList)):
+            position = i 
+            # while we arent at the start index and the current element is less than the previous element,
+            while position > 0 and self._unordList[position-1] > self._unordList[position]:
+                # swap the two elements if they are not in the correct order
+                self._unordList[position], self._unordList[position-1] = self._unordList[position-1], self._unordList[position]
+                # change the position value to be the previous element
+                position -= 1
+        # once all loops are broken, set the sortedDir attribute to the sorted list
+        self._sortedDir = self._unordList
+
+        # line below only used if testing the function with pytest
+        return self._sortedDir
+
+
+    def binarySearch(self,sortedDir,target,start,end):
+        if start > end:
+            # file not found, return False
+            return False
+        else:
+            # calculate mid-point
+            mid = (start + end) //2
+            # check if mid-point is the file 
+            if target == sortedDir[mid]:
+                # file exists, return True
+                return True
+            # otherwise check if file would be above or below the mid-poiny
+            elif target > sortedDir[mid]:
+                # recur and exclude the first half of the list
+                return self.binarySearch(sortedDir,target,mid+1,end)
+            elif target < sortedDir[mid]:
+                # recur and exclude the second half of the list
+                return self.binarySearch(sortedDir,target,start,mid-1)
+
+
+    def search(self):
+        """
+        this uses binary search on an ordered list to check if the filename is in the directory.
+        returns a boolean value and takes no parameters. MUST call sort() method first.
+        """
+        if self._sortedDir != None:
+            # completes a binary search algorithm --> O(log n) complexity 
+            return self.binarySearch(self._sortedDir,self._filename,0,len(self._sortedDir)-1)
+        else:
+            sys.exit("ERROR - call sort() method before search() method")
+~~~
+
+### detect.py
+~~~python
+"""This is the file for the detection class"""
+import cv2
+import copy
+import sys
+import numpy as np 
+import imutils
+
+class Detect():
+    def __init__(self,webcam=None, targetsList=None):
+        """
+        Parameters:
+        - webcam: the webcam object.
+        - targetsList: array of target objects.
+        """
+        self.webcam = webcam
+        self.targetsList = targetsList
+        self.detected = None
+        # generate the aruco dictionary for enhanced detection -> mostly for finding clean borders
+        self.arucoDict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
+
+    def detect(self):
+        # Intialize the bruteforce matcher which scans entire webcam frame for keypoints of targets
+        bruteForce = cv2.BFMatcher()
+        self.webcam.genPoints()
+        # Iterate through each target object
+        Matches = []
+
+        # check for aruco markers for more accurate borders
+        arucoBorders = self.detectArucoMarkers()
+
+        for target in self.targetsList:
+            print("CHECK......"+ str(target._filepath) + str(len(target.getDescriptors())))
+            # Scan images to compare keypoints based on descriptors attributes
+            matches = bruteForce.knnMatch(target.getDescriptors(),self.webcam.getDescriptors(),k=2)
+            successfullMatches = []
+            # Iterate through the matches and add them to a list of good matches if they're within a certain simiarity
+            for targetMatch,sourceMatch in matches:
+                if targetMatch.distance < 0.75 * sourceMatch.distance:
+                    # Append the good match to a list
+                    successfullMatches.append(targetMatch)
+            Matches.append([successfullMatches, target])
+        # Over 15 good matches will be considered a complete match
+        for resultMatches in Matches:
+            print(str(len(resultMatches[0])) + str(resultMatches[1]._filepath))
+            if len(resultMatches[0]) > 15:
+                print("MATCHED")
+                # If so, break the for loop and return the list of matches from the Detect method alongside the detected target and, if applicable, the aruco marker borders
+                return resultMatches[0], resultMatches[1], arucoBorders
+
+    
+    def myHighPass(self,size,target,threshold=80, x=0,y=0):
+        # size paramter limits how much of the image we filter and use
+        # this can improve performance if image is high resolution
+        # create a blank mask of empty zero values in size of sample
+        """
+        if lowLevel:
+            mask = np.zeros(shape=(size[1],size[1]))
+            targetCOPY = copy.deepcopy(target)
+            # change to greyscale
+            target = cv2.cvtColor(targetCOPY, cv2.COLOR_BGR2GRAY)
+            # iterate through each position in the empty matrix
+            for i in range(size[0],size[1]):
+                for j in range(size[0],size[1]):
+                    # find the overall summed difference between the values in a 9*9 grid around the central current position
+                    differential = -1*target[i][j]-1*target[i][j+1]-1*target[i][j+2]-1*target[i+1][j]+8*target[i+1][j+1]-1*target[i+1][j+2]-1*target[i+2][j]-target[i+2][j+1]-1*target[i+2][j+2]
+                    
+                    # if this overall differences with the surrounding pixels is greater than 80, we accept it as a hard edge and adjust that pixel to be shown equal to how hard the edge is.
+                    if differential > 60:
+                        mask[i][j] = differential
+            # crop the mask to only show the sampled area
+            mask = mask[size[0]:size[1],size[0]:size[1]]
+            return mask
+        """
+        # create a blank mask of empty zero values in size of sample
+        mask = np.zeros(shape=(size[1], size[0]), dtype=np.float32)
+        # create a deep copy of the target so that the original image is not affected, and change to grayscale
+        target_gray = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY).astype(np.float32)
+        # calculate the kernel for the 3x3 grid
+        kernel = np.array([
+                        [-1, -1, -1],
+                        [-1,  8, -1],
+                        [-1, -1, -1],], dtype=np.float32)
+        # select the target region based on the x and y coordinates
+        target_region = target_gray[y:y+size[1], x:x+size[0]]
+        # use OpenCV's filter2D function to convolve the kernel with the image to calculate the overall summed difference
+        differential = cv2.filter2D(target_region, -1, kernel, borderType=cv2.BORDER_CONSTANT)
+        # if the overall difference with the surrounding pixels is greater than the threshold value, adjust that pixel to be shown equal to how hard the edge is
+        mask[differential > threshold] = differential[differential > threshold]
+        # any values above 255 will be 'clipped' to make validating quality of samples better (see targets.myGenPoints)
+        mask = np.clip(mask, 0, 255)
+        return mask
+
+
+    def myDetect(self):
+        """
+        This class is intended to create my own implementation of OpenCV's image matcher and keypoint generator.
+        My initial ideas are to use a 'high-pass' filter on the target images to only get B&W data on hard edges.
+        This means that any colour variation caused by viewing the target through a webcam can be avoided.
+        From this high-pass version, I will take the most significant keypoints by scanning over the image and then using the portions with high variety in pixels. These will be compared to scans across the target webcam frame to find the detected target. 
+        """
+
+
+        # apply highpass filter to webcam image
+        webcamHP = cv2.convertScaleAbs(self.myHighPass(size=[self.webcam.getFrame().shape[1]-10,self.webcam.getFrame().shape[0]-10],target=self.webcam.getFrame(), threshold=20))
+
+        # Apply contrast normalization to image
+        webcamHP = cv2.normalize(webcamHP, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
+
+        # Apply noise reduction to image
+        webcamHP = cv2.GaussianBlur(webcamHP, (5, 5), 0)
+
+        detectedTarget = None
+
+        # rotate the target image by different angles and perform template matching on each rotated version
+        for target in self.targetsList:
+            print(str(target._filepath))
+            for targetHP in target.myGetPoints():
+
+                # Apply contrast normalization to image
+                targetHP = cv2.normalize(targetHP, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
+
+                # Apply noise reduction to image
+                targetHP = cv2.GaussianBlur(targetHP, (5, 5), 0)
+
+                scores = []
+                angles = np.arange(0, 360, 5) # rotate by 5 degree increments
+                for angle in angles:
+                    rotated = imutils.rotate_bound(targetHP, angle) # rotate the image
+                    result = cv2.matchTemplate(webcamHP, rotated, cv2.TM_CCOEFF_NORMED)
+                    scores.append(np.max(result)) # store the maximum correlation score for each rotation
+
+                # use the maximum score across all rotations as the final score for the template match
+                max_score = np.max(scores)
+                print(max_score)
+
+                threshold = 0.29 # adjust threshold value
+
+                # if the maximum score is above the threshold, return the location of the detected target
+                if max_score >= threshold:
+                    print("MY MATCHED")
+                    detectedTarget = target  # return the target
+            
+        return detectedTarget 
+
+
+    def detectArucoMarkers(self):
+        """use opencv to detect aruco markers in the webcam frame"""
+        # get the webcam frame
+        frame = self.webcam.getFrame()
+        # convert to grayscale
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        parameters =  cv2.aruco.DetectorParameters()
+        # detect aruco markers
+        detector = cv2.aruco.ArucoDetector(self.arucoDict, parameters)
+        corners, ids, rejectedImgPoints = detector.detectMarkers(gray)
+        # Check if all four markers are detected
+        if ids is not None and len(ids) == 4:
+            # Get the indices of the four markers
+            marker_indices = np.where(np.isin(ids, [0, 1, 2, 3]))[0]
+            # Extract the corner coordinates of the four markers
+            marker_corners = np.array([corners[i][0] for i in marker_indices], dtype=np.float32)
+
+            # return the corners of the markers -> this can help us remove need for border detetection
+            return marker_corners
+        # if we didn't detect an aruco marker, return None
+        return None
+~~~
+
+### warp.py
+~~~python
+"""This file is for the warp class which takes a source object and warps it"""
+import cv2
+class Warp():
+    def __init__(self, sourceFrame, homographyMatrix, dimensionsList):
+        self.warpedImg = None
+        self.homographyMatrix = homographyMatrix
+        self.sourceFrame = sourceFrame
+        self.dimensionsList = dimensionsList
+    
+    @property
+    def warpedImg(self):
+        return self._warpedImg
+
+    @property
+    def homographyMatrix(self):
+        return self._homographyMatrix
+
+    @property
+    def sourceFrame(self):
+        return self._sourceFrame
+
+    @property
+    def dimensionsList(self):
+        return self._dimensionsList
+
+    @warpedImg.setter
+    def warpedImg(self,img):
+        self._warpedImg = img
+
+    @homographyMatrix.setter
+    def homographyMatrix(self,matrix):
+        self._homographyMatrix = matrix
+
+    @sourceFrame.setter
+    def sourceFrame(self,frame):
+        self._sourceFrame = frame
+
+    @dimensionsList.setter
+    def dimensionsList(self,listDim):
+        self._dimensionsList = listDim
+
+    def warp(self):
+        """
+        Takes an image frame in the form of an OpenCV object.
+        Warps the image by the provided homography matrix.
+        Returns the resulting OpenCV object.
+        """
+        self._warpedImg = cv2.warpPerspective(self._sourceFrame, self._homographyMatrix, (self._dimensionsList[0],self._dimensionsList[1]))
+        return self._warpedImg
+~~~
+
+### border.py
+~~~python
+# the file for the class Border which finds the borders of the detected target in the webcam frame
+import cv2
+import numpy as np
+class Border():
+    def __init__(self, target, webcam, successfullMatches, arucoBorders):
+        self._target = target
+        self._webcam = webcam
+        self._successfullMatches = successfullMatches
+        self._arucoBorders = arucoBorders
+
+    def border(self):
+        h1,w1,c1 = self._target.getLoadedObj().shape
+        sourcePoints = np.float32([[0,0],[w1,0],[w1,h1],[0,h1]]).reshape(-1,1,2)
+
+        if self._arucoBorders is None:
+            originalPoints = np.float32([self._target.getKeyPoints()[m.queryIdx].pt for m in self._successfullMatches]).reshape(-1,1,2)
+            destinationPoints = np.float32([self._webcam.getKeyPoints()[m.trainIdx].pt for m in self._successfullMatches]).reshape(-1,1,2)
+        else:
+            # if we did detect an aruco marker we can use that to calculate homography rather than keypoints
+            originalPoints = sourcePoints
+            destinationPoints = self._arucoBorders
+        
+        homographyMatrix, mask = cv2.findHomography(originalPoints,destinationPoints,cv2.RANSAC,5)
+
+        try:
+            destinationPoints = cv2.perspectiveTransform(sourcePoints, homographyMatrix)
+        except cv2.error:
+            # if we hit CV2 error it means we had a false match and we can catch this error
+            return
+
+        return destinationPoints, homographyMatrix
+~~~
+
+### project.py
+~~~python
+"""This is the file for projecting the source object onto the webcam object"""
+import numpy as np
+import cv2
+# import my own implementation of bitwise image operations
+from bitwise import Bitwise
+
+
+class Project():
+    def __init__(self, webFrame,warpedSource,destinationPoints):
+        self.webFrame = webFrame
+        self.warpedSource = warpedSource
+        self.destinationPoints = destinationPoints
+
+    
+    # the getter for webFrame
+    @property
+    def webFrame(self):
+        return self._webFrame
+
+    # the getter for warpedSource
+    @property
+    def warpedSource(self):
+        return self._warpedSource
+
+    # the getter for destinationPoints
+    @property
+    def destinationPoints(self):
+        return self._destinationPoints
+
+    # the setter for webFrame
+    @webFrame.setter
+    def webFrame(self,frame):
+        self._webFrame = frame
+
+    # the setter for warpedSource
+    @warpedSource.setter
+    def warpedSource(self,frame):
+        self._warpedSource = frame
+
+
+    # the setter for destinationPoints
+    @destinationPoints.setter
+    def destinationPoints(self, points):
+        self._destinationPoints = points
+
+    def project(self):
+        """This method will use the intialized values for warpedSource and the webcamFrame
+        to overlay the two and create an AR effect based on the destination points calculated via
+        the Border() class"""
+        # create a blank mask of 0s in the dimensions of the webcam frame
+        self._mask2 = np.zeros(self.webFrame.shape, dtype=np.uint8)
+        # create a white mask with a black box where the target was detected
+        cv2.fillConvexPoly(self._mask2, np.int32(self.destinationPoints), (255,255,255))
+        self._mask2 = cv2.bitwise_not(self._mask2)
+        self._masked_image2 = cv2.bitwise_and(self.webFrame, self._mask2)
+        self._final = cv2.bitwise_or(self.warpedSource, self._masked_image2)
+        cv2.imshow("Output", self._final)
+
+    def myProject(self):
+        bitwise = Bitwise()
+        # create a blank mask of 0s in the dimensions of the webcam frame
+        self._mask2 = np.zeros(self.webFrame.shape, dtype=np.uint8)
+        # create a white mask with a black box where the target was detected
+        cv2.fillConvexPoly(self._mask2, np.int32(self.destinationPoints), (255,255,255))
+        # the following all use my own pure python implementation of openCV's bitwise operations
+        self._mask2 = bitwise.bitNot(self._mask2)
+        self._masked_image2 = bitwise.bitAnd(self.webFrame, self._mask2)
+        self._final = bitwise.bitOr(self.warpedSource, self._masked_image2)
+        cv2.imshow("Output", self._final)
+~~~
+
+### bitwise.py
+~~~python
+"""This class is for the bitwise operations which have to be performed on the webcam and source video to create a projection effect."""
+import cv2
+
+class Bitwise():
+    def __init__(self):
+        pass
+
+
+    def decimalToBinary(self,num,output=[]): 
+        """takes a decimal number and uses recursion to return the binary value """
+        # if the number is greater than 1
+        if num > 1:
+            # recur and half the number by 2 using integer division and also pass in the current output
+            self.decimalToBinary(num//2,output)
+        # then if the output is 1 or less we can append this to our output and return the output
+        # when the output is not complete, the return closes the stack frame, 
+        # but when the final stack is complete, it will return the final output out of the original call
+        output.append(num%2)
+        # make output a single string
+        return int("".join(map(str,output)))
+
+
+    def bitAnd(self,img, img2):
+        # perform a bitwise AND between the two images
+        height = img.shape[0]
+        width = img.shape[1]
+        if img.shape != img2.shape:
+            sys.exit("ERROR - images are not the same size")
+        # iterate through each row
+        for column in range(0,height):
+            # iterate through each column
+            for row in range(0,width):
+                # list to hold each pixels, RGB values after operation
+                values = []
+                # iterate and hold each images pixel colour values one by one for each colour
+                for value in img[column, row]:
+                    for value2 in img2[column,row]:
+                        values.append(value&value2)
+                # ammend the pixel values in the respective pixel with the ANDed values
+                img[column,row] = (values[0],values[1],values[2])
+        # return the amended first image which now holds the values after being ANDed with all of image 2
+        cv2.imshow("AND",img)
+        return img
+
+
+    def bitOr(self, img, img2):
+        # perform a bitwise OR between the two images
+        height = img.shape[0]
+        width = img.shape[1]
+        if img.shape != img2.shape:
+            sys.exit("ERROR - images are not the same size")
+        # iterate through each row
+        for column in range(0,height):
+            # iterate through each column
+            for row in range(0,width):
+                # list to hold each pixels, RGB values after operation
+                values = []
+                # iterate and hold each images pixel colour values one by one for each colour
+                for value in img[column, row]:
+                    for value2 in img2[column,row]:
+                        # perform OR operation on the bits and add to this pixels values
+                        values.append(value|value2)
+                # ammend the pixel values in the respective pixel with the ORed values
+                img[column,row] = (values[0],values[1],values[2])
+        # return the amended first image which now holds the values after being ORed with all of image 2
+        cv2.imshow("OR",img)
+        return img
+
+    def bitNot(self, img):
+        # perfrom a bitwise NOT on an image
+        height = (img.shape[0])
+        width = (img.shape[1])
+        for column in range(0,height):
+            for row in range(0,width):
+                # iterate through every pixel value
+                # create list to store new values for this pixel
+                values = []
+                for value in img[column,row]:
+                    # iterate through every pixel's RGB values, using a loop here as sometimes images have more than 3 values (CMYK)
+                    # use a bitwise NOT on the value
+                    values.append(~value)
+                img[column,row] = (values[0],values[1],values[2])
+        cv2.imshow("NOT",img)
+        return img
+
+if __name__ == "__main__":
+    bitwise = Bitwise()
+    bitwise.decimalToBinary(4)
+    # due to pass by reference need to pass in an empty list to replace old lst
+    a = bitwise.decimalToBinary(5,[])
+    print(a)
+~~~
+
+### text.py
+~~~python
+"""Class for extracting text from targets and adding them to source frames"""
+import pytesseract
+import cv2
+import numpy as np
+
+class Text():
+    def __init__(self, target):
+        self._target = target
+
+    def thresholding(self,image):
+        return cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+
+    def opening(self,image):
+        # processing method to improve OCR accuracy 
+        kernel = np.ones((5,5),np.uint8)
+        return cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel)
+
+    def process(self):
+        # convert to B&W and then apply above method for 'opening' filter
+        self._processedTarget = cv2.cvtColor(self._target.getLoadedObj(), cv2.COLOR_BGR2GRAY)
+        self._processedTarget = self.thresholding(self._processedTarget)
+
+    def extract(self):
+        # this image_to_date returns a dictionary. The key of the dictionary is the text detected and the data includes:
+        # location co-ordinates and confidence scores --> this can be used later to relicate this text in the same location on the source frame
+        data = pytesseract.image_to_data(self._processedTarget, output_type=pytesseract.Output.DICT)
+        self._data = data
+
+    def addText(self):
+        self._target.getSourceObj().setText(self._data)
+~~~
 
 ## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
