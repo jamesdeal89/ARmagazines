@@ -96,7 +96,7 @@ This is a code editor which is extremely light-weight and focuses on streamlinin
 #### Python3:
 Python is a high-level programming language with a focus on simple, 'English-like' syntax. While it's back-end is often considered inefficient in comparison to others, it's still a powerful language with many API and libraries avaliable which will no doubt be useful for a project which will need to integrate with webcams and other hardware.  
 
-### Research On Algorithms / Aproaches That Could Be Used:
+### Research On Algorithms / Aproaches That Could Be Used / External Libraries:
 #### OpenCV Documentation - Displaying Video And Capturing Camera Feeds:
 Source: https://docs.opencv.org/4.x/dd/de7/group__videoio.html
 
@@ -120,9 +120,13 @@ Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
 
 #### OpenCV Documentation - Aruco Markers:
 
-#### PyTesseract - Optical Character Recognition:
+#### OpenCV Documentation - Resizing Images:
 
-#### 
+#### OpenCV Documentation - Convolutions
+
+#### Python - Copy.deepcopy
+
+#### PyTesseract - Optical Character Recognition:
 
 ## Documented Design:
 
@@ -170,17 +174,21 @@ Below is a structure diagram which demonstrates the procedural decomposition of 
 
 ### Flowcharts
 
-#### Border() class flowchart
+#### Border() Class Flowchart
 
 <img src="assets/flowchartBorder.png" alt="flowchart image" width="200">
 
-#### Denary to Binary flowchart
+#### Denary To Binary Flowchart
 
 <img src="assets/binaryFlowchart.png" alt="flowchart image" width="400">
 
-#### Sample selection flowchart
+#### Sample Selection Flowchart
 
 <img src="assets/sampleFlowchart.png" alt="flowchart image" width = "400">
+
+#### Optical Character Recognition Flowchart
+
+<img src="assets/OCRflowchart.png" alt="flowchart image" width ="300">
 
 ### Prototype Proof-Of-Concept:
 #### Detecting a target magazine
