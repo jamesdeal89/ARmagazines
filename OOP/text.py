@@ -7,6 +7,9 @@ class Text():
     def __init__(self, target):
         self._target = target
 
+    def greyscale(self,image):
+        return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
     def thresholding(self,image):
         return cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 
@@ -17,7 +20,7 @@ class Text():
 
     def process(self):
         # convert to B&W and then apply above method for 'opening' filter
-        self._processedTarget = cv2.cvtColor(self._target.getLoadedObj(), cv2.COLOR_BGR2GRAY)
+        self._processedTarget = self.greyscale(self._target.getLoadedObj())
         self._processedTarget = self.thresholding(self._processedTarget)
 
     def extract(self):
