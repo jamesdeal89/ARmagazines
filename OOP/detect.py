@@ -12,26 +12,26 @@ class Detect():
         - webcam: the webcam object.
         - targetsList: array of target objects.
         """
-        self.webcam = webcam
-        self.targetsList = targetsList
-        self.detected = None
+        self._webcam = webcam
+        self._targetsList = targetsList
+        self._detected = None
         # generate the aruco dictionary for enhanced detection -> mostly for finding clean borders
-        self.arucoDict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
+        self._arucoDict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
 
     def detect(self):
         # Intialize the bruteforce matcher which scans entire webcam frame for keypoints of targets
         bruteForce = cv2.BFMatcher()
-        self.webcam.genPoints()
+        self._webcam.genPoints()
         # Iterate through each target object
         Matches = []
 
         # check for aruco markers for more accurate borders
         arucoBorders = self.detectArucoMarkers()
 
-        for target in self.targetsList:
+        for target in self._targetsList:
             print("CHECK......"+ str(target._filepath) + str(len(target.getDescriptors())))
             # Scan images to compare keypoints based on descriptors attributes
-            matches = bruteForce.knnMatch(target.getDescriptors(),self.webcam.getDescriptors(),k=2)
+            matches = bruteForce.knnMatch(target.getDescriptors(),self._webcam.getDescriptors(),k=2)
             successfullMatches = []
             # Iterate through the matches and add them to a list of good matches if they're within a certain simiarity
             for targetMatch,sourceMatch in matches:
@@ -101,7 +101,7 @@ class Detect():
 
 
         # apply highpass filter to webcam image
-        webcamHP = cv2.convertScaleAbs(self.myHighPass(size=[self.webcam.getFrame().shape[1]-10,self.webcam.getFrame().shape[0]-10],target=self.webcam.getFrame(), threshold=20))
+        webcamHP = cv2.convertScaleAbs(self.myHighPass(size=[self._webcam.getFrame().shape[1]-10,self._webcam.getFrame().shape[0]-10],target=self._webcam.getFrame(), threshold=20))
 
         # Apply contrast normalization to image
         webcamHP = cv2.normalize(webcamHP, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
@@ -112,7 +112,7 @@ class Detect():
         detectedTarget = None
 
         # rotate the target image by different angles and perform template matching on each rotated version
-        for target in self.targetsList:
+        for target in self._targetsList:
             print(str(target._filepath))
             for targetHP in target.myGetPoints():
 
@@ -146,12 +146,12 @@ class Detect():
     def detectArucoMarkers(self):
         """use opencv to detect aruco markers in the webcam frame"""
         # get the webcam frame
-        frame = self.webcam.getFrame()
+        frame = self._webcam.getFrame()
         # convert to grayscale
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         parameters =  cv2.aruco.DetectorParameters()
         # detect aruco markers
-        detector = cv2.aruco.ArucoDetector(self.arucoDict, parameters)
+        detector = cv2.aruco.ArucoDetector(self._arucoDict, parameters)
         corners, ids, rejectedImgPoints = detector.detectMarkers(gray)
         # Check if all four markers are detected
         if ids is not None and len(ids) == 4:
