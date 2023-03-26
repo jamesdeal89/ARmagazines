@@ -190,6 +190,14 @@ Below is a structure diagram which demonstrates the procedural decomposition of 
 
 <img src="assets/OCRflowchart.png" alt="flowchart image" width ="300">
 
+#### Project() Class Flowchart
+
+<img src="assets/projectFlowchart.png" alt="flowchart image" width="300">
+
+#### Aruco Detection Flowchart
+
+<img src="assets/arucoFlowchart.png" alt="flowchart image" width="300">
+
 ### Prototype Proof-Of-Concept:
 #### Detecting a target magazine
 <img src="/assets/keypoints.png" alt="Keypoint markers drawn using OpenCV" width="500"/>
