@@ -159,14 +159,7 @@ class Detect():
             marker_indices = np.where(np.isin(ids, [0, 1, 2, 3]))[0]
             # Extract the corner coordinates of the four markers
             marker_corners = np.array([corners[i][0] for i in marker_indices], dtype=np.float32)
-
             # return the corners of the markers -> this can help us remove need for border detetection
             return marker_corners
         # if we didn't detect an aruco marker, return None
         return None
-
-
-
-
-
-
