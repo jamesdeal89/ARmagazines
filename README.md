@@ -50,23 +50,23 @@ I want to create this product to help the school's Media Studies department, spe
 "Right now they add their coursework onto their website portfolio. We also print out their work for displays and to allow us to see the work in print quality to make improvements more obvious."
 
 ### Main Objectives:
-- Load target magazine image data
-    - store in an object
-- Load source videos of pre-recorded moving covers in addition to webcam video 
-    - store source in an object which links to the target object (composition) 
-    - create methods to iterate frames 
-- Detect and recognize which of the source videos matches to the magazine/digipack shown
-    - Create unique samples for detection of magazine covers
-    - Create my own sample detection system to match the samples to the webcam frame
-- Detect edges and borders of the magazine/digipack
-    - Ensure the co-ordinates can be used in warping (generating homography)
-- Frame by frame overlay and adjust the warping of the source to match the one in the video
-    - Warp the source video into the shape of the magazine in the webcam (applying homography)
-    - Creating my own bit-wise image operation methods
-- Finally adapt the project for a user friendly interface GUI
-    - File-name input in GUI
-    - Pairs file generation in GUI so they don't have to be re-entered every time
-    - Batching of pairs via GUI into seperate groups - per client demands
+ - 1.0) Load target magazine image data
+    - 1.1) store in an object
+ - 2.0) Load source videos of pre-recorded moving covers in addition to webcam video 
+    - 2.1) store source in an object which links to the target object (composition) 
+    - 2.2) create methods to iterate frames 
+ - 3.0) Detect and recognize which of the source videos matches to the magazine/digipack shown
+    - 3.1) Create unique samples for detection of magazine covers
+    - 3.2) Create my own sample detection system to match the samples to the webcam frame
+ - 4.0) Detect edges and borders of the magazine/digipack
+    - 4.1) Ensure the co-ordinates can be used in warping (generating homography)
+ - 5.0) Frame by frame overlay and adjust the warping of the source to match the one in the video
+    - 5.1) Warp the source video into the shape of the magazine in the webcam (applying homography)
+    - 5.2) Creating my own bit-wise image operation methods
+ - 6.0) Finally adapt the project for a user friendly interface GUI
+    - 6.1) File-name input in GUI
+    - 6.2) Pairs file generation in GUI so they don't have to be re-entered every time
+    - 6.3) Batching of pairs via GUI into seperate groups - per client demands
 
 ### Already existing AR products:
 #### Example 1: IKEA Place
@@ -775,6 +775,24 @@ def test_search():
 ~~~
 
 <img src="assets/testSearch.png">
+
+### Testing Final Product With High-Level Mode
+For these tests, 'high-level' means my code will use cv2 based methods as much as possible to enhance performance.
+
+### Testing Final Product With Low-Level Mode
+For these tests, 'low-level' means my code will use my own implementations as much as possible and therefore performance will be slower.
+
+### Testing Final Product With Compression
+I implemented a slider to improve performance if the user decides it's needed. This can go from 0.7x size to 1.0x size in 0.1 increments. 
+
+### Testing Final Product With Keypoints
+This is a test to see if using object keypoints to detect unique magazines works. 
+
+### Testing Final Product With Aruco Markers
+This is a test to see if the target is still tracked when using aruco markers.
+
+### Testing Final Product With Optical Character Recognition
+This checks the accuracy of OCR when used on the original target image. It also needs to be layered on top of each projected source frame. 
 
 ## Technical Solution
 Below are seperated sections for each file of my overall project. 
@@ -1960,6 +1978,37 @@ class Text():
     def addText(self):
         self._target.getSourceObj().setText(self._data)
 ~~~
+
+## Evaluation
+
+### Did I Meet My Objectives?
+My original objectives for this project, as stated in the section at the beginning of this documentation, are shown below:
+ - 1.0) Load target magazine image data
+    - 1.1) store in an object
+ - 2.0) Load source videos of pre-recorded moving covers in addition to webcam video 
+    - 2.1) store source in an object which links to the target object (composition) 
+    - 2.2) create methods to iterate frames 
+ - 3.0) Detect and recognize which of the source videos matches to the magazine/digipack shown
+    - 3.1) Create unique samples for detection of magazine covers
+    - 3.2) Create my own sample detection system to match the samples to the webcam frame
+ - 4.0) Detect edges and borders of the magazine/digipack
+    - 4.1) Ensure the co-ordinates can be used in warping (generating homography)
+ - 5.0) Frame by frame overlay and adjust the warping of the source to match the one in the video
+    - 5.1) Warp the source video into the shape of the magazine in the webcam (applying homography)
+    - 5.2) Creating my own bit-wise image operation methods
+ - 6.0) Finally adapt the project for a user friendly interface GUI
+    - 6.1) File-name input in GUI
+    - 6.2) Pairs file generation in GUI so they don't have to be re-entered every time
+    - 6.3) Batching of pairs via GUI into seperate groups - per client demands
+
+Going through each of these I'll evaluate whether I met my goals and add any additional features I added:
+ - 1.0) I sucessfully used cv2.imload() to get data from images stored and load them as numpy arrays
+    - 1.1) I successfully used OOP to make an object for all targets
+ - 2.0) I succesfully used cv2.imload() combined with .next() to get each frames data as needed
+    - 2.1) I succesfully used OOP, inhertiance, and polymorphism to link a webcam class to the target class
+    - 2.2) Sucessesfully created a getter for frames.
+ - 3.0) I successfully used object keypoint generation, combined with keypoint matchers to calculate which magazine was detected
+
 
 ## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
