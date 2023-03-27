@@ -2001,14 +2001,29 @@ My original objectives for this project, as stated in the section at the beginni
     - 6.2) Pairs file generation in GUI so they don't have to be re-entered every time
     - 6.3) Batching of pairs via GUI into seperate groups - per client demands
 
-Going through each of these I'll evaluate whether I met my goals and add any additional features I added:
+Going through each of these I'll evaluate whether I met my goals and add any additional features I added (indicated by a '+'):
  - 1.0) I sucessfully used cv2.imload() to get data from images stored and load them as numpy arrays
     - 1.1) I successfully used OOP to make an object for all targets
  - 2.0) I succesfully used cv2.imload() combined with .next() to get each frames data as needed
     - 2.1) I succesfully used OOP, inhertiance, and polymorphism to link a webcam class to the target class
-    - 2.2) Sucessesfully created a getter for frames.
+    - 2.2) Succesfully created a getter for frames
  - 3.0) I successfully used object keypoint generation, combined with keypoint matchers to calculate which magazine was detected
-
+    - 3.1) I succeeded in making my own image samples with target.myGenPoints()
+    - +) Also implemented a highpass filter using convolutions
+    - 3.2) Complete via detect.detect() for keypoints,
+    - +) detect.myDetect() for template matching, 
+    - +) and detect.detectArucoMarkers() for aruco markers
+ - 4.0) Complete via border.border() 
+    - 4.1) Also generates homography matrix based on keypoints
+    - +) Additionally generates homography based on aruco borders
+ - 5.0) Complete via warp.warp()
+    - 5.1) Use the homography matrix to adjust each corner point and warp the source
+    - 5.2) Complete via bitwise.bitAnd(), bitwise.bitOr(), bitwise.Not(), and bitwise.decimalToBinary()
+ - 6.0) Achieved via main.GUI() and utilising PySimpleGui library
+    - 6.1) Complete via main.GUI() which asks the user for an pairs filename if the program has been used before
+    - 6.2) Complete via main.GUIgen() which asks the user to define the pairs of sources and targets
+    - 6.3) Also complete via main.GUI() as user can choose to generate, update or load a save file
+ - +) Implement OCR to allow automatic masthead/ sell-line duplication onto the source video frames
 
 ## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
