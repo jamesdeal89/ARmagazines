@@ -12,11 +12,43 @@ class Detect():
         - webcam: the webcam object.
         - targetsList: array of target objects.
         """
-        self._webcam = webcam
-        self._targetsList = targetsList
-        self._detected = None
+        self.webcam = webcam
+        self.targetsList = targetsList
+        self.detected = None
         # generate the aruco dictionary for enhanced detection -> mostly for finding clean borders
-        self._arucoDict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
+        self.arucoDict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
+
+    @property
+    def webcam(self):  
+        return self._webcam
+    
+    @webcam.setter
+    def webcam(self, webcam):
+        self._webcam = webcam
+
+    @property
+    def targetsList(self):
+        return self._targetsList
+    
+    @targetsList.setter
+    def targetsList(self, targetsList):
+        self._targetsList = targetsList
+    
+    @property
+    def detected(self):
+        return self._detected
+    
+    @detected.setter
+    def detected(self, detected):
+        self._detected = detected
+
+    @property
+    def arucoDict(self):
+        return self._arucoDict
+    
+    @arucoDict.setter
+    def arucoDict(self, arucoDict):
+        self._arucoDict = arucoDict
 
     def detect(self):
         # Intialize the bruteforce matcher which scans entire webcam frame for keypoints of targets

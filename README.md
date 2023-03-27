@@ -452,7 +452,6 @@ As the recursive binary converter was too complex to be calculated at a suitable
         # return the amended first image which now holds the values after being ANDed with all of image 2
         return img
 
-
     def bitOr(self, img, img2):
         # perform a bitwise OR between the two images
         height = img.shape[0]
@@ -493,7 +492,7 @@ As the recursive binary converter was too complex to be calculated at a suitable
 
 #### Fixing B&W Error
 
-When projecting an image using this bitwise class, it makes the final output black and white. I debugged my code and found the error. Mainly this was due to performing an operation using a mask with only one value will make other colour channels be removed. Therefore I adjusted my code to account for more colour channels individually. A snipped of this can be seen below.
+When projecting an image using this bitwise class, it makes the final output black and white. I debugged my code and found the error. Mainly this was due to performing an operation using a mask with only one value will make other colour channels be removed. Therefore I adjusted my code to account for more colour channels individually. A snippet of this can be seen below.
 
 ### Image Detection Implementation
 #### Initial Aproach

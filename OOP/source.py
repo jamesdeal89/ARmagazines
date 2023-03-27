@@ -6,12 +6,28 @@ class Source(Webcam):
     This is the Source class which inherits from the Webcam class.
     It similarly loads frames however from a file rather than a video capture device.
     """
-    def __init__(self, filepath,autoText):
+    def __init__(self,filepath,autoText):
         # intialize the filepath from the parent class which is Webcam which then passes into that parent class which is File
         super().__init__(filepath=filepath)
-        self._frame = None   
-        self._autoText = autoText
+        self.frame = None   
+        self.autoText = autoText
     
+    @property
+    def frame(self):
+        return self._frame
+    
+    @frame.setter
+    def frame(self,frame):
+        self._frame = frame
+    
+    @property
+    def autoText(self):
+        return self._autoText
+    
+    @autoText.setter
+    def autoText(self,autoText):
+        self._autoText = autoText
+
     # Getter for frame 
     def getFrame(self):
         return self._frame

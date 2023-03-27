@@ -2,10 +2,33 @@
 """
 class Search():
     def __init__(self, filename, unordList):
-        self._filename = filename
-        self._unordList = unordList
-        self._sortedDir = None
+        self.filename = filename
+        self.unordList = unordList
+        self.sortedDir = None
 
+    @property
+    def filename(self):
+        return self._filename
+    
+    @filename.setter
+    def filename(self, filename):
+        self._filename = filename
+
+    @property
+    def unordList(self):
+        return self._unordList
+    
+    @unordList.setter
+    def unordList(self, unordList):
+        self._unordList = unordList
+
+    @property
+    def sortedDir(self):
+        return self._sortedDir
+    
+    @sortedDir.setter
+    def sortedDir(self, sortedDir):
+        self._sortedDir = sortedDir
 
     def sort(self):
         """

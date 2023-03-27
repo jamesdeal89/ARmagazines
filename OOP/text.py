@@ -5,6 +5,14 @@ import numpy as np
 
 class Text():
     def __init__(self, target):
+        self.target = target
+
+    @property
+    def target(self):
+        return self._house
+    
+    @target.setter
+    def target(self, target):
         self._target = target
 
     def greyscale(self,image):

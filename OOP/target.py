@@ -15,8 +15,24 @@ class Target(File):
     def __init__(self, filepath, sourceObj):
         # Intialize the parent class, File using the filepath Parameter
         super().__init__(filepath)
+        self.sourceObj = sourceObj
+        self.myPoints = [None]
+
+    @property
+    def sourceObj(self):
+        return self._sourceObj
+    
+    @sourceObj.setter
+    def sourceObj(self, sourceObj):
         self._sourceObj = sourceObj
-        self._myPoints = [None]
+
+    @property
+    def myPoints(self):
+        return self._myPoints
+    
+    @myPoints.setter
+    def myPoints(self, myPoints):
+        self._myPoints = myPoints
 
     # Method to generate the descriptors and keypoints
     def genPoints(self):

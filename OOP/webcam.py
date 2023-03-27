@@ -7,11 +7,59 @@ class Webcam(File):
     """
     def __init__(self,filepath=None,lowRes=False):
         super().__init__(filepath)
-        self._frame = None
-        self._descriptors = None
-        self._keyPoints = None
-        self._loadedBool = None
-        self._loadedWeb = None
+        self.frame = None
+        self.descriptors = None
+        self.keyPoints = None
+        self.loadedBool = None
+        self.loadedWeb = None
+        self.lowRes = lowRes
+
+    @property
+    def frame(self):
+        return self._frame
+    
+    @frame.setter
+    def frame(self,frame):
+        self._frame = frame
+    
+    @property
+    def descriptors(self):
+        return self._descriptors
+    
+    @descriptors.setter
+    def descriptors(self,descriptors):
+        self._descriptors = descriptors
+
+    @property
+    def keyPoints(self):
+        return self._keyPoints
+    
+    @keyPoints.setter
+    def keyPoints(self,keyPoints):
+        self._keyPoints = keyPoints
+
+    @property
+    def loadedBool(self):
+        return self._loadedBool
+    
+    @loadedBool.setter
+    def loadedBool(self,loadedBool):
+        self._loadedBool = loadedBool
+    
+    @property
+    def loadedWeb(self):
+        return self._loadedWeb
+    
+    @loadedWeb.setter
+    def loadedWeb(self,loadedWeb):
+        self._loadedWeb = loadedWeb
+
+    @property
+    def lowRes(self):
+        return self._lowRes
+    
+    @lowRes.setter
+    def lowRes(self,lowRes):
         self._lowRes = lowRes
 
     # Method to generate the descriptors and keypoints

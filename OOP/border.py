@@ -8,6 +8,38 @@ class Border():
         self._successfullMatches = successfullMatches
         self._arucoBorders = arucoBorders
 
+    @property
+    def target(self):
+        return self._target
+    
+    @target.setter
+    def target(self, target):
+        self._target = target
+
+    @property
+    def webcam(self):
+        return self._webcam
+    
+    @webcam.setter
+    def webcam(self, webcam):
+        self._webcam = webcam
+    
+    @property
+    def successfullMatches(self):
+        return self._successfullMatches
+    
+    @successfullMatches.setter
+    def successfullMatches(self, successfullMatches):
+        self._successfullMatches = successfullMatches
+
+    @property
+    def arucoBorders(self):
+        return self._arucoBorders
+    
+    @arucoBorders.setter
+    def arucoBorders(self, arucoBorders):
+        self._arucoBorders = arucoBorders
+
     def border(self):
         h1,w1,c1 = self._target.getLoadedObj().shape
         sourcePoints = np.float32([[0,0],[w1,0],[w1,h1],[0,h1]]).reshape(-1,1,2)
