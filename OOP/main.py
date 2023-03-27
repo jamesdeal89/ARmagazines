@@ -25,7 +25,7 @@ from border import Border
 from webcam import Webcam
 from source import Source
 from target import Target
-from OOP.search import Search
+from search import Search
 
 def GUIgen():
     """The second GUI to get the target and source file locations"""

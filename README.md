@@ -779,20 +779,37 @@ def test_search():
 ### Testing Final Product With High-Level Mode
 For these tests, 'high-level' means my code will use cv2 based methods as much as possible to enhance performance.
 
+<img src="assets/test1.png">
+
 ### Testing Final Product With Low-Level Mode
 For these tests, 'low-level' means my code will use my own implementations as much as possible and therefore performance will be slower.
+
+<img src="assets/testLow.png">
 
 ### Testing Final Product With Compression
 I implemented a slider to improve performance if the user decides it's needed. This can go from 0.7x size to 1.0x size in 0.1 increments. 
 
+<img src="assets/testCompress.png">
+
 ### Testing Final Product With Keypoints
 This is a test to see if using object keypoints to detect unique magazines works. 
+
+<img src="assets/targetTest1.png">
+<img src="assets/targetTest.png">
 
 ### Testing Final Product With Aruco Markers
 This is a test to see if the target is still tracked when using aruco markers.
 
+<img src="assets/arucoTest.png">
+
 ### Testing Final Product With Optical Character Recognition
 This checks the accuracy of OCR when used on the original target image. It also needs to be layered on top of each projected source frame. 
+
+<img src="assets/OCRtest.png">
+
+### Optimal conditions test using a real-world application of the program
+
+<img src="assets/QR.png" width="350">
 
 ## Technical Solution
 Below are seperated sections for each file of my overall project. 

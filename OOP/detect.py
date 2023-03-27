@@ -75,7 +75,7 @@ class Detect():
         for resultMatches in Matches:
             print(str(len(resultMatches[0])) + str(resultMatches[1]._filepath))
             if len(resultMatches[0]) > 15:
-                print("MATCHED")
+                print("MATCHED", resultMatches[1]._filepath)
                 # If so, break the for loop and return the list of matches from the Detect method alongside the detected target and, if applicable, the aruco marker borders
                 return resultMatches[0], resultMatches[1], arucoBorders
 
