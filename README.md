@@ -982,12 +982,28 @@ class Source(Webcam):
     This is the Source class which inherits from the Webcam class.
     It similarly loads frames however from a file rather than a video capture device.
     """
-    def __init__(self, filepath,autoText):
+    def __init__(self,filepath,autoText):
         # intialize the filepath from the parent class which is Webcam which then passes into that parent class which is File
         super().__init__(filepath=filepath)
-        self._frame = None   
-        self._autoText = autoText
+        self.frame = None   
+        self.autoText = autoText
     
+    @property
+    def frame(self):
+        return self._frame
+    
+    @frame.setter
+    def frame(self,frame):
+        self._frame = frame
+    
+    @property
+    def autoText(self):
+        return self._autoText
+    
+    @autoText.setter
+    def autoText(self,autoText):
+        self._autoText = autoText
+
     # Getter for frame 
     def getFrame(self):
         return self._frame
@@ -1035,8 +1051,24 @@ class Target(File):
     def __init__(self, filepath, sourceObj):
         # Intialize the parent class, File using the filepath Parameter
         super().__init__(filepath)
+        self.sourceObj = sourceObj
+        self.myPoints = [None]
+
+    @property
+    def sourceObj(self):
+        return self._sourceObj
+    
+    @sourceObj.setter
+    def sourceObj(self, sourceObj):
         self._sourceObj = sourceObj
-        self._myPoints = [None]
+
+    @property
+    def myPoints(self):
+        return self._myPoints
+    
+    @myPoints.setter
+    def myPoints(self, myPoints):
+        self._myPoints = myPoints
 
     # Method to generate the descriptors and keypoints
     def genPoints(self):
@@ -1131,11 +1163,59 @@ class Webcam(File):
     """
     def __init__(self,filepath=None,lowRes=False):
         super().__init__(filepath)
-        self._frame = None
-        self._descriptors = None
-        self._keyPoints = None
-        self._loadedBool = None
-        self._loadedWeb = None
+        self.frame = None
+        self.descriptors = None
+        self.keyPoints = None
+        self.loadedBool = None
+        self.loadedWeb = None
+        self.lowRes = lowRes
+
+    @property
+    def frame(self):
+        return self._frame
+    
+    @frame.setter
+    def frame(self,frame):
+        self._frame = frame
+    
+    @property
+    def descriptors(self):
+        return self._descriptors
+    
+    @descriptors.setter
+    def descriptors(self,descriptors):
+        self._descriptors = descriptors
+
+    @property
+    def keyPoints(self):
+        return self._keyPoints
+    
+    @keyPoints.setter
+    def keyPoints(self,keyPoints):
+        self._keyPoints = keyPoints
+
+    @property
+    def loadedBool(self):
+        return self._loadedBool
+    
+    @loadedBool.setter
+    def loadedBool(self,loadedBool):
+        self._loadedBool = loadedBool
+    
+    @property
+    def loadedWeb(self):
+        return self._loadedWeb
+    
+    @loadedWeb.setter
+    def loadedWeb(self,loadedWeb):
+        self._loadedWeb = loadedWeb
+
+    @property
+    def lowRes(self):
+        return self._lowRes
+    
+    @lowRes.setter
+    def lowRes(self,lowRes):
         self._lowRes = lowRes
 
     # Method to generate the descriptors and keypoints
@@ -1177,10 +1257,33 @@ class Webcam(File):
 """
 class Search():
     def __init__(self, filename, unordList):
-        self._filename = filename
-        self._unordList = unordList
-        self._sortedDir = None
+        self.filename = filename
+        self.unordList = unordList
+        self.sortedDir = None
 
+    @property
+    def filename(self):
+        return self._filename
+    
+    @filename.setter
+    def filename(self, filename):
+        self._filename = filename
+
+    @property
+    def unordList(self):
+        return self._unordList
+    
+    @unordList.setter
+    def unordList(self, unordList):
+        self._unordList = unordList
+
+    @property
+    def sortedDir(self):
+        return self._sortedDir
+    
+    @sortedDir.setter
+    def sortedDir(self, sortedDir):
+        self._sortedDir = sortedDir
 
     def sort(self):
         """
@@ -1259,20 +1362,52 @@ class Detect():
         # generate the aruco dictionary for enhanced detection -> mostly for finding clean borders
         self.arucoDict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
 
+    @property
+    def webcam(self):  
+        return self._webcam
+    
+    @webcam.setter
+    def webcam(self, webcam):
+        self._webcam = webcam
+
+    @property
+    def targetsList(self):
+        return self._targetsList
+    
+    @targetsList.setter
+    def targetsList(self, targetsList):
+        self._targetsList = targetsList
+    
+    @property
+    def detected(self):
+        return self._detected
+    
+    @detected.setter
+    def detected(self, detected):
+        self._detected = detected
+
+    @property
+    def arucoDict(self):
+        return self._arucoDict
+    
+    @arucoDict.setter
+    def arucoDict(self, arucoDict):
+        self._arucoDict = arucoDict
+
     def detect(self):
         # Intialize the bruteforce matcher which scans entire webcam frame for keypoints of targets
         bruteForce = cv2.BFMatcher()
-        self.webcam.genPoints()
+        self._webcam.genPoints()
         # Iterate through each target object
         Matches = []
 
         # check for aruco markers for more accurate borders
         arucoBorders = self.detectArucoMarkers()
 
-        for target in self.targetsList:
+        for target in self._targetsList:
             print("CHECK......"+ str(target._filepath) + str(len(target.getDescriptors())))
             # Scan images to compare keypoints based on descriptors attributes
-            matches = bruteForce.knnMatch(target.getDescriptors(),self.webcam.getDescriptors(),k=2)
+            matches = bruteForce.knnMatch(target.getDescriptors(),self._webcam.getDescriptors(),k=2)
             successfullMatches = []
             # Iterate through the matches and add them to a list of good matches if they're within a certain simiarity
             for targetMatch,sourceMatch in matches:
@@ -1342,7 +1477,7 @@ class Detect():
 
 
         # apply highpass filter to webcam image
-        webcamHP = cv2.convertScaleAbs(self.myHighPass(size=[self.webcam.getFrame().shape[1]-10,self.webcam.getFrame().shape[0]-10],target=self.webcam.getFrame(), threshold=20))
+        webcamHP = cv2.convertScaleAbs(self.myHighPass(size=[self._webcam.getFrame().shape[1]-10,self._webcam.getFrame().shape[0]-10],target=self._webcam.getFrame(), threshold=20))
 
         # Apply contrast normalization to image
         webcamHP = cv2.normalize(webcamHP, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
@@ -1353,7 +1488,7 @@ class Detect():
         detectedTarget = None
 
         # rotate the target image by different angles and perform template matching on each rotated version
-        for target in self.targetsList:
+        for target in self._targetsList:
             print(str(target._filepath))
             for targetHP in target.myGetPoints():
 
@@ -1387,12 +1522,12 @@ class Detect():
     def detectArucoMarkers(self):
         """use opencv to detect aruco markers in the webcam frame"""
         # get the webcam frame
-        frame = self.webcam.getFrame()
+        frame = self._webcam.getFrame()
         # convert to grayscale
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         parameters =  cv2.aruco.DetectorParameters()
         # detect aruco markers
-        detector = cv2.aruco.ArucoDetector(self.arucoDict, parameters)
+        detector = cv2.aruco.ArucoDetector(self._arucoDict, parameters)
         corners, ids, rejectedImgPoints = detector.detectMarkers(gray)
         # Check if all four markers are detected
         if ids is not None and len(ids) == 4:
@@ -1400,7 +1535,6 @@ class Detect():
             marker_indices = np.where(np.isin(ids, [0, 1, 2, 3]))[0]
             # Extract the corner coordinates of the four markers
             marker_corners = np.array([corners[i][0] for i in marker_indices], dtype=np.float32)
-
             # return the corners of the markers -> this can help us remove need for border detetection
             return marker_corners
         # if we didn't detect an aruco marker, return None
@@ -1470,6 +1604,38 @@ class Border():
         self._target = target
         self._webcam = webcam
         self._successfullMatches = successfullMatches
+        self._arucoBorders = arucoBorders
+
+    @property
+    def target(self):
+        return self._target
+    
+    @target.setter
+    def target(self, target):
+        self._target = target
+
+    @property
+    def webcam(self):
+        return self._webcam
+    
+    @webcam.setter
+    def webcam(self, webcam):
+        self._webcam = webcam
+    
+    @property
+    def successfullMatches(self):
+        return self._successfullMatches
+    
+    @successfullMatches.setter
+    def successfullMatches(self, successfullMatches):
+        self._successfullMatches = successfullMatches
+
+    @property
+    def arucoBorders(self):
+        return self._arucoBorders
+    
+    @arucoBorders.setter
+    def arucoBorders(self, arucoBorders):
         self._arucoBorders = arucoBorders
 
     def border(self):
@@ -1672,7 +1838,18 @@ import numpy as np
 
 class Text():
     def __init__(self, target):
+        self.target = target
+
+    @property
+    def target(self):
+        return self._house
+    
+    @target.setter
+    def target(self, target):
         self._target = target
+
+    def greyscale(self,image):
+        return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     def thresholding(self,image):
         return cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
@@ -1684,7 +1861,7 @@ class Text():
 
     def process(self):
         # convert to B&W and then apply above method for 'opening' filter
-        self._processedTarget = cv2.cvtColor(self._target.getLoadedObj(), cv2.COLOR_BGR2GRAY)
+        self._processedTarget = self.greyscale(self._target.getLoadedObj())
         self._processedTarget = self.thresholding(self._processedTarget)
 
     def extract(self):
