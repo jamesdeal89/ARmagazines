@@ -800,7 +800,7 @@ This is a test to see if using object keypoints to detect unique magazines works
 ### Testing Final Product With Aruco Markers
 This is a test to see if the target is still tracked when using aruco markers.
 
-<img src="assets/arucoTest.png">
+<img src="assets/testAruco.png">
 
 ### Testing Final Product With Optical Character Recognition
 This checks the accuracy of OCR when used on the original target image. It also needs to be layered on top of each projected source frame. 
