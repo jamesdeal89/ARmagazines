@@ -1,14 +1,13 @@
 """This is the class for webcam objects which inherits from the file class"""
 from file import File
 import cv2
-import copy
 
 class Webcam(File):
     """
     This is the Webcam class which inherits from the File class
     """
     def __init__(self,filepath=None,lowRes=False):
-        super().__init__(copy.deepcopy(filepath))
+        super().__init__(filepath)
         self.frame = None
         self.descriptors = None
         self.keyPoints = None

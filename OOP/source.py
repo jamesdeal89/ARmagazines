@@ -1,7 +1,6 @@
 """This is the class for source videos which inherits from the webcam class"""
 from webcam import Webcam
 import cv2
-import copy
 
 class Source(Webcam):
     """
@@ -10,7 +9,7 @@ class Source(Webcam):
     """
     def __init__(self,filepath,autoText):
         # intialize the filepath from the parent class which is Webcam which then passes into that parent class which is File
-        super().__init__(filepath=copy.deepcopy(filepath))
+        super().__init__(filepath=filepath)
         self.frame = None   
         self.autoText = autoText
     

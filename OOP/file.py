@@ -1,10 +1,9 @@
 """The class for files as OpenCV objects"""
 import cv2
-import copy
 
 class File():
     def __init__(self, filepath):
-        self.filepath = copy.deepcopy(filepath)
+        self.filepath = filepath
         self._loadedObj = None
     
     # the getter for the filepath attribute

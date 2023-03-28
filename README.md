@@ -807,9 +807,14 @@ This checks the accuracy of OCR when used on the original target image. It also 
 
 <img src="assets/OCRtest.png">
 
-### Optimal conditions test using a real-world application of the program
-
+### Video Tests Including Final Client Use-Case
+#### 3rd person view 
+https://youtu.be/0VBcbq0p-C8
 <img src="assets/QR.png" width="350">
+
+### Series of screen-recorded tests
+https://youtu.be/9YzmsHYRRgA
+<img src="assets/QR2.png" width="350">
 
 ## Technical Solution
 Below are seperated sections for each file of my overall project. 
