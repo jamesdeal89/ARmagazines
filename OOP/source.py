@@ -1,6 +1,8 @@
 """This is the class for source videos which inherits from the webcam class"""
 from webcam import Webcam
 import cv2
+import copy
+
 class Source(Webcam):
     """
     This is the Source class which inherits from the Webcam class.
@@ -8,7 +10,7 @@ class Source(Webcam):
     """
     def __init__(self,filepath,autoText):
         # intialize the filepath from the parent class which is Webcam which then passes into that parent class which is File
-        super().__init__(filepath=filepath)
+        super().__init__(filepath=copy.deepcopy(filepath))
         self.frame = None   
         self.autoText = autoText
     
@@ -41,6 +43,7 @@ class Source(Webcam):
     # Loads the next frame of the video
     def next(self,w,h):
         # Here loadedBool is a True/False of whether the video has ended
+        print(self.filepath)
         self._loadedBool, self._frame = self._loadedVid.read()
         self._frame = cv2.resize(self._frame,(w,h))
         if self._autoText:

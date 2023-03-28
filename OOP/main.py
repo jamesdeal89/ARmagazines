@@ -115,12 +115,9 @@ def loadPairs(fileName,autoText):
     with open(fileName, "r") as file:
         reader = csv.DictReader(file)
         targets = []
-        sources = []
-        counter = 0
         for row in reader:
             # we make an append to an array of each object we create for target and source respectively
-            targets.append(Target(row["target"],sourceObj=Source([row["source"]],autoText)))
-            counter += 1
+            targets.append(Target(copy.deepcopy(row["target"]),sourceObj=Source(copy.deepcopy([row["source"]]),autoText)))
         return targets
 
 def main():
@@ -213,7 +210,7 @@ def main():
                     destinationPoints, homographyMatrix = borderResult
                     print("BORDER CALCULATED")
                     h,w,c = webcam.getFrame().shape
-                    warp = Warp(target.getSourceObj().getFrame(), homographyMatrix, [w,h])
+                    warp = Warp(detectedTarget.getSourceObj().getFrame(), homographyMatrix, [w,h])
                     warpedSource = warp.warp()
                     print("SOURCE WARPED")
                     project = Project(webcam.getFrame(), warpedSource, destinationPoints)
