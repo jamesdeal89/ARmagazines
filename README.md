@@ -141,7 +141,7 @@ I would like to highlight some areas of this:
 
 Firstly, the Target and Webcam classes inherit from the File class. This is as both of these need to use the filepath attribute and the load()/getLoadedObj() methods. However they cannot be the same object as Target only needs to be for images, whereas Webcam needs additional methods like next() and getFrame() to iterate through the frames.
 
-Furthermore, Source inherits from Webcam as it also uses video data. The Source class is then used as a composition inside of Target as it creates a link between magazine targets and the AR video that needs to be projected onto it; making storing the source inside of the target effectice. 
+Furthermore, Source inherits from Webcam as it also uses video data. The Source class is then used inside of Target as it creates a link between magazine targets and the AR video that needs to be projected onto it; making storing a source instance inside of the target instance effective. This is represented by the 1-to-1 multiplicity which you can see in the UML diagram. 
 
 The rest of the classes serve the purpose of manipulating/analysing data from the others. For example, Detect takes the Webcam instance and several Target instances and uses them to determine which image from Target can be seen in the data from Webcam. This data is then used by Border to find which coordinates in the Webcam data hold the detected Target, which is passed to Warp and Project, which uses Bitwise to manipulate the data and overlay the two. 
 
