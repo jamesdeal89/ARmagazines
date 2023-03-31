@@ -117,17 +117,23 @@ Source: https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
 Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
 
 #### OpenCV Documentation - Perspective Warp:
-
+Source: https://theailearner.com/tag/cv2-warpperspective/
 
 #### OpenCV Documentation - Aruco Markers:
+Source: https://docs.opencv.org/3.4/d5/dae/tutorial_aruco_detection.html
 
 #### OpenCV Documentation - Resizing Images:
+Source: https://www.tutorialkart.com/opencv/python/opencv-python-resize-image/
 
 #### OpenCV Documentation - Convolutions
+Source: https://pyimagesearch.com/2016/07/25/convolutions-with-opencv-and-python/
+Source: https://developer.nvidia.com/discover/convolution
 
 #### Python - Copy.deepcopy
+Source: https://docs.python.org/3/library/copy.html
 
 #### PyTesseract - Optical Character Recognition:
+Source: https://nanonets.com/blog/ocr-with-tesseract/#nanonets-and-humans-in-the-loop
 
 ## Documented Design:
 
