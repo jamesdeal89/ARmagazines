@@ -715,6 +715,11 @@ A visualisation of this process can be seen below:
 <img src="assets/smartSample.png" width=500>
 
 ## Testing
+
+### Testing Table
+
+<img src="testTable.png">
+
 ### Unit Testing For Bitwise()
 
 ~~~python
