@@ -2089,53 +2089,53 @@ https://youtu.be/oXlwWbU8l2o , accessed October 28th 2022.
 https://youtu.be/7gSWd2hodFU , accessed October 29th 2022.
 - YouTube OpenCV video series; specifically on Augmented Reality
 
-https://learnopencv.com/image-alignment-feature-based-using-opencv-c-python/ , accessed  
+https://learnopencv.com/image-alignment-feature-based-using-opencv-c-python/ , accessed  November 2nd 2022
 - OpenCV ORB image alignment
 
-https://pythonprogramming.net/image-recognition-python/
+https://pythonprogramming.net/image-recognition-python/ , accessed November 2nd 2022
 - Article discussing image recognition algorithms without OpenCV
 
-https://docs.python.org/3/library/tkinter.html
+https://docs.python.org/3/library/tkinter.html , accessed November 29th 2022
 - Documentation on Tkinter for GUI
 
-https://www.pocket-lint.com/apps/news/google/147956-what-is-google-maps-ar-navigation-and-how-do-you-use-it
+https://www.pocket-lint.com/apps/news/google/147956-what-is-google-maps-ar-navigation-and-how-do-you-use-it , accessed October 27th 2022
 - Article on Google Live View, used in research for AR similar products
 
-https://stackoverflow.com/questions/14177744/how-does-perspective-transformation-work-in-pil
+https://stackoverflow.com/questions/14177744/how-does-perspective-transformation-work-in-pil , accessed November 4th
 - Stackoverflow question about perspective warp algorithms
 
-https://dev.to/duomly/how-to-create-simple-image-recognition-with-python-3hf4
+https://dev.to/duomly/how-to-create-simple-image-recognition-with-python-3hf4 , accessed November 12th 2022
 - Article on image recognition using neural network
 
-https://datahacker.rs/how-to-access-and-edit-pixel-values-in-opencv-with-python/
+https://datahacker.rs/how-to-access-and-edit-pixel-values-in-opencv-with-python/ , accessed January 15th 2023
 - Article on reading pixel colour values from OpenCV images - part of making a bitwise operator class
 
-https://www.geeksforgeeks.org/python-list-files-in-a-directory/
+https://www.geeksforgeeks.org/python-list-files-in-a-directory/ , accessed January 17th 2023
 - Explains different methods for accessing files in directories
 
-https://www.geeksforgeeks.org/searching-algorithms/
+https://www.geeksforgeeks.org/searching-algorithms/ , accessed January 17th 2023
 - Explains several searching algorithms
 
-https://www.geeksforgeeks.org/sorting-algorithms/
+https://www.geeksforgeeks.org/sorting-algorithms/ , accessed January 17th 2023
 - Explains several sorting algorithms
 
-https://docs.opencv.org/3.4/d0/d86/tutorial_py_image_arithmetics.html
+https://docs.opencv.org/3.4/d0/d86/tutorial_py_image_arithmetics.html , accessed November 20th 2022
 - Overview of image overlays and masking using bitwise operations
 
-https://www.youtube.com/watch?v=X7vBbelRXn0
+https://www.youtube.com/watch?v=X7vBbelRXn0 , accessed November 20th 2022
 - YouTube video from mCoding which explains how to optimise Python execution
 
-https://www.geeksforgeeks.org/python-gui-tkinter/
+https://www.geeksforgeeks.org/python-gui-tkinter/ , accessed January 12th 2023
 - Lists the possible elements for user input in Tkinter for GUI
 
-https://aishack.in/tutorials/image-convolution-examples/
+https://aishack.in/tutorials/image-convolution-examples/ , accessed November 30th 2022
 - Short web article which explains several convolution image filters
 
-https://www.youtube.com/watch?v=i76B1pBoN4Y
+https://www.youtube.com/watch?v=i76B1pBoN4Y , accessed November 30th 2022
 - YouTube video explaining high/low pass filters in CS
 
-https://stackoverflow.com/questions/29133085/what-are-keypoints-in-image-processing
+https://stackoverflow.com/questions/29133085/what-are-keypoints-in-image-processing , accessed January 18th 2023
 - Stackoverflow thread on how keypoints/descriptors are generated
 
-https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/viola-cvpr-01.pdf
+https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/viola-cvpr-01.pdf , accessed January 19th 2023
 - Paper on Viola-Jones algorithm for facial detection; useful for understanding integral images
