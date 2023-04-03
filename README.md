@@ -2071,6 +2071,8 @@ In the written feedback section they wrote the following:
 
 As a next iteration, it would be exciting for it to be able to function through higher resolution cameras such mobile phones or high resolution external webcams, to allow the software to function better in more challenging conditions such as low light, affecting the currently supported small sensor cameras significantly at times."
 
+To summarise their main feedback was that the software meets the requirements perfectly. It sucessfully can be used for print products of many types (digipak/magazine). They were also impressed that it can process high defintiion source videos. However they suggested that the project could have been improved by allowing for higher resolution external cameras to be used, for example a DSLR camera attached via USB. Furthermore this would allow the project to be more flexible in different lighting conditions as it allows for greater dynamic range and easier matching via my algorithms. This is a great suggestions and something I could have expanded on more via a GUI based prompt to select whether the internal or external camera should be used. 
+
 ## Bibliography:
 https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html , accessed November 5th 2022.
 - OpenCV homography documentation
