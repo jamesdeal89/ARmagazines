@@ -139,6 +139,22 @@ Source: https://nanonets.com/blog/ocr-with-tesseract/#nanonets-and-humans-in-the
 
 ## Documented Design:
 
+### Hardware Requirements 
+
+In order to run my program the user is required to have the following hardware:
+ - a computer capable of running Python3.XX to execute the program
+ - a webcam up to 1080p HD to get data to project on
+ - a hard-disk to store the source videos, magazine images, and pairs files
+ - a monitor to display the output
+
+### File Structure
+
+The structure of the program will be as shown in the diagram below:
+
+<img src="assets/fileStructure.png">
+
+We need to store the main.py, file.py, bitwise.py, border.py, detect.py, project.py, search.py, source.py, target.py, text.py, warp.py, and webcam.py in a single folder to allow them to import between one another. Futhermore, any pairs.csv files the user generates should be stored in the same folder for access by main.py the next time the program is executed. 
+
 ### UML Class Diagram
 
 Below is a UML diagram to demonstrate how I plan to structure my program: 
