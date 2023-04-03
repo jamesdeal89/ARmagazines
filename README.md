@@ -98,7 +98,7 @@ Python is a high-level programming language with a focus on simple, 'English-lik
 
 ### Research On Algorithms / Aproaches That Could Be Used / External Libraries:
 #### OpenCV Documentation - Displaying Video And Capturing Camera Feeds:
-Source: https://docs.opencv.org/4.x/dd/de7/group__videoio.html
+Source: https://docs.opencv.org/4.x/dd/de7/group__videoio.html , accessed November 5th 2022.
 
 This page holds detailed information on how the Open Computer Vision Python library can used to load and write video information. 
 It states that the syntax for the VideoCapture() method is:
@@ -111,29 +111,31 @@ In laymans terms this notation means that this is a part of the CV library which
 The index which is an integer and your 'api preference' which is also an integer. The documentation page further elaborates to say that passing in a value of '0' will capture from to the systems default video device; typically the webcam. 
 
 #### OpenCV Documentation - Homography Algorithms:
-Source: https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
+Source: https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html , accessed November 5th 2022.
+
+
 
 #### OpenCV Documentation - Bitwise Operators:
-Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
+Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html , accessed November 5th 2022.
 
 #### OpenCV Documentation - Perspective Warp:
-Source: https://theailearner.com/tag/cv2-warpperspective/
+Source: https://theailearner.com/tag/cv2-warpperspective/ , accessed November 5th 2022.
 
 #### OpenCV Documentation - Aruco Markers:
-Source: https://docs.opencv.org/3.4/d5/dae/tutorial_aruco_detection.html
+Source: https://docs.opencv.org/3.4/d5/dae/tutorial_aruco_detection.html , accessed November 5th 2022.
 
 #### OpenCV Documentation - Resizing Images:
-Source: https://www.tutorialkart.com/opencv/python/opencv-python-resize-image/
+Source: https://www.tutorialkart.com/opencv/python/opencv-python-resize-image/ , accessed November 5th 2022.
 
 #### OpenCV Documentation - Convolutions
-Source: https://pyimagesearch.com/2016/07/25/convolutions-with-opencv-and-python/
-Source: https://developer.nvidia.com/discover/convolution
+Source: https://pyimagesearch.com/2016/07/25/convolutions-with-opencv-and-python/ , accessed November 5th 2022.
+Source: https://developer.nvidia.com/discover/convolution , accessed November 5th 2022.
 
 #### Python - Copy.deepcopy
-Source: https://docs.python.org/3/library/copy.html
+Source: https://docs.python.org/3/library/copy.html , accessed November 5th 2022.
 
 #### PyTesseract - Optical Character Recognition:
-Source: https://nanonets.com/blog/ocr-with-tesseract/#nanonets-and-humans-in-the-loop
+Source: https://nanonets.com/blog/ocr-with-tesseract/#nanonets-and-humans-in-the-loop , accessed November 5th 2022.
 
 ## Documented Design:
 
@@ -2053,23 +2055,39 @@ Going through each of these I'll evaluate whether I met my goals and add any add
     - 6.3) Also complete via main.GUI() as user can choose to generate, update or load a save file
  - +) Implement OCR to allow automatic masthead/ sell-line duplication onto the source video frames
 
+### Exit Survey With End-User Client:
+
+I completed an exit interview with my end-user and client. This takes my objectives above and asks the client if they believe I met or did not meet my goals. At the end of the questionaire there's a text response where they gave suggestions for what could have been improved. 
+
+<img src="assets/question1.png">
+<img src="assets/question2.png">
+<img src="assets/question3.png">
+<img src="assets/question4.png">
+
+The response is very positive from the client and they responded 'Yes' to ceritfy that all of my objectives apear complete. This is based on the six main objectives of: Loading magazine data, Loading video data, detecting specific magazines, Detecting borders, Frame by frame projection, User-friendly GUI. 
+
+In the written feedback section they wrote the following:
+"The software meets the requirements perfectly, allowing for AR print products of all types which is very exciting. The software responds quickly and is able to handle high definition footage which exceeded my expectations of such a solution.
+
+As a next iteration, it would be exciting for it to be able to function through higher resolution cameras such mobile phones or high resolution external webcams, to allow the software to function better in more challenging conditions such as low light, affecting the currently supported small sensor cameras significantly at times."
+
 ## Bibliography:
-https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html
+https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html , accessed November 5th 2022.
 - OpenCV homography documentation
 
-https://medium.com/acmvit/how-to-project-an-image-in-perspective-view-of-a-background-image-opencv-python-d101bdf966bc
+https://medium.com/acmvit/how-to-project-an-image-in-perspective-view-of-a-background-image-opencv-python-d101bdf966bc , accessed November 3rd 2022.
 - Perspective warping images onto each other
 
-https://pyimagesearch.com/2021/01/04/opencv-augmented-reality-ar/
+https://pyimagesearch.com/2021/01/04/opencv-augmented-reality-ar/ , accessed November 3rd 2022.
 - Projecting images onto marker cards
 
-https://youtu.be/oXlwWbU8l2o
+https://youtu.be/oXlwWbU8l2o , accessed October 28th 2022.
 - YouTube OpenCV Course
 
-https://youtu.be/7gSWd2hodFU
+https://youtu.be/7gSWd2hodFU , accessed October 29th 2022.
 - YouTube OpenCV video series; specifically on Augmented Reality
 
-https://learnopencv.com/image-alignment-feature-based-using-opencv-c-python/
+https://learnopencv.com/image-alignment-feature-based-using-opencv-c-python/ , accessed  
 - OpenCV ORB image alignment
 
 https://pythonprogramming.net/image-recognition-python/
