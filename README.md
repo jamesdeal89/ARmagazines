@@ -718,7 +718,7 @@ A visualisation of this process can be seen below:
 
 ### Testing Table
 
-<img src="testTable.png">
+<img src="assets/testTable.png">
 
 ### Unit Testing For Bitwise()
 
