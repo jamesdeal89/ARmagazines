@@ -112,30 +112,109 @@ The index which is an integer and your 'api preference' which is also an integer
 
 #### OpenCV Documentation - Homography Algorithms:
 Source: https://docs.opencv.org/3.4/d9/dab/tutorial_homography.html , accessed November 5th 2022.
+Source: https://learnopencv.com/homography-examples-using-opencv-python-c/ , accessed November 12th 2022.
 
+According to OpenCV's documentation, a homography matrix is a 3 by 3 matrix with 8 degrees of freedom as it needs to scale. 
+It specifically gives the following examples of uses:
+ - camera pose estimation for augmented reality
+ - Perspective removal
+ - Panorama stitching
 
+In order to use it with the built-in OpenCV python module we can use the following syntax:
+~~~python
+h, status = cv2.findHomography(pts_src, pts_dst)
+~~~
+and to then apply this homography matrix we can use:
+~~~python 
+im_dst = cv2.warpPerspective(im_src, h, size)
+~~~
+I believe this will be key in adjusting the perspective of source frames to line-up with the magazine detected in the webcam. 
 
 #### OpenCV Documentation - Bitwise Operators:
 Source: https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html , accessed November 5th 2022.
 
+This webpage from OpenCV's documentation has information on how bitwise operators can be used for overlaying images. This is specifically useful to me as I need to overlay video frames onto a webcam. 
+
+In the documentation it states that creating an overlay requires the following main steps:
+ - creating a mask by having a black and white image with the white areas being the parts we keep whereas the black is where data is deleted.
+ - Performing a bitwise AND between this mask and the other image.
+ - ORing the original image with the mask to allow for only the areas which are pure white to be added to the base image ( as it will replicate the data of the overlaid image ) whereas black regions will retain the original data. 
+
+The main bitwise operators in OpenCV are:
+ - cv2.bitwise_not()
+ - cv2.bitwise_and()
+ - cv2.bitwise_or()
+
 #### OpenCV Documentation - Perspective Warp:
 Source: https://theailearner.com/tag/cv2-warpperspective/ , accessed November 5th 2022.
+
+As previously mentioned in the homography section, we use this syntax to apply homography:
+~~~python
+im_dst = cv2.warpPerspective(im_src, h, size)
+~~~
+What this does is warp the im_src image to mimick the homography we pass in via 'h'. This allows us to store this in im_dst as a new image. 
 
 #### OpenCV Documentation - Aruco Markers:
 Source: https://docs.opencv.org/3.4/d5/dae/tutorial_aruco_detection.html , accessed November 5th 2022.
 
+This page defines what aruco markers are, which is a square marker with a black base and a binary matrix within in white. The clearly defined border and pixels allow for efficient detection. 
+
+The documentation states that OpenCV has built-in aruco dictionaries which allow python code to detect these markers in images. 
+
+This can be done via the 'getPredefinedDictionary' method of the cv2.aruco class.
+
+It also explains that 'detectMarkers' method of the cv2.aruco class can be used to detect and collect data about markers in images passed in. This includes border corner points and detection locations. The results of this method are returned as a tiple of 'markerCorners' and 'markerIds'. 
+
+I believe these can used to help determine location and a border of a larger image via the webcam in my project. 
+
 #### OpenCV Documentation - Resizing Images:
 Source: https://www.tutorialkart.com/opencv/python/opencv-python-resize-image/ , accessed November 5th 2022.
+
+In OpenCV you can use the cv2.resize() method to resize an image. This is important as the sizes of the source frame need to match the size of the target magazine, otherwise it could overflow from the edges in AR. 
+
+The syntax is as follows:
+~~~python
+cv2.resize(src, dsize[, dst[, fx[, fy[, interpolation]]]])
+~~~
 
 #### OpenCV Documentation - Convolutions
 Source: https://pyimagesearch.com/2016/07/25/convolutions-with-opencv-and-python/ , accessed November 5th 2022.
 Source: https://developer.nvidia.com/discover/convolution , accessed November 5th 2022.
 
+The links above were useful in allowing me to understand image convolutions. This is important for my project as I will need to create my own form of image detection. This will involve creating samples which the algorithm searches for. Therefore using convolutions to create a highpass of images would allow the data to be processed to be reduced. 
+
+According to Nvidia's developer documentation a common high-pass convolution kernel is:
+
+[-1,-1,-1,
+
+-1,8,-1,
+
+-1,-1,-1]
+
+The way this kernel is used is that it's scanned across an image. The values of each pixel in each of the surrounding pixels from the centre of this convolution kernel has the multiplier applied and then is summed. This essentially gives each pixel a number which defines how 'different' it is from it's surrounding pixels. Therefore a threshold value can be set to only allow pixels with a high output to be shown; thereby only showing hard edges. 
+
 #### Python - Copy.deepcopy
 Source: https://docs.python.org/3/library/copy.html , accessed November 5th 2022.
 
+copy.deepcopy is a built-in Python method which allows for large arrays and lists to be copied via data rather than via memory reference. As I'm using large amounts of image data which is often manipulated for detection and projection, I need to ensure original data is kept intact. Therefore deep copies are sometimes needed.
+
 #### PyTesseract - Optical Character Recognition:
 Source: https://nanonets.com/blog/ocr-with-tesseract/#nanonets-and-humans-in-the-loop , accessed November 5th 2022.
+
+PyTesseract is a library which allows for Tesseract, an OCR engine, to be utilised in Python. I want to use this it allows for sell-lines and mastheads to be translated over to source frames, which saves time for the end user although not essential. 
+
+The syntax for using PyTesseract to detect text via Optical Character Recognition is:
+~~~python
+data = pytesseract.image_to_data(img, output_type=Output.DICT))
+~~~
+The data in this return is a dictionary with the following useful data:
+ - left (the x co-ordinate of the texts position)
+ - top (the y co-ordinate of the texts position)
+ - width (width of the text)
+ - height (height of the text)
+ - text (the actual OCR detected text data)
+
+From this dictionary data we should be able to overlay this text in a similar position onto the source frame thanks to the provided x and y co-ordinates and the OCR text.
 
 ## Documented Design:
 
